@@ -5,6 +5,7 @@ import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons
 import Link from "next/link";
 import MottoSection from "./motto-section";
 import { registerUser, registerLawyer, handleLogin } from "./action";
+import { useRouter } from "next/navigation";
 
 interface AuthFormProps {
   type?: "login" | "register";
@@ -67,6 +68,8 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   });
   const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
+  const router = useRouter();
 
   // ! Kelvin menambahkan async untuk action register
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,10 +83,15 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         console.log("Register attempt:", sanitizedData);
 
         // todo: register data to api server with action by Kelvin
+        // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
-        if (sanitizedData.role === "client") await registerUser(sanitizedData);
-        else if (sanitizedData.role === "lawyer") await registerLawyer(sanitizedData);
-        // console.log("Register response:", response);
+        if (sanitizedData.role === "client") {
+          const response = await registerUser(sanitizedData);
+          if (response.message === "Success Register") router.push("/login");
+        } else if (sanitizedData.role === "lawyer") {
+          const response = await registerLawyer(sanitizedData);
+          if (response.message === "Success Register Lawyer") router.push("/login");
+        }
       } else {
         console.log("Login attempt:", { email, password });
 
@@ -95,6 +103,9 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
 
         await handleLogin(formData);
       }
+
+      // ! jika ada error, maka redirect ke halaman register lagi dengan error (Kelvin)
+      // if (response && response.ok) redirect("/login");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
