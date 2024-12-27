@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Navbar() {
   return (
     <>
@@ -58,7 +60,7 @@ export default function Navbar() {
                     <a>Berita</a>
                   </li>
                   <li>
-                    <a>Tips Hukum</a>
+                    <Link href="/tips">Tips Hukum</Link>
                   </li>
                 </ul>
               </details>
