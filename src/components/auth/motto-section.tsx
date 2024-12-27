@@ -1,6 +1,17 @@
 "use client"
 
-export default function MottoSection() {
+import Lottie, { LottieComponentProps } from "lottie-react"
+import justiceLottie from "@/assets/lottie/justice.json"
+
+// Custom type utk props Lottie klo mau extend
+type LottieProps = Partial<LottieComponentProps>
+
+// Klo mau pake props di component
+interface MottoSectionProps {
+    lottieProps?: LottieProps
+}
+
+export default function MottoSection({ lottieProps }: MottoSectionProps = {}) {
     return (
         <div className="
             bg-white/10 
@@ -14,24 +25,29 @@ export default function MottoSection() {
             text-center 
             h-auto 
             overflow-hidden 
-            group
+            flex
+            flex-col
+            items-center
+            justify-center
+            gap-6
         ">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="w-96 h-96 relative">
+                <Lottie 
+                    animationData={justiceLottie} 
+                    loop={true}
+                    className="w-full h-full"
+                    {...lottieProps}
+                />
+            </div>
             
-            <h2 className="text-4xl font-lora mb-8 relative">
-                Konsultasi Hukum Modern
-            </h2>
-            
-            <div className="space-y-8 relative">
-                <div className="text-xl font-light space-y-4">
-                    <p className="leading-relaxed">
-                        Temukan solusi hukum terpercaya melalui konsultasi dengan pengacara profesional berpengalaman
-                    </p>
-                </div>
+            <div className="space-y-4 relative">
+                <h2 className="text-3xl font-lora">
+                    Konsultasi Hukum Modern
+                </h2>
                 
-                <div className="text-sm text-white/80 italic">
+                <p className="text-sm text-white/80 italic">
                     &quot;Mewujudkan keadilan dan kepastian hukum bagi seluruh lapisan masyarakat Indonesia&quot;
-                </div>
+                </p>
             </div>
         </div>
     )

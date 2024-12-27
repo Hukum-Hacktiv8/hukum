@@ -138,8 +138,9 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           <input
             type="checkbox"
             className="rounded border-white/30 bg-white/20 text-blue-500 
-                        focus:ring-blue-400/50 focus:ring-offset-0 focus:ring-2"
+                         focus:ring-blue-400/50 focus:ring-offset-0 focus:ring-2"
           />
+
           <span className="ml-2 text-white/90">Ingat aku</span>
         </label>
         <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
@@ -180,15 +181,12 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
 
         <div className="col-span-2 md:col-span-1">
           <label className="text-sm font-medium text-white mb-1 block">Peran</label>
-          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value as "client" | "lawyer" | "admin" })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" required>
+          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value as "client" | "lawyer" })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" required>
             <option value="client" className="bg-gray-800">
               Client
             </option>
             <option value="lawyer" className="bg-gray-800">
               Lawyer
-            </option>
-            <option value="admin" className="bg-gray-800">
-              Admin
             </option>
           </select>
         </div>
