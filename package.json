@@ -11,9 +11,13 @@
   "dependencies": {
     "firebase": "^11.1.0",
     "daisyui": "^4.12.23",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
+    "mongodb": "^6.12.0",
     "next": "14.2.20",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
