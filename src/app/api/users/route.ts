@@ -1,12 +1,12 @@
 import { createSubsFirstRegister, extractObjectIdString } from "@/app/models/subscription";
 import { registerUser } from "@/app/models/user";
-
 import { z } from "zod";
 
 const profileSchema = z.object({
   address: z.string(),
   birth: z.string(),
 });
+
 const userInput = z.object({
   name: z.string(),
   email: z.string().email(),
