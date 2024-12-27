@@ -41,10 +41,12 @@ export const registerLawyer = async (data: RegisterFormData) => {
     },
     specialization: data.specialization,
     credentials: {
-      education: data.education,
+      education: [data.education],
       certification: data.certification,
     },
   };
+
+  console.log(userInput);
 
   const response = await fetch("http://localhost:3000/api/lawyers", {
     method: "POST",
@@ -55,7 +57,7 @@ export const registerLawyer = async (data: RegisterFormData) => {
   });
 
   // ? untuk mengetahui data yang diinput sesuai atau tidak
-  // console.log("data:", userInput);
+  console.log("data:", userInput);
 
   // ! mengembalikan response ke client
   return response.json();

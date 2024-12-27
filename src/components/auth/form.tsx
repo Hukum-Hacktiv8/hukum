@@ -4,8 +4,7 @@ import { useState, useRef } from "react";
 import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
 import MottoSection from "./motto-section";
-import { registerUser } from "./action";
-import { registerLawyer } from "@/app/models/user";
+import { registerUser, registerLawyer } from "./action";
 
 interface AuthFormProps {
   type?: "login" | "register";
@@ -72,12 +71,12 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           ...formData,
           certification: certification ? certification.name : null,
         };
-        // console.log("Register attempt:", sanitizedData);
+        console.log("Register attempt:", sanitizedData);
 
         // todo: register data to api server with action by Kelvin
         // const response = await registerUser(sanitizedData);
         if (sanitizedData.role === "client") await registerUser(sanitizedData);
-        if (sanitizedData.role === "lawyer") await registerLawyer(sanitizedData);
+        else if (sanitizedData.role === "lawyer") await registerLawyer(sanitizedData);
         // console.log("Register response:", response);
       } else {
         console.log("Login attempt:", { email, password });
