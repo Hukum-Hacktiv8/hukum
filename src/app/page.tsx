@@ -3,7 +3,7 @@ import KonsultasiCard from "@/components/KonsultasiCard";
 import Navbar from "@/components/Navbar";
 
 import WaveDivider from "@/components/wave-divider";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
@@ -12,7 +12,6 @@ export default function Home() {
             <Navbar />
             <Carousel />
             <KonsultasiCard />
-
             <WaveDivider />
             <Footer />
     </>

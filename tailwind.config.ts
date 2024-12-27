@@ -12,9 +12,6 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      fontFamily: {
-        'lora': ['var(--font-lora)'],
-      },
       animation: {
         gradient: 'gradient 4s ease-in-out alternate-reverse infinite',
       },

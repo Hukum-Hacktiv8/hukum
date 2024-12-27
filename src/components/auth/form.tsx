@@ -13,7 +13,7 @@ interface RegisterFormData {
     name: string
     email: string
     password: string
-    role: 'client' | 'lawyer' | 'admin'
+    role: 'client' | 'lawyer'
     address: string
     birthDate: string
     specialization: string
@@ -227,13 +227,12 @@ export default function AuthForm({ type = 'login' }: AuthFormProps) {
                     </label>
                     <select
                         value={formData.role}
-                        onChange={(e) => setFormData({...formData, role: e.target.value as 'client' | 'lawyer' | 'admin'})}
+                        onChange={(e) => setFormData({...formData, role: e.target.value as 'client' | 'lawyer'})}
                         className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans"
                         required
                     >
                         <option value="client" className="bg-gray-800">Client</option>
                         <option value="lawyer" className="bg-gray-800">Lawyer</option>
-                        <option value="admin" className="bg-gray-800">Admin</option>
                     </select>
                 </div>
 
