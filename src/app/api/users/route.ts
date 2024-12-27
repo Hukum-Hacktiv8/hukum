@@ -44,8 +44,6 @@ export const POST = async (request: Request) => {
       }
     );
   } catch (error) {
-    // console.log(error);
-
     if (error instanceof z.ZodError) {
       return Response.json(
         {

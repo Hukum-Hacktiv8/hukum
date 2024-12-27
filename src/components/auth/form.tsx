@@ -4,10 +4,17 @@ import { useState, useRef } from "react";
 import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
 import MottoSection from "./motto-section";
-import { registerUser } from "./action";
+import { registerUser, registerLawyer, handleLogin } from "./action";
+import { useRouter } from "next/navigation";
 
 interface AuthFormProps {
   type?: "login" | "register";
+}
+
+// ! export interface by Kelvin untuk action login
+export interface LoginFormData {
+  email: string;
+  password: string;
 }
 
 // ! export interface by Kelvin untuk action register
@@ -61,6 +68,8 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   });
   const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
+  const router = useRouter();
 
   // ! Kelvin menambahkan async untuk action register
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,16 +80,32 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           ...formData,
           certification: certification ? certification.name : null,
         };
-        // console.log("Register attempt:", sanitizedData);
+        console.log("Register attempt:", sanitizedData);
 
         // todo: register data to api server with action by Kelvin
+        // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
-        await registerUser(sanitizedData);
-
-        // console.log("Register response:", response);
+        if (sanitizedData.role === "client") {
+          const response = await registerUser(sanitizedData);
+          if (response.message === "Success Register") router.push("/login");
+        } else if (sanitizedData.role === "lawyer") {
+          const response = await registerLawyer(sanitizedData);
+          if (response.message === "Success Register Lawyer") router.push("/login");
+        }
       } else {
         console.log("Login attempt:", { email, password });
+
+        // ! Login action by Kelvin
+        const formData = new FormData();
+
+        formData.append("email", email);
+        formData.append("password", password);
+
+        await handleLogin(formData);
       }
+
+      // ! jika ada error, maka redirect ke halaman register lagi dengan error (Kelvin)
+      // if (response && response.ok) redirect("/login");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -124,8 +149,9 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           <input
             type="checkbox"
             className="rounded border-white/30 bg-white/20 text-blue-500 
-                        focus:ring-blue-400/50 focus:ring-offset-0 focus:ring-2"
+                         focus:ring-blue-400/50 focus:ring-offset-0 focus:ring-2"
           />
+
           <span className="ml-2 text-white/90">Ingat aku</span>
         </label>
         <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
@@ -166,15 +192,12 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
 
         <div className="col-span-2 md:col-span-1">
           <label className="text-sm font-medium text-white mb-1 block">Peran</label>
-          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value as "client" | "lawyer" | "admin" })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" required>
+          <select value={formData.role} onChange={(e) => setFormData({ ...formData, role: e.target.value as "client" | "lawyer" })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" required>
             <option value="client" className="bg-gray-800">
               Client
             </option>
             <option value="lawyer" className="bg-gray-800">
               Lawyer
-            </option>
-            <option value="admin" className="bg-gray-800">
-              Admin
             </option>
           </select>
         </div>

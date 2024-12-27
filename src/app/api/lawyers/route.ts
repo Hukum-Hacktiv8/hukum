@@ -1,6 +1,4 @@
 import { registerLawyer } from "@/app/models/user";
-import { register } from "module";
-
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -12,6 +10,7 @@ const credentialsSchema = z.object({
   education: z.string().array(),
   certification: z.string(),
 });
+
 const lawyerInput = z.object({
   name: z.string(),
   email: z.string().email(),
