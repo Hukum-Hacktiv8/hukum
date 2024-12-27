@@ -3,9 +3,9 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getUserByEmail } from "../models/user";
-import { comparePass } from "../utils/bcrypt";
-import { createJoseToken } from "../utils/jwt";
+import { getUserByEmail } from "@/app/models/user";
+import { comparePass } from "@/app/utils/bcrypt";
+import { createJoseToken } from "@/app/utils/jwt";
 
 export const handleLogin = async (formData: FormData) => {
   //   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/users`, {
