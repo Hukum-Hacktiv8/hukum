@@ -36,7 +36,7 @@ export default function Navbar() {
     return (
         <nav className={`fixed top-0 w-full transition-all duration-300 z-50 ${
             isScrolled 
-                ? "bg-[#1a4b69]/60 backdrop-blur-sm border-b border-white/10"
+                ? "bg-slate-900/95 backdrop-blur-sm border-b border-white/10"
                 : "bg-transparent"
         }`}>
             <div className="max-w-7xl mx-auto px-4">
@@ -82,7 +82,7 @@ export default function Navbar() {
 
                 {/* Mobile Menu */}
                 {isOpen && (
-                    <div className="md:hidden py-4 space-y-2 bg-[#1a4b69]/60 backdrop-blur-sm border-t border-white/10">
+                    <div className="md:hidden py-4 space-y-2 bg-slate-900/95 backdrop-blur-sm border-t border-white/10">
                         {menuItems.map((item) => (
                             <Link
                                 key={item.text}

@@ -98,7 +98,7 @@ export default function AuthForm({ type = 'login' }: AuthFormProps) {
         }
     }
 
-    // LOGIN FORM
+    //! LOGIN FORM
     const renderLoginForm = () => (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="relative">
