@@ -23,9 +23,10 @@ export const createPayment = async (body: InputPayments) => {
 };
 
 export const readPayment = async (id: string) => {
+  //ini untuk melihat payment dari user yang sedang login
   const db = await getDb();
 
-  const response = await db.collection(COLLECTION).findOne({ _id: new ObjectId(id) });
+  const response = await db.collection(COLLECTION).findOne({ userId: new ObjectId(id) });
 
   return response;
 };

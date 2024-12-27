@@ -81,3 +81,19 @@ export const createMessage = async (id: string, body: InputMessage) => {
     messages: `Success add new Chat`,
   };
 };
+
+export const findRoom = async () => {
+  const db = await getDb();
+
+  const data = await db.collection(COLLECTION).find().toArray();
+
+  return data;
+};
+
+export const roomDetail = async (id: string) => {
+  const db = await getDb();
+
+  const data = await db.collection(COLLECTION).findOne({ _id: new ObjectId(id) });
+
+  return data;
+};

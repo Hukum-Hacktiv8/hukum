@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "1b9e8d8a-f3bc-4d9b-a135-98d817fa0768",
+		"name": "Hacktivist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39646103"
+	},
+	"item": [
+		{
+			"name": "register users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"raga19\",\r\n    \"email\": \"raga@mail.com\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"client\",\r\n    \"profile\": {\r\n        \"address\": \"jl.merpati\",\r\n        \"birth\": \"2000-12-12\" \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/users",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register lawyers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"raga\",\r\n    \"email\": \"raga@mail.com\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"client\",\r\n    \"profile\": {\r\n        \"address\": \"jl.merpati\",\r\n        \"birth\": \"2000-12-12\" \r\n    },\r\n    \"specialization\":\"konsultan tanah\",\r\n    \"credentials\":{\r\n        \"education\":[\"SMA\",\"S1\"],\r\n        \"certification\":\"HTTP:// contoh aja\"\r\n\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/lawyers",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"lawyers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create blogpost",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"hukuman2\",\r\n    \"content\":\"hukuman penjara\",\r\n    \"image\":[\"https://www.shutterstock.com/image-photo/calm-weather-on-sea-ocean-600nw-2212935531.jpg\",\"google.com\"],\r\n    \"tags\":[\"kejahatan\",\"jahat\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/blogpost",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"blogpost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read blog",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/blogpost",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"blogpost"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create roomchat",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"participants\":[\"ini contoh lawyerid\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/roomchats",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"roomchats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get room chat all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/roomchats",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"roomchats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ROOM DETAIL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/roomchats/676e9bd13d4fd3aedbb065bd",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"roomchats",
+						"676e9bd13d4fd3aedbb065bd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE CONSULTATION",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lawyerId\":\"11111\",\r\n    \"duration\":30,\r\n    \"scheduledAt\":\"1 Januari 2025\",\r\n    \"status\":\"pending\",\r\n    \"notes\":\"Jangan digalakin bang\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/consultation",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"consultation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All Consul Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/consultation",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"consultation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read consul detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/consultation/676ed1f53d4fd3aedbb065be",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"consultation",
+						"676ed1f53d4fd3aedbb065be"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE PAYMENT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\":10000,\r\n    \"paymentType\":\"consultation\",\r\n    \"status\":\"successful\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{link}}api/payment",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read payment by user Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{link}}api/payment",
+					"host": [
+						"{{link}}api"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "link",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

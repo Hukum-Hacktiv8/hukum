@@ -31,3 +31,10 @@ export const readConsul = async (id: string) => {
 
   return response;
 };
+
+export const readConsulAll = async () => {
+  const db = await getDb();
+  const response = await db.collection(COLLECTION).find().toArray();
+
+  return response;
+};
