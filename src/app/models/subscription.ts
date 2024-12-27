@@ -48,7 +48,7 @@ export const createSubs = async (body: InputSubscription) => {
   }
 
   Subs.startDate = new Date().toISOString();
-  Subs.updatedAt = new Date().toISOString();
+  Subs.endDate = new Date().toISOString();
   Subs.status = "active";
   Subs.type = "premium";
 
