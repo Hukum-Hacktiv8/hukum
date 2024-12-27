@@ -13,6 +13,7 @@
     "daisyui": "^4.12.23",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
+    "jose": "^5.9.6",
     "mongodb": "^6.12.0",
     "zod": "^3.24.1",
     "@ionic/react": "^8.4.1",

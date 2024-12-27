@@ -4,10 +4,16 @@ import { useState, useRef } from "react";
 import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
 import MottoSection from "./motto-section";
-import { registerUser, registerLawyer } from "./action";
+import { registerUser, registerLawyer, handleLogin } from "./action";
 
 interface AuthFormProps {
   type?: "login" | "register";
+}
+
+// ! export interface by Kelvin untuk action login
+export interface LoginFormData {
+  email: string;
+  password: string;
 }
 
 // ! export interface by Kelvin untuk action register
@@ -80,6 +86,14 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         // console.log("Register response:", response);
       } else {
         console.log("Login attempt:", { email, password });
+
+        // ! Login action by Kelvin
+        const formData = new FormData();
+
+        formData.append("email", email);
+        formData.append("password", password);
+
+        await handleLogin(formData);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
