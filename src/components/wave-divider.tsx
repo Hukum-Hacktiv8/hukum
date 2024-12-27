@@ -19,7 +19,7 @@ export default function WaveDivider() {
                         xlinkHref="#wave-path"
                         x="48"
                         y="0"
-                        fill="rgba(26,75,105,0.4)"
+                        fill="rgba(15,23,42,0.4)"
                         className="wave1"
                     />
                     {/* Wave 2 - Tengah */}
@@ -27,15 +27,15 @@ export default function WaveDivider() {
                         xlinkHref="#wave-path"
                         x="48"
                         y="3"
-                        fill="rgba(255,255,255,0.5)"
+                        fill="rgba(30,58,138,0.3)"
                         className="wave2"
                     />
-                    {/* Wave 3 - Paling depan */}
+                    {/* Wave 3 - Paling depan - Disamakan dengan footer */}
                     <use
                         xlinkHref="#wave-path"
                         x="48"
                         y="5"
-                        fill="rgba(26,75,105,0.7)"
+                        fill="rgba(15,23,42,0.95)"
                         className="wave3"
                     />
                 </g>

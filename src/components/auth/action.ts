@@ -1,8 +1,18 @@
 "use server";
 
-import { RegisterFormData } from "./form";
+interface RegisterDataInput {
+  certification: string | null;
+  name: string;
+  email: string;
+  password: string;
+  role: "client" | "lawyer" | "admin";
+  address: string;
+  birthDate: string;
+  specialization: string;
+  education: string;
+}
 
-export const registerUser = async (data: RegisterFormData) => {
+export const registerUser = async (data: RegisterDataInput) => {
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
     name: data.name,
@@ -23,14 +33,13 @@ export const registerUser = async (data: RegisterFormData) => {
     body: JSON.stringify(userInput),
   });
 
-  // ? untuk mengetahui data yang diinput sesuai atau tidak
-  // console.log("data:", userInput);
+  // console.log("response:", response);
 
   // ! mengembalikan response ke client
   return response.json();
 };
 
-export const registerLawyer = async (data: RegisterFormData) => {
+export const registerLawyer = async (data: RegisterDataInput) => {
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
     name: data.name,
@@ -48,8 +57,6 @@ export const registerLawyer = async (data: RegisterFormData) => {
     },
   };
 
-  console.log(userInput);
-
   const response = await fetch("http://localhost:3000/api/lawyers", {
     method: "POST",
     headers: {
@@ -59,8 +66,6 @@ export const registerLawyer = async (data: RegisterFormData) => {
   });
 
   // ? untuk mengetahui data yang diinput sesuai atau tidak
-  console.log("data:", userInput);
-
   // ! mengembalikan response ke client
   return response.json();
 };
