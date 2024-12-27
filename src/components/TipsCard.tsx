@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export default function TipsCard() {
   return (
-    <>
+    <div className="flex justify-center gap-5 p-5">
       {/* Tips 1 */}
       <div className="card glass w-96">
         <figure>
           <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="car!"
+            src="https://images.hukumonline.com/frontend/lt515b7ec90fe0c/lt64df56656b9b2.jpg"
+            alt="tips1"
           />
         </figure>
         <div className="card-body">
@@ -23,8 +23,8 @@ export default function TipsCard() {
       <div className="card glass w-96">
         <figure>
           <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-            alt="car!"
+            src="https://images.hukumonline.com/frontend/lt66a12b77d0258/lt66a12c7c1762d.jpg"
+            alt="tips2"
           />
         </figure>
         <div className="card-body">
@@ -67,6 +67,6 @@ export default function TipsCard() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }
