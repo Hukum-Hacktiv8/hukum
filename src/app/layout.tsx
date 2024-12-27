@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Lora } from 'next/font/google'
 import "./globals.css";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 
 const lora = Lora({ 
     subsets: ['latin'],
