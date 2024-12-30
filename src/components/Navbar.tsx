@@ -20,7 +20,11 @@ export default function Navbar() {
   const menuItems = [
     { text: "Home", href: "/", icon: HiOutlineHome },
     { text: "About", href: "/about", icon: HiOutlineInformationCircle },
-    { text: "Services", href: "/services", icon: HiOutlineBookOpen },
+    {
+      text: "Services",
+      href: "/konsultasi/lawyer",
+      icon: HiOutlineBookOpen,
+    },
     { text: "Contact", href: "/contact", icon: HiOutlinePhone },
   ];
 
