@@ -12,6 +12,7 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "Hacktivist Indonesia",
   description: "Hacktivist Indonesia",
+  icons: "/logo.png",
 };
 
 export default function RootLayout({
