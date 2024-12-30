@@ -6,6 +6,7 @@ import { IonIcon } from "@ionic/react";
 import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
 import { db } from "@/lib/firebase";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
+import { ObjectId } from "mongodb";
 
 interface Message {
   id: string;
@@ -27,11 +28,19 @@ interface VideoCallState {
   isVideoOn: boolean;
 }
 
+type Room = {
+  _id: ObjectId;
+  participants: { participants: string[] };
+  createdAt: string;
+  messages: Message[];
+};
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
+  const [contacts, setContacts] = useState<Contact[]>([]);
   const [videoCall, setVideoCall] = useState<VideoCallState>({
     isActive: false,
     isMuted: false,
@@ -43,11 +52,6 @@ export default function Chat() {
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
 
-  const contacts: Contact[] = [
-    { id: "1", name: "Ahmad Lawyer", role: "Pengacara Pidana", isOnline: true },
-    { id: "2", name: "Siti Lawyer", role: "Pengacara Perdata", isOnline: false },
-  ];
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -55,6 +59,33 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    async function fetchContacts() {
+      const response = await fetch("http://localhost:3000/api/myrooms", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      const rooms: Room[] = data.data;
+
+      const contactsPromises = rooms.map(async (el) => {
+        const participantIds = el.participants.participants;
+        const response = await fetch("/api/participant-details", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ participantIds }),
+        });
+        return await response.json();
+      });
+      const fetchedContacts = await Promise.all(contactsPromises);
+      setContacts(fetchedContacts.filter(Boolean));
+    }
+
+    fetchContacts();
+  }, []);
 
   const joinChatRoom = (roomId: string) => {
     const q = query(collection(db, "chat-rooms", roomId, "messages"), orderBy("timestamp", "asc"));
