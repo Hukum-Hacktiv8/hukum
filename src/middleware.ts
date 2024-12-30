@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyJoseToken } from "./app/utils/jwt";
 
 export const middleware = async (request: NextRequest) => {
-  if (request.url.includes("/api/tinggalganti")) {
+  if (request.url.includes("/api/roomchats")) {
     const token = cookies().get("token");
 
     if (!token) {

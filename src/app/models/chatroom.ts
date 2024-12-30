@@ -97,3 +97,21 @@ export const roomDetail = async (id: string) => {
 
   return data;
 };
+
+export const CheckRoomLogin = async (id: string) => {
+  const db = await getDb();
+
+  const data = await db
+    .collection(COLLECTION)
+    .aggregate([
+      {
+        $match: {
+          "participants.participants": new ObjectId(id),
+        },
+      },
+    ])
+    .toArray();
+  console.log(`masuk sini`);
+
+  return data;
+};
