@@ -1,5 +1,5 @@
 import AuthForm from "@/components/auth/form";
-import Footer from "@/components/Footer";
+import Footer from "@/components/temp_Footer";
 import WaveDivider from "@/components/wave-divider";
 
 export default function Login() {
