@@ -43,7 +43,7 @@ export default function KonsultasiPage() {
               ].map((day) => (
                 <button
                   key={day}
-                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium"
+                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium active:bg-violet-600 focus:outline-none"
                 >
                   {day}
                 </button>
@@ -60,7 +60,7 @@ export default function KonsultasiPage() {
               ].map((time) => (
                 <button
                   key={time}
-                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium"
+                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium active:bg-violet-600 focus:outline-none"
                 >
                   {time}
                 </button>
