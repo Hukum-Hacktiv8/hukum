@@ -113,3 +113,11 @@ export const CheckRoomLogin = async (id: string) => {
     .toArray();
   return data;
 };
+
+export const getRoomChatByParticipants = async (clientId: string, contactId: string) => {
+  const db = await getDb();
+  const chatroom = await db.collection(COLLECTION).findOne({
+    "participants.participants": { $all: [clientId, contactId] },
+  });
+  return chatroom;
+};
