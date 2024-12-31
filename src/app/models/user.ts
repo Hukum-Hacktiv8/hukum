@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { connectToDatabase } from "../config/config";
 import { hashPass } from "../utils/bcrypt";
 
@@ -70,4 +70,11 @@ export const getUserByEmail = async (email: string) => {
   const result = db.collection(COLLECTION).findOne({ email });
 
   return result;
+};
+
+export const getUserById = async (id: string) => {
+  const db = await getDb();
+  const user = await db.collection("users").findOne({ _id: new ObjectId(id) });
+
+  return user ? { id: user._id, name: user.name, email: user.email } : null;
 };

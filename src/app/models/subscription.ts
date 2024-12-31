@@ -47,12 +47,19 @@ export const createSubs = async (body: InputSubscription) => {
     throw `Not Found User`;
   }
 
-  Subs.startDate = new Date().toISOString();
-  Subs.endDate = new Date().toISOString();
-  Subs.status = "active";
-  Subs.type = "premium";
+  const startDate = new Date();
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 30);
 
-  const response = await db.collection(COLLECTION).updateOne({ userId: new ObjectId(body.userId) }, Subs);
+  const updatedSubs = {
+    ...Subs,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+    status: "active",
+    type: "premium",
+  };
+
+  const response = await db.collection(COLLECTION).updateOne({ userId: new ObjectId(body.userId) }, { $set: updatedSubs });
 
   return response;
 };
@@ -70,3 +77,58 @@ export async function extractObjectIdString(input: any) {
 
   return null;
 }
+
+// Fungsi untuk memeriksa dan memperbarui status langganan
+export const updateSubscriptionStatus = async () => {
+  const db = await getDb();
+  const currentDate = new Date();
+
+  const result = await db.collection(COLLECTION).updateMany(
+    {
+      endDate: { $lt: currentDate },
+      status: "active",
+      type: "premium",
+    },
+    {
+      $set: {
+        status: "expired",
+        type: "free",
+      },
+    }
+  );
+
+  console.log(`${result.modifiedCount} subscriptions updated to expired status.`);
+};
+
+// Fungsi yang dimodifikasi untuk membuat langganan
+
+// Fungsi untuk memeriksa status langganan saat mengakses layanan
+export const checkSubscriptionStatus = async (userId: string) => {
+  const db = await getDb();
+
+  const subscription = await db.collection(COLLECTION).findOne({ userId: new ObjectId(userId) });
+
+  if (!subscription) {
+    throw `Not Found User`;
+  }
+
+  const currentDate = new Date();
+  const endDate = new Date(subscription.endDate);
+
+  if (currentDate > endDate && subscription.status === "active" && subscription.type === "premium") {
+    // Update subscription status if it's expired
+    await db.collection(COLLECTION).updateOne(
+      { userId: new ObjectId(userId) },
+      {
+        $set: {
+          status: "expired",
+          type: "free",
+        },
+      }
+    );
+
+    return { status: "expired", type: "free" };
+  }
+
+  return { status: subscription.status, type: subscription.type };
+};

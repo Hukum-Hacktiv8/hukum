@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyJoseToken } from "./app/utils/jwt";
 
 export const middleware = async (request: NextRequest) => {
-  if (request.url.includes("/api/tinggalganti")) {
+  if (request.url.includes("/api/roomchats") || request.url.includes("/api/myrooms") || request.url.includes("/api/participant-details") || request.url.includes("/api/find-chatroom")) {
     const token = cookies().get("token");
 
     if (!token) {
@@ -23,13 +23,10 @@ export const middleware = async (request: NextRequest) => {
       headers: requestHeaders,
     });
   }
-  
+
   // taruh middleware upload di sini
   if (request.url.includes("/api/lawyers")) {
-    
   }
-  
+
   return NextResponse.next();
-  
-  
 };
