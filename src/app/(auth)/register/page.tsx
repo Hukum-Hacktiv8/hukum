@@ -1,5 +1,5 @@
 import AuthForm from "@/components/auth/form";
-import Footer from "@/components/temp_Footer";
+// import Footer from "@/components/temp_Footer";
 import WaveDivider from "@/components/wave-divider";
 
 export default function Register() {
@@ -7,7 +7,7 @@ export default function Register() {
     <div>
       <AuthForm type="register" />
       <WaveDivider />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

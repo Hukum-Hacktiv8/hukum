@@ -1,50 +1,33 @@
 export default function Carousel() {
   return (
-    <>
-      <div className="carousel rounded-box">
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.webp"
-            alt="Burger"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-            src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.webp"
-            alt="Burger"
-          />
-        </div>
+    <div className="relative w-full overflow-hidden">
+      <div className="carousel w-full px-4">
+        {[1, 2, 3, 4, 5].map((num) => (
+          <div key={num} className="carousel-item w-full md:w-1/3 px-2">
+            <div className="bg-slate-800/50 p-6 rounded-xl w-full">
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={`https://picsum.photos/seed/${num}/64/64`}
+                    alt="Client"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                  <div>
+                    <h3 className="text-white font-medium">
+                      Client Name {num}
+                    </h3>
+                    <p className="text-white/60 text-sm">Business Owner</p>
+                  </div>
+                </div>
+                <p className="text-white/80">
+                  "Pelayanan sangat profesional dan responsif. Sangat membantu
+                  dalam menyelesaikan masalah hukum saya."
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }
