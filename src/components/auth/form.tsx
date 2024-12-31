@@ -68,6 +68,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   });
   const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
   // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
   const router = useRouter();
 
@@ -76,11 +77,14 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     e.preventDefault();
     try {
       if (type === "register") {
+        console.log("formData: ", formData);
+        // di sini ga perlu sanitized data, karena data yang dikirimkan adalah certificate file
         const sanitizedData = {
           ...formData,
-          certification: certification ? certification.name : null,
+          certification,
         };
-        console.log("Register attempt:", sanitizedData);
+        // console.log("Register attempt:", sanitizedData);
+        // console.log("certification: ", certification);
 
         // todo: register data to api server with action by Kelvin
         // ? jika register berhasil maka berpindah ke halaman login
@@ -119,6 +123,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         ...prev,
         certification: file,
       }));
+      console.log(formData);
     }
   };
 

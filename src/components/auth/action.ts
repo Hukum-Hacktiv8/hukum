@@ -1,7 +1,6 @@
 "use server";
 
 interface RegisterDataInput {
-  certification: string | null;
   name: string;
   email: string;
   password: string;
@@ -10,6 +9,7 @@ interface RegisterDataInput {
   birthDate: string;
   specialization: string;
   education: string;
+  certification: File | null;
 }
 
 export const registerUser = async (data: RegisterDataInput) => {
@@ -40,6 +40,8 @@ export const registerUser = async (data: RegisterDataInput) => {
 };
 
 export const registerLawyer = async (data: RegisterDataInput) => {
+  console.log("data: ", data);
+
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
     name: data.name,
@@ -53,9 +55,11 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     specialization: data.specialization,
     credentials: {
       education: [data.education],
-      certification: data.certification,
+      certification: data.certification?.name,
     },
   };
+
+  console.log("userInput: ", userInput);
 
   const response = await fetch("http://localhost:3000/api/lawyers", {
     method: "POST",

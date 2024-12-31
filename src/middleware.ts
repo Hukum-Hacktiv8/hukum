@@ -23,5 +23,13 @@ export const middleware = async (request: NextRequest) => {
       headers: requestHeaders,
     });
   }
+  
+  // taruh middleware upload di sini
+  if (request.url.includes("/api/lawyers")) {
+    
+  }
+  
   return NextResponse.next();
+  
+  
 };
