@@ -106,11 +106,16 @@ export const CheckRoomLogin = async (id: string) => {
     .aggregate([
       {
         $match: {
+<<<<<<< HEAD
           "participants.participants": id,
+=======
+          "participants.participants": new ObjectId(id),
+>>>>>>> 27de592e44755b378e7641ba29acec62507256c9
         },
       },
     ])
     .toArray();
+<<<<<<< HEAD
   return data;
 };
 
@@ -121,3 +126,9 @@ export const getRoomChatByParticipants = async (clientId: string, contactId: str
   });
   return chatroom;
 };
+=======
+  console.log(`masuk sini`);
+
+  return data;
+};
+>>>>>>> 27de592e44755b378e7641ba29acec62507256c9
