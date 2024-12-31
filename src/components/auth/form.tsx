@@ -78,10 +78,10 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     try {
       if (type === "register") {
         console.log("formData: ", formData);
-        // di sini ga perlu sanitized data, karena data yang dikirimkan adalah certificate file
+        // sanitizedData diperlukan untuk backend untuk masukin data yang dikirimkan
         const sanitizedData = {
           ...formData,
-          certification,
+          certification: certification ? certification.name : null,
         };
         // console.log("Register attempt:", sanitizedData);
         // console.log("certification: ", certification);

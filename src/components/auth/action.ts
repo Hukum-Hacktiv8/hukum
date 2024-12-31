@@ -9,7 +9,7 @@ interface RegisterDataInput {
   birthDate: string;
   specialization: string;
   education: string;
-  certification: File | null;
+  certification: string | null;
 }
 
 export const registerUser = async (data: RegisterDataInput) => {
@@ -55,7 +55,7 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     specialization: data.specialization,
     credentials: {
       education: [data.education],
-      certification: data.certification?.name,
+      certification: data.certification,
     },
   };
 
