@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 export default function KonsultasiPage() {
   const router = useRouter();
   function handleBooking() {
-    const lawyerId = "676da8a4ab88bd555d8103b6";
+    const lawyerId = "676d906bab88bd555d8103ab";
     fetch("http://localhost:3000/api/roomchats", {
       method: "POST",
       headers: {

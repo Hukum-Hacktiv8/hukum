@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { IonIcon } from "@ionic/react";
 import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
 import { db } from "@/lib/firebase";
@@ -47,6 +47,7 @@ export default function Chat() {
     isMuted: false,
     isVideoOn: true,
   });
+  const [clientId, setClientId] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const localVideoRef = useRef<HTMLVideoElement>(null);
@@ -82,6 +83,7 @@ export default function Chat() {
         return await response.json();
       });
       const fetchedContacts = await Promise.all(contactsPromises);
+
       setContacts(fetchedContacts.filter(Boolean));
     }
 
@@ -90,6 +92,7 @@ export default function Chat() {
 
   const handleContactSelection = async (contact: Contact) => {
     setSelectedContact(contact);
+
     const response = await fetch("/api/find-chatroom", {
       method: "POST",
       headers: {
@@ -97,30 +100,35 @@ export default function Chat() {
       },
       body: JSON.stringify({ contactId: contact.id }),
     });
+
     const data = await response.json();
     const roomId = data?.roomId;
     const clientId = data?.clientId;
-    const chatroom = await findChatRoomInFirestroe(clientId, contact.id);
+    await setClientId(clientId);
+
+    const chatroom = await findChatRoomInFirestore(clientId, contact.id);
+
     if (chatroom) {
       setRoomId(chatroom.id);
-      setSelectedContact(contact);
-      const q = query(collection(db, "chat-rooms", chatroom.id, "messages"), orderBy("timestamp", "asc"));
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const msgs = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Message[];
-        setMessages(msgs);
+
+      const chatRoomRef = doc(db, "chat-rooms", chatroom.id);
+      const unsubscribe = onSnapshot(chatRoomRef, (doc) => {
+        const roomData = doc.data();
+        if (roomData?.messages) {
+          setMessages(roomData.messages as Message[]);
+        }
       });
+
       return unsubscribe;
     }
   };
 
-  const findChatRoomInFirestroe = async (clientId: string, contactId: string) => {
+  const findChatRoomInFirestore = async (clientId: string, contactId: string) => {
     const chatroomsRef = collection(db, "chat-rooms");
-    const q = query(chatroomsRef, where("participants", "array-contains", clientId));
 
+    const q = query(chatroomsRef, where("participants", "array-contains", clientId));
     const querySnapshot = await getDocs(q);
+
     for (let doc of querySnapshot.docs) {
       const data = doc.data();
       if (data.participants.includes(contactId)) {
@@ -134,14 +142,16 @@ export default function Chat() {
   const sendMessage = async () => {
     if (!roomId || !newMessage.trim()) return;
 
-    console.log(roomId);
-    console.log(newMessage);
+    const chatRoomRef = doc(db, "chat-rooms", roomId);
 
-    await addDoc(collection(db, "chat-rooms", roomId, "messages"), {
-      text: newMessage,
-      sender: "user",
-      timestamp: new Date(),
+    await updateDoc(chatRoomRef, {
+      messages: arrayUnion({
+        text: newMessage,
+        sender: clientId,
+        timestamp: new Date(),
+      }),
     });
+
     setNewMessage("");
   };
 
