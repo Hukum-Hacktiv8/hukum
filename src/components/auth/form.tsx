@@ -77,11 +77,10 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     e.preventDefault();
     try {
       if (type === "register") {
-        console.log("formData: ", formData);
         // sanitizedData diperlukan untuk backend untuk masukin data yang dikirimkan
         const sanitizedData = {
           ...formData,
-          certification: certification ? certification.name : null,
+          certification,
         };
         // console.log("Register attempt:", sanitizedData);
         // console.log("certification: ", certification);
@@ -90,7 +89,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
         if (sanitizedData.role === "client") {
-          const response = await registerUser(sanitizedData);
+          const response = await registerUser(formData);
           if (response.message === "Success Register") router.push("/login");
         } else if (sanitizedData.role === "lawyer") {
           const response = await registerLawyer(sanitizedData);
@@ -117,13 +116,13 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+    console.log("file: ", file);
     if (file) {
       setCertification(file);
       setFormData((prev) => ({
         ...prev,
         certification: file,
       }));
-      console.log(formData);
     }
   };
 
