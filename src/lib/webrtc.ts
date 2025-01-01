@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 
 // STUN Server
@@ -13,10 +13,11 @@ export const createPeerConnection = (): RTCPeerConnection => {
 };
 
 //Create Room
-export const createRoom = async (peerConnection: RTCPeerConnection): Promise<string> => {
-  const roomRef = await addDoc(collection(db, "rooms"), {});
+export const createRoom = async (peerConnection: RTCPeerConnection, roomId: string): Promise<string> => {
+  const roomRef = doc(collection(db, "video-rooms"), roomId);
+  await setDoc(roomRef, {});
 
-  const callerCandidatesCollection = collection(db, `rooms/${roomRef.id}/callerCandidates`);
+  const callerCandidatesCollection = collection(db, `video-rooms/${roomId}/callerCandidates`);
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
       await addDoc(callerCandidatesCollection, event.candidate.toJSON());
@@ -41,12 +42,12 @@ export const createRoom = async (peerConnection: RTCPeerConnection): Promise<str
     }
   });
 
-  return roomRef.id;
+  return roomId;
 };
 
 //Join Room
 export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string): Promise<string> => {
-  const roomRef = doc(db, "rooms", roomId);
+  const roomRef = doc(db, "video-rooms", roomId);
   const roomSnapshot = await getDoc(roomRef);
 
   if (roomSnapshot?.exists()) {
@@ -71,14 +72,14 @@ export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string
     return `Room ${roomId} not found`;
   }
 
-  const calleeCandidatesCollection = collection(db, `rooms/${roomId}/calleeCandidates`);
+  const calleeCandidatesCollection = collection(db, `video-rooms/${roomId}/calleeCandidates`);
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
       await addDoc(calleeCandidatesCollection, event?.candidate?.toJSON());
     }
   });
 
-  onSnapshot(collection(db, `rooms/${roomId}/callerCandidates`), (snapshot) => {
+  onSnapshot(collection(db, `video-rooms/${roomId}/callerCandidates`), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         const candidate = new RTCIceCandidate(change?.doc?.data());
