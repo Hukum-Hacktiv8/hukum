@@ -66,7 +66,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     education: "",
     certification: null,
   });
-  const [certification, setCertification] = useState<File | null>(null);
+  // const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
@@ -77,26 +77,23 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     e.preventDefault();
     try {
       if (type === "register") {
-        console.log("formData: ", formData);
-        const sanitizedData = {
-          ...formData,
-          certification,
-        };
-        console.log("Register attempt:", sanitizedData);
-        // console.log("certification: ", certification);
+        // const sanitizedData = {
+        //   ...formData,
+        //   certification: certification ? certification.name : null,
+        // };
 
         // todo: register data to api server with action by Kelvin
         // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
-        if (sanitizedData.role === "client") {
-          const response = await registerUser(sanitizedData);
+        if (formData.role === "client") {
+          const response = await registerUser(formData);
           if (response.message === "Success Register") router.push("/login");
-        } else if (sanitizedData.role === "lawyer") {
-          const response = await registerLawyer(sanitizedData);
+        } else if (formData.role === "lawyer") {
+          const response = await registerLawyer(formData);
           if (response.message === "Success Register Lawyer") router.push("/login");
         }
       } else {
-        console.log("Login attempt:", { email, password });
+        // console.log("Login attempt:", { email, password });
 
         // ! Login action by Kelvin
         const formData = new FormData();
@@ -116,13 +113,14 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+
     if (file) {
-      setCertification(file);
+      // setCertification(file);
       setFormData((prev) => ({
         ...prev,
         certification: file,
       }));
-      console.log(formData);
+      // console.log("form Data kalau ada file: ", formData);
     }
   };
 

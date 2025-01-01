@@ -40,6 +40,25 @@ export const registerUser = async (data: RegisterDataInput) => {
 };
 
 export const registerLawyer = async (data: RegisterDataInput) => {
+  // ? upload data menggunakan cloudinary
+  let secureUrl = "";
+  try {
+    let certificationPicture = null;
+    if (data.certification) {
+      certificationPicture = new FormData();
+      certificationPicture.set("picture", data.certification);
+    }
+
+    const response = await fetch("/api/uploadImage", {
+      method: "POST",
+      body: certificationPicture,
+    });
+    const cldRes = await response.json();
+    secureUrl = cldRes.secure_url;
+  } catch (error) {
+    console.log(error);
+  }
+
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
     name: data.name,
@@ -53,7 +72,8 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     specialization: data.specialization,
     credentials: {
       education: [data.education],
-      certification: data.certification?.name,
+      // ! di sini harus diganti dengan cldRes
+      certification: secureUrl,
     },
   };
 
@@ -65,8 +85,6 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     body: JSON.stringify(userInput),
   });
 
-  // ? untuk mengetahui data yang diinput sesuai atau tidak
-  // ! mengembalikan response ke client
   return response.json();
 };
 
