@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { IonIcon } from "@ionic/react";
 import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
 import { db } from "@/lib/firebase";
@@ -159,11 +159,12 @@ export default function Chat() {
     if (!roomId) return;
 
     const pc = createPeerConnection();
-    await createRoom(pc, roomId);
     setPeerConnection(pc);
 
-    setVideoCall({ ...videoCall, isActive: true });
     await startMedia(pc);
+    await createRoom(pc, roomId);
+
+    setVideoCall({ ...videoCall, isActive: true });
   };
 
   const joinCall = async () => {
@@ -172,6 +173,7 @@ export default function Chat() {
     const pc = createPeerConnection();
 
     await joinRoom(pc, roomId);
+
     setPeerConnection(pc);
 
     setVideoCall((prevState) => ({ ...prevState, isActive: true }));
@@ -186,9 +188,14 @@ export default function Chat() {
 
     if (localVideoRef.current) localVideoRef.current.srcObject = localStream;
 
-    localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
+
     pc.ontrack = (event) => {
-      if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = event.streams[0];
+      }
     };
   };
 

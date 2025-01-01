@@ -18,8 +18,10 @@ export const createRoom = async (peerConnection: RTCPeerConnection, roomId: stri
   await setDoc(roomRef, {});
 
   const callerCandidatesCollection = collection(db, `video-rooms/${roomId}/callerCandidates`);
+
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
+      console.log("Caller ICE Candidate:", event.candidate);
       await addDoc(callerCandidatesCollection, event.candidate.toJSON());
     }
   });
@@ -75,6 +77,7 @@ export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string
   const calleeCandidatesCollection = collection(db, `video-rooms/${roomId}/calleeCandidates`);
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
+      console.log("Callee ICE Candidate:", event.candidate);
       await addDoc(calleeCandidatesCollection, event?.candidate?.toJSON());
     }
   });
