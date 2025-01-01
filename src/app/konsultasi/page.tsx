@@ -10,17 +10,14 @@ export default function KonsultasiPage() {
   const router = useRouter();
 
   function handleBooking() {
-<<<<<<< HEAD
     if (!selectedDate || !selectedTime) {
       alert("Please select a date and time for your booking.");
       return;
     }
 
-    const lawyerId = "676d906bab88bd555d8103ab";
-
-=======
-    const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
->>>>>>> 9d6cb24439aeced874cec5dfea7ac0298e66ad5a
+    // const lawyerId = "676d906bab88bd555d8103ab";
+    // const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
+    const lawyerId = "9d6cb24439aeced874cec5dfea7ac0298e66ad5a"; // ID user dgn username : user2
     fetch("http://localhost:3000/api/roomchats", {
       method: "POST",
       headers: {
