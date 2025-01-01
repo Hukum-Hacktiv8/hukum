@@ -82,7 +82,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           ...formData,
           certification,
         };
-        // console.log("Register attempt:", sanitizedData);
+        console.log("Register attempt:", sanitizedData);
         // console.log("certification: ", certification);
 
         // todo: register data to api server with action by Kelvin

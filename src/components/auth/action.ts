@@ -1,7 +1,7 @@
 "use server";
 
 interface RegisterDataInput {
-  certification: string | null;
+  certification: File | null;
   name: string;
   email: string;
   password: string;
@@ -53,7 +53,7 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     specialization: data.specialization,
     credentials: {
       education: [data.education],
-      certification: data.certification,
+      certification: data.certification?.name,
     },
   };
 
