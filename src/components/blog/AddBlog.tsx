@@ -78,13 +78,19 @@ export default function AddBlog() {
               <span className="label-text">Content</span>
             </div>
             <div className="">
-              <input
+              <textarea
+                className="textarea textarea-bordered h-24 w-full max-w-xs"
+                placeholder="Enter content..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+              {/* <input
                 type="text"
                 placeholder="Enter content..."
                 className="input input-bordered w-full max-w-xs"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-              />
+              /> */}
             </div>
             <div className="label p-5">
               <span className="label-text">Image</span>
