@@ -12,7 +12,7 @@ export default function KonsultasiConfirmCard() {
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">New album is released!</h2>
+          <h2 className="card-title">Jasa Konsultasi (One-time)</h2>
           <p>Click the button to listen on Spotiwhy app.</p>
           <div className="card-actions justify-end">
             <button className="btn btn-primary">Listen</button>

@@ -2,13 +2,11 @@ import KonsultasiConfirmCard from "@/components/konfirmasi/KonsultasiConfirmCard
 
 export default function KonfirmasiKonsultasi() {
   return (
-    <>
-      <div className="flex justify-center items-center p-20">
-        <div className="font-bold p-5">Konfirmasi Booking Anda</div>
-      </div>
-      <div>
+    <main className="flex flex-col justify-center items-center min-h-screen">
+      <div className="font-bold text-3xl mb-5">Konfirmasi Booking Anda</div>
+      <div className="p-5">
         <KonsultasiConfirmCard />
       </div>
-    </>
+    </main>
   );
 }
