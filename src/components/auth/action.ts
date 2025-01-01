@@ -40,7 +40,7 @@ export const registerUser = async (data: RegisterDataInput) => {
 };
 
 export const registerLawyer = async (data: RegisterDataInput) => {
-  console.log("data: ", data);
+  // console.log("data: ", data);
 
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
@@ -55,12 +55,11 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     specialization: data.specialization,
     credentials: {
       education: [data.education],
-      // ! di sini harus diganti dengan cldRes
       certification: data.certification,
     },
   };
 
-  console.log("userInput: ", userInput);
+  // console.log("userInput: ", userInput);
 
   const response = await fetch("http://localhost:3000/api/lawyers", {
     method: "POST",

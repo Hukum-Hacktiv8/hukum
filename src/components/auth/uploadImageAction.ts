@@ -11,7 +11,7 @@ export const UploadImage = async (data: File | null) => {
       body: dataPicture,
     });
     const cldRes = await res.json();
-    console.log("cldRes nih: ", cldRes);
+    // console.log("cldRes nih: ", cldRes);
 
     return cldRes;
   } catch (error) {

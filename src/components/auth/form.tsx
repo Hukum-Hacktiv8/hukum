@@ -83,7 +83,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           certification: certification ? certification.name : null,
         };
 
-        console.log(formData);
+        // console.log(formData);
         // todo: register data to api server with action by Kelvin
         // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
