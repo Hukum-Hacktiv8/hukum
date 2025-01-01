@@ -167,13 +167,14 @@ export default function Chat() {
   };
 
   const joinCall = async () => {
-    const id = prompt("Enter Room ID");
-    if (!id) return;
+    if (!roomId) return;
+
     const pc = createPeerConnection();
-    await joinRoom(pc, id.trim());
+
+    await joinRoom(pc, roomId);
     setPeerConnection(pc);
-    setRoomId(id);
-    setVideoCall({ ...videoCall, isActive: true });
+
+    setVideoCall((prevState) => ({ ...prevState, isActive: true }));
     await startMedia(pc);
   };
 
@@ -182,7 +183,9 @@ export default function Chat() {
       video: true,
       audio: true,
     });
+
     if (localVideoRef.current) localVideoRef.current.srcObject = localStream;
+
     localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
     pc.ontrack = (event) => {
       if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
@@ -190,8 +193,21 @@ export default function Chat() {
   };
 
   const endCall = () => {
-    peerConnection?.close();
-    setPeerConnection(null);
+    if (peerConnection) {
+      peerConnection.close();
+      setPeerConnection(null);
+    }
+
+    if (localVideoRef.current && localVideoRef.current.srcObject) {
+      const stream = localVideoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      localVideoRef.current.srcObject = null;
+    }
+
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = null;
+    }
+
     setVideoCall({ isActive: false, isMuted: false, isVideoOn: true });
   };
 

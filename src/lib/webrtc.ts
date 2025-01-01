@@ -47,7 +47,7 @@ export const createRoom = async (peerConnection: RTCPeerConnection, roomId: stri
 
 //Join Room
 export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string): Promise<string> => {
-  const roomRef = doc(db, "rooms", roomId);
+  const roomRef = doc(db, "video-rooms", roomId);
   const roomSnapshot = await getDoc(roomRef);
 
   if (roomSnapshot?.exists()) {
@@ -72,14 +72,14 @@ export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string
     return `Room ${roomId} not found`;
   }
 
-  const calleeCandidatesCollection = collection(db, `rooms/${roomId}/calleeCandidates`);
+  const calleeCandidatesCollection = collection(db, `video-rooms/${roomId}/calleeCandidates`);
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
       await addDoc(calleeCandidatesCollection, event?.candidate?.toJSON());
     }
   });
 
-  onSnapshot(collection(db, `rooms/${roomId}/callerCandidates`), (snapshot) => {
+  onSnapshot(collection(db, `video-rooms/${roomId}/callerCandidates`), (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         const candidate = new RTCIceCandidate(change?.doc?.data());
