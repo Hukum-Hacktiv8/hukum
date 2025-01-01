@@ -6,6 +6,7 @@ import Link from "next/link";
 import MottoSection from "./motto-section";
 import { registerUser, registerLawyer, handleLogin } from "./action";
 import { useRouter } from "next/navigation";
+import { UploadImage } from "./uploadImageAction";
 
 interface AuthFormProps {
   type?: "login" | "register";
@@ -22,7 +23,7 @@ export interface RegisterFormData {
   name: string;
   email: string;
   password: string;
-  role: "client" | "lawyer" | "admin";
+  role: "client" | "lawyer";
   address: string;
   birthDate: string;
   specialization: string;
@@ -66,7 +67,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     education: "",
     certification: null,
   });
-  // const [certification, setCertification] = useState<File | null>(null);
+  const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
@@ -77,19 +78,28 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
     e.preventDefault();
     try {
       if (type === "register") {
-        // const sanitizedData = {
-        //   ...formData,
-        //   certification: certification ? certification.name : null,
-        // };
+        const sanitizedData = {
+          ...formData,
+          certification: certification ? certification.name : null,
+        };
 
+        console.log(formData);
         // todo: register data to api server with action by Kelvin
         // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
         if (formData.role === "client") {
-          const response = await registerUser(formData);
+          const response = await registerUser(sanitizedData);
           if (response.message === "Success Register") router.push("/login");
         } else if (formData.role === "lawyer") {
-          const response = await registerLawyer(formData);
+          // ? upload data menggunakan cloudinary
+          let secureImageUrlCloudinary = null;
+          if (formData.certification) secureImageUrlCloudinary = await UploadImage(formData.certification);
+          const registerFormData = {
+            ...formData,
+            certification: secureImageUrlCloudinary.secure_url,
+          };
+
+          const response = await registerLawyer(registerFormData);
           if (response.message === "Success Register Lawyer") router.push("/login");
         }
       } else {
@@ -112,10 +122,10 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files?.[0];
 
     if (file) {
-      // setCertification(file);
+      setCertification(file);
       setFormData((prev) => ({
         ...prev,
         certification: file,

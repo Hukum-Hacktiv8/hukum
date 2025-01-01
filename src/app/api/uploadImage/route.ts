@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const data = await request.formData();
+  console.log(data);
   const file: File | null = data.get("picture") as File;
   let cldRes = null;
 

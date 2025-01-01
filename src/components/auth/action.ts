@@ -1,11 +1,11 @@
 "use server";
 
 interface RegisterDataInput {
-  certification: File | null;
+  certification: string | null;
   name: string;
   email: string;
   password: string;
-  role: "client" | "lawyer" | "admin";
+  role: "client" | "lawyer";
   address: string;
   birthDate: string;
   specialization: string;
@@ -40,25 +40,6 @@ export const registerUser = async (data: RegisterDataInput) => {
 };
 
 export const registerLawyer = async (data: RegisterDataInput) => {
-  // ? upload data menggunakan cloudinary
-  let secureUrl = "";
-  try {
-    let certificationPicture = null;
-    if (data.certification) {
-      certificationPicture = new FormData();
-      certificationPicture.set("picture", data.certification);
-    }
-
-    const response = await fetch("/api/uploadImage", {
-      method: "POST",
-      body: certificationPicture,
-    });
-    const cldRes = await response.json();
-    secureUrl = cldRes.secure_url;
-  } catch (error) {
-    console.log(error);
-  }
-
   // ! merubah data sesuai dengan yang dibutuhkan backend
   const userInput = {
     name: data.name,
@@ -73,7 +54,7 @@ export const registerLawyer = async (data: RegisterDataInput) => {
     credentials: {
       education: [data.education],
       // ! di sini harus diganti dengan cldRes
-      certification: secureUrl,
+      certification: data.certification,
     },
   };
 
