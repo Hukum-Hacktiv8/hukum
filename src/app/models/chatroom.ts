@@ -106,11 +106,12 @@ export const CheckRoomLogin = async (id: string) => {
     .aggregate([
       {
         $match: {
-          "participants.participants": new ObjectId(id),
+          "participants.participants": id,
         },
       },
     ])
     .toArray();
+
   return data;
 };
 
