@@ -156,11 +156,12 @@ export default function Chat() {
   };
 
   const startCall = async () => {
+    if (!roomId) return;
+
     const pc = createPeerConnection();
-    const id = await createRoom(pc);
+    await createRoom(pc, roomId);
     setPeerConnection(pc);
-    setRoomId(id);
-    alert(`Room ID: ${id}`);
+
     setVideoCall({ ...videoCall, isActive: true });
     await startMedia(pc);
   };
