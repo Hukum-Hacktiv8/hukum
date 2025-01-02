@@ -1,13 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function KonsultasiPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedInterval, setSelectedInterval] = useState("");
+  const [selectedLawyer, setSelectedLawyer] = useState("");
+
+  const searchParamsData = new URLSearchParams(window.location.search);
 
   const router = useRouter();
+
+  router.refresh();
+
+  useEffect(() => {
+    const lawyer = searchParamsData.get("lawyer");
+    if (lawyer) {
+      setSelectedLawyer(lawyer);
+    }
+  }, [searchParamsData]);
 
   function handleBooking() {
     if (!selectedDate || !selectedTime) {
@@ -33,7 +46,22 @@ export default function KonsultasiPage() {
         participants: [lawyerId],
       }),
     }).then(() => {
-      router.push("/chats");
+      const searchParamsData = new URLSearchParams();
+      searchParamsData.append("interval", selectedInterval);
+      searchParamsData.append("time", selectedTime);
+      searchParamsData.append("date", selectedDate);
+      searchParamsData.append("lawyer", selectedLawyer);
+
+      // searchParamsData = ?interval=[value]&time=[value]&date=[value]
+      if (selectedInterval === "One-time") {
+        router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
+      }
+
+      if (selectedInterval === "Monthly") {
+        router.push(`/konfirmasi/subscription?${searchParamsData.toString()}`);
+      }
+
+      // router.push("/chats");
     });
   }
 
@@ -44,7 +72,7 @@ export default function KonsultasiPage() {
           <img src="https://images.pexels.com/photos/4427610/pexels-photo-4427610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Doctor" className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80" />
         </figure>
         <div className="card-body lg:w-2/3 w-full">
-          <h2 className="card-title text-2xl font-bold">Dr. Andria Pratama</h2>
+          <h2 className="card-title text-2xl font-bold">{selectedLawyer}</h2>
           <p className="text-lg font-medium text-gray-600">Ph.D - Ahli Hukum (4 Years)</p>
           <p className="text-md text-gray-600 mt-4">Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.</p>
           <p className="font-semibold text-lg mt-4">
@@ -52,6 +80,13 @@ export default function KonsultasiPage() {
           </p>
           <div className="mt-6">
             <p className="font-semibold mb-2">Booking Slots:</p>
+            <div className="flex flex-wrap gap-4 mb-4">
+              {["One-time", "Monthly"].map((interval) => (
+                <button key={interval} onClick={() => setSelectedInterval(interval)} className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${selectedInterval === interval ? "btn-primary text-white" : ""}`}>
+                  {interval}
+                </button>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-4 mb-4">
               {["Wed 3", "Thu 4", "Fri 5", "Sat 6", "Sun 7", "Mon 8", "Tue 9"].map((day) => (
                 <button key={day} onClick={() => setSelectedDate(day)} className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${selectedDate === day ? "btn-primary text-white" : ""}`}>
