@@ -1,4 +1,36 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 export default function KonsultasiPage() {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+
+  const router = useRouter();
+
+  function handleBooking() {
+    if (!selectedDate || !selectedTime) {
+      alert("Please select a date and time for your booking.");
+      return;
+    }
+
+    // const lawyerId = "676d906bab88bd555d8103ab";
+    // const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
+    const lawyerId = "9d6cb24439aeced874cec5dfea7ac0298e66ad5a"; // ID user dgn username : user2
+    fetch("http://localhost:3000/api/roomchats", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        participants: [lawyerId],
+      }),
+    }).then(() => {
+      router.push("/chats");
+    });
+  }
+
   return (
     <>
       <div className="card lg:card-side bg-base-100 shadow-xl flex lg:flex-row flex-col p-20">
@@ -43,7 +75,10 @@ export default function KonsultasiPage() {
               ].map((day) => (
                 <button
                   key={day}
-                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium"
+                  onClick={() => setSelectedDate(day)}
+                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                    selectedDate === day ? "btn-primary text-white" : ""
+                  }`}
                 >
                   {day}
                 </button>
@@ -60,7 +95,10 @@ export default function KonsultasiPage() {
               ].map((time) => (
                 <button
                   key={time}
-                  className="btn btn-outline rounded-full px-4 py-1 text-sm font-medium"
+                  onClick={() => setSelectedTime(time)}
+                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                    selectedTime === time ? "btn-primary text-white" : ""
+                  }`}
                 >
                   {time}
                 </button>
@@ -68,7 +106,7 @@ export default function KonsultasiPage() {
             </div>
           </div>
           <div className="card-actions justify-end mt-6">
-            <button className="btn btn-primary px-6">
+            <button className="btn btn-primary px-6" onClick={handleBooking}>
               Book an Appointment
             </button>
           </div>

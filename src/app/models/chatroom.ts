@@ -97,3 +97,28 @@ export const roomDetail = async (id: string) => {
 
   return data;
 };
+
+export const CheckRoomLogin = async (id: string) => {
+  const db = await getDb();
+
+  const data = await db
+    .collection(COLLECTION)
+    .aggregate([
+      {
+        $match: {
+          "participants.participants": id,
+        },
+      },
+    ])
+    .toArray();
+
+  return data;
+};
+
+export const getRoomChatByParticipants = async (clientId: string, contactId: string) => {
+  const db = await getDb();
+  const chatroom = await db.collection(COLLECTION).findOne({
+    "participants.participants": { $all: [clientId, contactId] },
+  });
+  return chatroom;
+};

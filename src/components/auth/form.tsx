@@ -6,6 +6,7 @@ import Link from "next/link";
 import MottoSection from "./motto-section";
 import { registerUser, registerLawyer, handleLogin } from "./action";
 import { useRouter } from "next/navigation";
+import { UploadImage } from "./uploadImageAction";
 
 interface AuthFormProps {
   type?: "login" | "register";
@@ -22,7 +23,7 @@ export interface RegisterFormData {
   name: string;
   email: string;
   password: string;
-  role: "client" | "lawyer" | "admin";
+  role: "client" | "lawyer";
   address: string;
   birthDate: string;
   specialization: string;
@@ -68,6 +69,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   });
   const [certification, setCertification] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
   // ? menggunakan useRouter untuk berpindah halaman jika register berhasil (Kelvin)
   const router = useRouter();
 
@@ -80,20 +82,28 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           ...formData,
           certification: certification ? certification.name : null,
         };
-        console.log("Register attempt:", sanitizedData);
 
+        // console.log(formData);
         // todo: register data to api server with action by Kelvin
         // ? jika register berhasil maka berpindah ke halaman login
         // const response = await registerUser(sanitizedData);
-        if (sanitizedData.role === "client") {
+        if (formData.role === "client") {
           const response = await registerUser(sanitizedData);
           if (response.message === "Success Register") router.push("/login");
-        } else if (sanitizedData.role === "lawyer") {
-          const response = await registerLawyer(sanitizedData);
+        } else if (formData.role === "lawyer") {
+          // ? upload data menggunakan cloudinary
+          let secureImageUrlCloudinary = null;
+          if (formData.certification) secureImageUrlCloudinary = await UploadImage(formData.certification);
+          const registerFormData = {
+            ...formData,
+            certification: secureImageUrlCloudinary.secure_url,
+          };
+
+          const response = await registerLawyer(registerFormData);
           if (response.message === "Success Register Lawyer") router.push("/login");
         }
       } else {
-        console.log("Login attempt:", { email, password });
+        // console.log("Login attempt:", { email, password });
 
         // ! Login action by Kelvin
         const formData = new FormData();
@@ -112,13 +122,15 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
+    const file = e.target.files?.[0];
+
     if (file) {
       setCertification(file);
       setFormData((prev) => ({
         ...prev,
         certification: file,
       }));
+      // console.log("form Data kalau ada file: ", formData);
     }
   };
 
@@ -128,7 +140,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
       <div className="relative">
         <label className="text-sm font-medium text-white/90 mb-1.5 block">Alamat Email</label>
         <div className="relative">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans pl-12" placeholder="Masukkan email Anda" required />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans pl-12" placeholder="Masukkan email kamu" required />
           <IoMail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg" />
         </div>
       </div>
@@ -136,7 +148,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
       <div className="relative">
         <label className="text-sm font-medium text-white/90 mb-1.5 block">Kata Sandi</label>
         <div className="relative">
-          <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans pl-12" placeholder="Masukkan kata sandi Anda" required />
+          <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans pl-12" placeholder="Masukkan kata sandi kamu" required />
           <IoLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-lg" />
           <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors">
             {showPassword ? <IoEyeOff className="text-lg" /> : <IoEye className="text-lg" />}
@@ -172,18 +184,18 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
       <div className="grid grid-cols-2 gap-6">
         <div className="col-span-2 md:col-span-1">
           <label className="text-sm font-medium text-white mb-1 block">Nama Lengkap</label>
-          <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan nama lengkap Anda" required />
+          <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan nama lengkap" required />
         </div>
 
         <div className="col-span-2 md:col-span-1">
           <label className="text-sm font-medium text-white mb-1 block">Email</label>
-          <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan email Anda" required />
+          <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan email" required />
         </div>
 
         <div className="col-span-2 md:col-span-1">
           <label className="text-sm font-medium text-white mb-1 block">Password</label>
           <div className="relative">
-            <input type={showPassword ? "text" : "password"} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan password Anda" required />
+            <input type={showPassword ? "text" : "password"} value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans" placeholder="Masukkan password" required />
             <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors">
               {showPassword ? <IoEyeOff className="text-lg" /> : <IoEye className="text-lg" />}
             </button>
