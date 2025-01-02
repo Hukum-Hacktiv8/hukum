@@ -80,7 +80,7 @@ export default function Chat() {
         const rooms: Room[] = data.data;
 
         if (!rooms || rooms.length === 0) {
-          console.log("No rooms found");
+          // console.log("No rooms found");
           setContacts([]);
           return;
         }
