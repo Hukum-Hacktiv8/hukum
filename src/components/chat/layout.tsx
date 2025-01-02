@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { IonIcon } from "@ionic/react";
-import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
+import { collection, query, onSnapshot, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 import { ObjectId } from "mongodb";
@@ -52,7 +50,8 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
+  const [peerConnection, setPeerConnection] =
+    useState<RTCPeerConnection | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -123,10 +122,16 @@ export default function Chat() {
     }
   };
 
-  const findChatRoomInFirestore = async (clientId: string, contactId: string) => {
+  const findChatRoomInFirestore = async (
+    clientId: string,
+    contactId: string
+  ) => {
     const chatroomsRef = collection(db, "chat-rooms");
 
-    const q = query(chatroomsRef, where("participants", "array-contains", clientId));
+    const q = query(
+      chatroomsRef,
+      where("participants", "array-contains", clientId)
+    );
     const querySnapshot = await getDocs(q);
 
     for (let doc of querySnapshot.docs) {
@@ -188,7 +193,8 @@ export default function Chat() {
 
     localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
     pc.ontrack = (event) => {
-      if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
+      if (remoteVideoRef.current)
+        remoteVideoRef.current.srcObject = event.streams[0];
     };
   };
 
@@ -224,5 +230,24 @@ export default function Chat() {
     setVideoCall((prev) => ({ ...prev, isVideoOn: !prev.isVideoOn }));
   };
 
-  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} videoCall={videoCall} localVideoRef={localVideoRef} remoteVideoRef={remoteVideoRef} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} onStartCall={startCall} onJoinCall={joinCall} onEndCall={endCall} onToggleMute={handleToggleMute} onToggleVideo={handleToggleVideo} />;
+  return (
+    <ChatUI
+      contacts={contacts}
+      selectedContact={selectedContact}
+      messages={messages}
+      newMessage={newMessage}
+      videoCall={videoCall}
+      localVideoRef={localVideoRef}
+      remoteVideoRef={remoteVideoRef}
+      messagesEndRef={messagesEndRef}
+      onContactSelect={handleContactSelection}
+      onMessageChange={(msg) => setNewMessage(msg)}
+      onMessageSubmit={handleMessageSubmit}
+      onStartCall={startCall}
+      onJoinCall={joinCall}
+      onEndCall={endCall}
+      onToggleMute={handleToggleMute}
+      onToggleVideo={handleToggleVideo}
+    />
+  );
 }
