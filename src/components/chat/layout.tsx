@@ -1,11 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, addDoc, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { IonIcon } from "@ionic/react";
-import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
+import { collection, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
 
@@ -42,17 +39,10 @@ export default function Chat() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [videoCall, setVideoCall] = useState<VideoCallState>({
-    isActive: false,
-    isMuted: false,
-    isVideoOn: true,
-  });
+
   const [clientId, setClientId] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -188,74 +178,10 @@ export default function Chat() {
     setNewMessage("");
   };
 
-  const startCall = async () => {
-    if (!roomId) return;
-
-    const pc = createPeerConnection();
-    await createRoom(pc, roomId);
-    setPeerConnection(pc);
-
-    setVideoCall({ ...videoCall, isActive: true });
-    await startMedia(pc);
-  };
-
-  const joinCall = async () => {
-    if (!roomId) return;
-
-    const pc = createPeerConnection();
-
-    await joinRoom(pc, roomId);
-    setPeerConnection(pc);
-
-    setVideoCall((prevState) => ({ ...prevState, isActive: true }));
-    await startMedia(pc);
-  };
-
-  const startMedia = async (pc: RTCPeerConnection) => {
-    const localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-
-    if (localVideoRef.current) localVideoRef.current.srcObject = localStream;
-
-    localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
-    pc.ontrack = (event) => {
-      if (remoteVideoRef.current) remoteVideoRef.current.srcObject = event.streams[0];
-    };
-  };
-
-  const endCall = () => {
-    if (peerConnection) {
-      peerConnection.close();
-      setPeerConnection(null);
-    }
-
-    if (localVideoRef.current && localVideoRef.current.srcObject) {
-      const stream = localVideoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      localVideoRef.current.srcObject = null;
-    }
-
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null;
-    }
-
-    setVideoCall({ isActive: false, isMuted: false, isVideoOn: true });
-  };
-
   const handleMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
   };
 
-  const handleToggleMute = () => {
-    setVideoCall((prev) => ({ ...prev, isMuted: !prev.isMuted }));
-  };
-
-  const handleToggleVideo = () => {
-    setVideoCall((prev) => ({ ...prev, isVideoOn: !prev.isVideoOn }));
-  };
-
-  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} videoCall={videoCall} localVideoRef={localVideoRef} remoteVideoRef={remoteVideoRef} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} onStartCall={startCall} onJoinCall={joinCall} onEndCall={endCall} onToggleMute={handleToggleMute} onToggleVideo={handleToggleVideo} />;
+  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
 }
