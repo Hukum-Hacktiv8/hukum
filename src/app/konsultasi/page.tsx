@@ -1,26 +1,46 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+type Lawyer = {
+  id: string;
+  name: string;
+  image: string;
+  bio: string;
+  fee: number;
+};
+
+async function fetchLawyer(): Promise<Lawyer[]> {
+  const response = await fetch("http://localhost:3001/lawyers");
+  const responseJson = await response.json();
+
+  return responseJson;
+}
 
 export default function KonsultasiPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
+  const [lawyers, setLawyers] = useState<Lawyer[]>([]);
 
-  const searchParamsData = new URLSearchParams(window.location.search);
+  const searchParamsData = useSearchParams();
 
   const router = useRouter();
 
-  // router.refresh();
-
   useEffect(() => {
-    const lawyer = searchParamsData.get("lawyer");
-    if (lawyer) {
-      setSelectedLawyer(lawyer);
+    async function getLawyers() {
+      try {
+        const fetchedLawyers = await fetchLawyer();
+        setLawyers(fetchedLawyers);
+      } catch (error) {
+        console.error("Error fetching lawyers:", error);
+      }
     }
-  }, [searchParamsData]);
+    getLawyers();
+  }, []);
+  console.log(lawyers, "<<< line 85");
 
   function handleBooking() {
     if (!selectedDate || !selectedTime) {
@@ -66,101 +86,109 @@ export default function KonsultasiPage() {
       // router.push("/chats");
     });
   }
-
   return (
     <>
       <div className="card lg:card-side bg-base-100 shadow-xl flex lg:flex-row flex-col p-20">
-        <figure className="flex justify-center items-center lg:w-1/3 w-full">
-          <img
-            src="https://images.pexels.com/photos/4427610/pexels-photo-4427610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="Doctor"
-            className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80"
-          />
-        </figure>
-        <div className="card-body lg:w-2/3 w-full">
-          <h2 className="card-title text-2xl font-bold">{selectedLawyer}</h2>
-          <p className="text-lg font-medium text-gray-600">
-            Ph.D - Ahli Hukum (4 Years)
-          </p>
-          <p className="text-md text-gray-600 mt-4">
-            Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman
-            luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar
-            Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum
-            laude dan melanjutkan studi Magister Hukum (MH) di Universitas
-            Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional.
-            Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.)
-            di Universitas Melbourne dengan fokus penelitian pada arbitrase
-            internasional. Sebagai konsultan hukum bersertifikat, ia aktif
-            membantu individu maupun perusahaan dalam menyelesaikan permasalahan
-            hukum yang kompleks, dengan pendekatan yang profesional dan solutif.
-          </p>
-          <p className="font-semibold text-lg mt-4">
-            Appointment Fee: <span className="text-primary">Rp. 50,000</span>
-          </p>
-          <div className="mt-6">
-            <p className="font-semibold mb-2">Booking Slots:</p>
-            <div className="flex flex-wrap gap-4 mb-4">
-              {["One-time", "Monthly"].map((interval) => (
-                <button
-                  key={interval}
-                  onClick={() => setSelectedInterval(interval)}
-                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
-                    selectedInterval === interval
-                      ? "btn-primary text-white"
-                      : ""
-                  }`}
-                >
-                  {interval}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-4 mb-4">
-              {[
-                "Wed 3",
-                "Thu 4",
-                "Fri 5",
-                "Sat 6",
-                "Sun 7",
-                "Mon 8",
-                "Tue 9",
-              ].map((day) => (
-                <button
-                  key={day}
-                  onClick={() => setSelectedDate(day)}
-                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
-                    selectedDate === day ? "btn-primary text-white" : ""
-                  }`}
-                >
-                  {day}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-4">
-              {[
-                "05:00 PM",
-                "06:00 PM",
-                "06:30 PM",
-                "07:00 PM",
-                "07:30 PM",
-                "08:00 PM",
-              ].map((time) => (
-                <button
-                  key={time}
-                  onClick={() => setSelectedTime(time)}
-                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
-                    selectedTime === time ? "btn-primary text-white" : ""
-                  }`}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="card-actions justify-end mt-6">
-            <button className="btn btn-primary px-6" onClick={handleBooking}>
-              Book an Appointment
-            </button>
-          </div>
+        <div>
+          {lawyers.length > 0 ? (
+            lawyers.map((lawyer) => (
+              <div key={lawyer.id}>
+                <figure className="flex justify-center items-center lg:w-1/3 w-full">
+                  <img
+                    src={lawyer.image}
+                    alt="Photo"
+                    className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80"
+                  />
+                </figure>
+                <div className="card-body lg:w-2/3 w-full">
+                  <h2 className="card-title text-2xl font-bold">
+                    {lawyer.name}
+                  </h2>
+
+                  <p className="text-md text-gray-600 mt-4">{lawyer.bio}</p>
+                  <p className="font-semibold text-lg mt-4">
+                    Appointment Fee:{" "}
+                    <span className="text-primary">Rp. 50,000</span>
+                  </p>
+                  <div className="mt-6">
+                    <p className="font-semibold mb-2">Booking Slots:</p>
+                    <div className="flex flex-wrap gap-4 mb-4">
+                      {["One-time", "Monthly"].map((interval) => (
+                        <button
+                          key={interval}
+                          onClick={() => setSelectedInterval(interval)}
+                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                            selectedInterval === interval
+                              ? "btn-primary text-white"
+                              : ""
+                          }`}
+                        >
+                          {interval}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-4 mb-4">
+                      {[
+                        "Wed 3",
+                        "Thu 4",
+                        "Fri 5",
+                        "Sat 6",
+                        "Sun 7",
+                        "Mon 8",
+                        "Tue 9",
+                      ].map((day) => (
+                        <button
+                          key={day}
+                          onClick={() => setSelectedDate(day)}
+                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                            selectedDate === day ? "btn-primary text-white" : ""
+                          }`}
+                        >
+                          {day}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      {[
+                        "05:00 PM",
+                        "06:00 PM",
+                        "06:30 PM",
+                        "07:00 PM",
+                        "07:30 PM",
+                        "08:00 PM",
+                      ].map((time) => (
+                        <button
+                          key={time}
+                          onClick={() => setSelectedTime(time)}
+                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                            selectedTime === time
+                              ? "btn-primary text-white"
+                              : ""
+                          }`}
+                        >
+                          {time}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="card-actions justify-end mt-6">
+                    <button
+                      className="btn btn-primary px-6"
+                      onClick={handleBooking}
+                    >
+                      Book an Appointment
+                    </button>
+                  </div>
+                </div>
+
+                {/* <button onClick={() => setSelectedLawyer(lawyer.id)}>
+                  Select
+                </button> */}
+              </div>
+            ))
+          ) : (
+            <p>Loading lawyers...</p>
+          )}
         </div>
       </div>
     </>
