@@ -18,8 +18,8 @@ export default function BillingPage() {
       <div className="  card bg-base-100 w-96 shadow-xl">
         <figure className="px-10 pt-10">
           <img
-            src="https://images.pexels.com/photos/4427506/pexels-photo-4427506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="Lawyer3"
+            src="https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg?auto=compress&cs=tinysrgb&w=800"
+            alt="Law-Billing"
             className="rounded-xl h-40"
           />
         </figure>

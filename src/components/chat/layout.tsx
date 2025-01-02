@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+<<<<<<< HEAD
 import { collection, query, onSnapshot, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
+=======
+import { collection, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
+>>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 import { db } from "@/lib/firebase";
-import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
 
@@ -40,18 +43,17 @@ export default function Chat() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [videoCall, setVideoCall] = useState<VideoCallState>({
-    isActive: false,
-    isMuted: false,
-    isVideoOn: true,
-  });
+
   const [clientId, setClientId] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+<<<<<<< HEAD
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [peerConnection, setPeerConnection] =
     useState<RTCPeerConnection | null>(null);
+=======
+>>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,27 +65,60 @@ export default function Chat() {
 
   useEffect(() => {
     async function fetchContacts() {
-      const response = await fetch("http://localhost:3000/api/myrooms", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      const rooms: Room[] = data.data;
-
-      const contactsPromises = rooms?.map(async (el) => {
-        const participantIds = el.participants.participants;
-        const response = await fetch("/api/participant-details", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ participantIds }),
+      try {
+        const response = await fetch("http://localhost:3000/api/myrooms", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        return await response.json();
-      });
-      const fetchedContacts = await Promise.all(contactsPromises);
 
-      setContacts(fetchedContacts.filter(Boolean));
+        if (!response.ok) {
+          throw new Error("Failed to fetch rooms");
+        }
+
+        const data = await response.json();
+        const rooms: Room[] = data.data;
+
+        if (!rooms || rooms.length === 0) {
+          // console.log("No rooms found");
+          setContacts([]);
+          return;
+        }
+
+        const contactsPromises = rooms.map(async (room) => {
+          const participantIds = room.participants.participants;
+          // console.log(participantIds, "ini untuk check isinya apa ");
+
+          if (!participantIds || participantIds.length === 0) {
+            // console.log(`No participants found for room `);
+            return null;
+          }
+
+          try {
+            const response = await fetch("/api/participant-details", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ participantIds }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to fetch participant details");
+            }
+
+            return await response.json();
+          } catch (error) {
+            // console.error("Error fetching participant details:", error);
+            return null;
+          }
+        });
+
+        const fetchedContacts = await Promise.all(contactsPromises);
+        setContacts(fetchedContacts.filter(Boolean));
+      } catch (error) {
+        // console.error("Error fetching contacts:", error);
+        setContacts([]);
+      }
     }
 
     fetchContacts();
@@ -160,6 +195,7 @@ export default function Chat() {
     setNewMessage("");
   };
 
+<<<<<<< HEAD
   const startCall = async () => {
     if (!roomId) return;
 
@@ -217,11 +253,14 @@ export default function Chat() {
     setVideoCall({ isActive: false, isMuted: false, isVideoOn: true });
   };
 
+=======
+>>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
   const handleMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
   };
 
+<<<<<<< HEAD
   const handleToggleMute = () => {
     setVideoCall((prev) => ({ ...prev, isMuted: !prev.isMuted }));
   };
@@ -250,4 +289,7 @@ export default function Chat() {
       onToggleVideo={handleToggleVideo}
     />
   );
+=======
+  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
+>>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 }

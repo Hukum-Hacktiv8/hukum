@@ -49,7 +49,7 @@ export const GET = async (request: Request) => {
   }
 
   const data = await CheckRoomLogin(clientId);
-  console.log(data);
+  // console.log(data);
 
   return data;
 };
