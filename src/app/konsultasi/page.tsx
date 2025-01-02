@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function KonsultasiPage() {
@@ -9,11 +9,13 @@ export default function KonsultasiPage() {
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
 
-  const searchParamsData = new URLSearchParams(window.location.search);
+  const searchParamsData = useSearchParams();
 
   const router = useRouter();
 
-  router.refresh();
+  const fetchData = async () => {
+    const response = await fetch("http://localhost:3001/lawyers");
+  };
 
   useEffect(() => {
     const lawyer = searchParamsData.get("lawyer");
@@ -48,10 +50,12 @@ export default function KonsultasiPage() {
 
       // searchParamsData = ?interval=[value]&time=[value]&date=[value]
       if (selectedInterval === "One-time") {
+        // router.refresh();
         router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
       }
 
       if (selectedInterval === "Monthly") {
+        // router.refresh();
         router.push(`/konfirmasi/subscription?${searchParamsData.toString()}`);
       }
 

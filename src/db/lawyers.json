@@ -1,23 +1,25 @@
-[
-  {
-    "id": "1",
-    "name": "Dr.Stephanie Mo",
-    "image": "https://images.pexels.com/photos/4427622/pexels-photo-4427622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
-    "fee": 50000
-  },
-  {
-    "id": "2",
-    "name": "Dr. Andi Sanjaya",
-    "image": "https://images.pexels.com/photos/4427620/pexels-photo-4427620.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
-    "fee": 50000
-  },
-  {
-    "id": "3",
-    "name": "Dr. Andria Pratama",
-    "image": "https://images.pexels.com/photos/4427622/pexels-photo-4427622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
-    "fee": 50000
-  }
-]
+{
+  "lawyers": [
+    {
+      "id": "1",
+      "name": "Dr.Stephanie Mo",
+      "image": "https://images.pexels.com/photos/4427622/pexels-photo-4427622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
+      "fee": 50000
+    },
+    {
+      "id": "2",
+      "name": "Dr. Andi Sanjaya",
+      "image": "https://images.pexels.com/photos/4427620/pexels-photo-4427620.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
+      "fee": 50000
+    },
+    {
+      "id": "3",
+      "name": "Dr. Andria Pratama",
+      "image": "https://images.pexels.com/photos/4427622/pexels-photo-4427622.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "bio": "Dr. Andria Pratama adalah seorang pakar hukum yang berpengalaman luas dalam memberikan konsultasi hukum profesional. Ia meraih gelar Sarjana Hukum (SH) dari Universitas Gadjah Mada dengan predikat cum laude dan melanjutkan studi Magister Hukum (MH) di Universitas Leiden, Belanda, dengan spesialisasi Hukum Bisnis Internasional. Selain itu, Dr. Andria juga menyelesaikan program Doktoral (Ph.D.) di Universitas Melbourne dengan fokus penelitian pada arbitrase internasional. Sebagai konsultan hukum bersertifikat, ia aktif membantu individu maupun perusahaan dalam menyelesaikan permasalahan hukum yang kompleks, dengan pendekatan yang profesional dan solutif.",
+      "fee": 50000
+    }
+  ]
+}
