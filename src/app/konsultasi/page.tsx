@@ -18,6 +18,12 @@ export default function KonsultasiPage() {
     // const lawyerId = "676d906bab88bd555d8103ab";
     // const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
     const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
+
+    // ! kelvin payment
+
+    //if (!data ){
+    //   throw "payment fai"
+    // }
     fetch("http://localhost:3000/api/roomchats", {
       method: "POST",
       headers: {

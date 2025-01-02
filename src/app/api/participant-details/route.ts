@@ -7,7 +7,11 @@ export const POST = async (request: Request) => {
   }
 
   const { participantIds } = await request.json();
+<<<<<<< HEAD
   console.log("participantIds:", participantIds);
+=======
+  // console.log(participantIds);
+>>>>>>> 2e18144344b627b9dceaa9143fc03740d8a140c1
 
   if (!participantIds || !Array.isArray(participantIds)) {
     return new Response(JSON.stringify({ error: "Invalid body, expected array of IDs" }), { status: 400 });
@@ -18,6 +22,7 @@ export const POST = async (request: Request) => {
   if (!otherParticipantId) {
     return new Response(JSON.stringify({ error: "No valid participant found" }), { status: 404 });
   }
+  console.log(otherParticipantId, "other");
 
   const user = await getUserById(otherParticipantId);
 
