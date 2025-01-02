@@ -16,6 +16,11 @@ type Plan = {
 };
 
 // Data plans
+/* 
+    seharusnya card sudah pertama free 
+    yang kedua premium dan semua fitur yang ada + ada video call dan chat with AI
+*/
+
 const plans: Plan[] = [
   {
     name: "Basic",
@@ -39,7 +44,7 @@ const plans: Plan[] = [
     color: "from-[#B8860B] to-[#DAA520]",
     popular: true,
     features: [
-      "Priority Legal Consultation",
+      "Priority Legal Consultation", 
       "Unlimited Document Review",
       "Priority Email & Phone Support",
       "Premium Legal Templates",
