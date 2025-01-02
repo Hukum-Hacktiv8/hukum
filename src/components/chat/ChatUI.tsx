@@ -15,73 +15,18 @@ interface Contact {
   isOnline: boolean;
 }
 
-interface VideoCallState {
-  isActive: boolean;
-  isMuted: boolean;
-  isVideoOn: boolean;
-}
-
 interface ChatUIProps {
   contacts: Contact[];
   selectedContact: Contact | null;
   messages: Message[];
   newMessage: string;
-  videoCall: VideoCallState;
-  localVideoRef: React.RefObject<HTMLVideoElement>;
-  remoteVideoRef: React.RefObject<HTMLVideoElement>;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   onContactSelect: (contact: Contact) => void;
   onMessageChange: (message: string) => void;
   onMessageSubmit: (e: React.FormEvent) => void;
-  onStartCall: () => void;
-  onJoinCall: () => void;
-  onEndCall: () => void;
-  onToggleMute: () => void;
-  onToggleVideo: () => void;
 }
 
-export default function ChatUI({ contacts, selectedContact, messages, newMessage, videoCall, localVideoRef, remoteVideoRef, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit, onStartCall, onJoinCall, onEndCall, onToggleMute, onToggleVideo }: ChatUIProps) {
-  const renderVideoCall = () => {
-    if (!videoCall.isActive) return null;
-
-    return (
-      <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-        <div className="relative w-full max-w-6xl h-[500px] grid grid-cols-2 gap-4 p-4">
-          {/* Local Video */}
-          <div className="relative bg-[#1a4b69] rounded-xl overflow-hidden flex items-center justify-center">
-            <video ref={localVideoRef} autoPlay muted playsInline className="w-full h-full object-cover" />
-            <div className="absolute bottom-4 left-4 text-white">
-              <h3 className="text-lg font-medium">You</h3>
-            </div>
-          </div>
-
-          {/* Remote Video */}
-          <div className="relative bg-[#1a4b69] rounded-xl overflow-hidden flex items-center justify-center">
-            <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover" />
-            <div className="absolute bottom-4 left-4 text-white">
-              <h3 className="text-lg font-medium">{selectedContact?.name}</h3>
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-[#1a4b69]/60 backdrop-blur-sm p-4 rounded-full">
-            <button onClick={onToggleMute} className={`p-4 rounded-full transition-colors ${videoCall.isMuted ? "bg-red-500" : "bg-white/10 hover:bg-white/20"}`}>
-              <IonIcon icon={videoCall.isMuted ? micOffOutline : micOutline} className="text-white text-xl" />
-            </button>
-
-            <button onClick={onToggleVideo} className={`p-4 rounded-full transition-colors ${!videoCall.isVideoOn ? "bg-red-500" : "bg-white/10 hover:bg-white/20"}`}>
-              <IonIcon icon={videoCall.isVideoOn ? videocamOutline : videocamOffOutline} className="text-white text-xl" />
-            </button>
-
-            <button onClick={onEndCall} className="p-4 bg-red-500 rounded-full hover:bg-red-600 transition-colors">
-              <IonIcon icon={closeCircleOutline} className="text-white text-xl" />
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
+export default function ChatUI({ contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
   return (
     <div className="flex h-screen pt-16 bg-gradient-to-br from-[#1a4b69] to-[#1a3f69]">
       <div className="w-80 bg-[#1a4b69]/60 backdrop-blur-sm border-r border-white/10">
@@ -105,10 +50,13 @@ export default function ChatUI({ contacts, selectedContact, messages, newMessage
                 <p className="text-sm text-white/60">{selectedContact.role}</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={onStartCall} className="p-2 bg-blue-600 text-white rounded-lg">
+                <button className="p-2 bg-orange-600 text-white rounded-lg">
+                  <IonIcon icon={videocamOutline} className="text-xl" /> Start Media
+                </button>
+                <button className="p-2 bg-blue-600 text-white rounded-lg">
                   <IonIcon icon={videocamOutline} className="text-xl" /> Start Call
                 </button>
-                <button onClick={onJoinCall} className="p-2 bg-green-600 text-white rounded-lg">
+                <button className="p-2 bg-green-600 text-white rounded-lg">
                   <IonIcon icon={callOutline} className="text-xl" /> Join Call
                 </button>
               </div>
@@ -136,7 +84,6 @@ export default function ChatUI({ contacts, selectedContact, messages, newMessage
           <div className="flex-1 flex items-center justify-center text-white/60">Select a contact to start chatting</div>
         )}
       </div>
-      {renderVideoCall()}
     </div>
   );
 }

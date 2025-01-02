@@ -13,16 +13,16 @@ export const createPeerConnection = (): RTCPeerConnection => {
 };
 
 //Create Room
-export const createRoom = async (peerConnection: RTCPeerConnection, roomId: string): Promise<string> => {
-  const roomRef = doc(collection(db, "video-rooms"), roomId);
-  await setDoc(roomRef, {});
+export const createRoom = async (peerConnection: RTCPeerConnection): Promise<string> => {
+  const roomRef = await addDoc(collection(db, "video-rooms"), {}); // Correct
+  console.log("Created new room with ID:", roomRef.id);
 
-  const callerCandidatesCollection = collection(db, `video-rooms/${roomId}/callerCandidates`);
+  const callerCandidatesCollection = collection(db, `video-rooms/${roomRef.id}/callerCandidates`); // Fixed path
 
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
-      console.log("Caller ICE Candidate:", event.candidate);
       await addDoc(callerCandidatesCollection, event.candidate.toJSON());
+      console.log("Added ICE candidate to Firestore:", event.candidate.toJSON());
     }
   });
 
@@ -39,57 +39,60 @@ export const createRoom = async (peerConnection: RTCPeerConnection, roomId: stri
   onSnapshot(roomRef, (snapshot) => {
     const data = snapshot.data();
     if (data?.answer && !peerConnection.currentRemoteDescription) {
-      const answer = new RTCSessionDescription(data?.answer);
+      const answer = new RTCSessionDescription(data.answer);
       peerConnection.setRemoteDescription(answer);
+      console.log("Set remote SDP answer:", answer);
     }
   });
 
-  return roomId;
+  return roomRef.id;
 };
 
 //Join Room
-export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string): Promise<string> => {
-  const roomRef = doc(db, "video-rooms", roomId);
-  const roomSnapshot = await getDoc(roomRef);
+export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string) => {
+  const roomRef = doc(db, "video-rooms", roomId); // Correct
 
-  if (roomSnapshot?.exists()) {
+  const roomSnapshot = await getDoc(roomRef);
+  if (roomSnapshot.exists()) {
+    console.log("Joined room with ID:", roomId);
+
     const roomData = roomSnapshot.data();
     const offer = roomData?.offer;
 
     if (offer) {
       const offerDescription = new RTCSessionDescription(offer);
       await peerConnection.setRemoteDescription(offerDescription);
+      console.log("Set remote SDP offer:", offerDescription);
+
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+
+      await updateDoc(roomRef, {
+        answer: {
+          type: answer.type,
+          sdp: answer.sdp,
+        },
+      });
     }
-
-    const answer = await peerConnection.createAnswer();
-    await peerConnection.setLocalDescription(answer);
-
-    await updateDoc(roomRef, {
-      answer: {
-        type: answer.type,
-        sdp: answer.sdp,
-      },
-    });
   } else {
-    return `Room ${roomId} not found`;
+    console.error("Room not found:", roomId);
+    return;
   }
 
-  const calleeCandidatesCollection = collection(db, `video-rooms/${roomId}/calleeCandidates`);
+  const calleeCandidatesCollection = collection(db, `video-rooms/${roomId}/calleeCandidates`); // Fixed path
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
-      console.log("Callee ICE Candidate:", event.candidate);
-      await addDoc(calleeCandidatesCollection, event?.candidate?.toJSON());
+      await addDoc(calleeCandidatesCollection, event.candidate.toJSON());
     }
   });
 
   onSnapshot(collection(db, `video-rooms/${roomId}/callerCandidates`), (snapshot) => {
+    // Fixed path
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        const candidate = new RTCIceCandidate(change?.doc?.data());
+        const candidate = new RTCIceCandidate(change.doc.data());
         peerConnection.addIceCandidate(candidate);
       }
     });
   });
-
-  return roomId;
 };
