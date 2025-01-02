@@ -1,6 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 export default function KonsultasiConfirmCard() {
+  const searchParamsData = new URLSearchParams();
+
   return (
     <main className="">
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -8,14 +12,20 @@ export default function KonsultasiConfirmCard() {
           <img
             src="https://images.pexels.com/photos/4427610/pexels-photo-4427610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="Lawyer"
-            className="h-40 rounded-lg ml-2"
+            className="h-96 rounded-lg p-5"
           />
         </figure>
         <div className="card-body">
           <h2 className="card-title">Jasa Konsultasi (One-time)</h2>
-          <p>Click the button to listen on Spotiwhy app.</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Listen</button>
+          <p>Lawyer Name</p>
+          <p>Chosen Date</p>
+          <p>One-time</p>
+          <p>30 minutes chat</p>
+          <p>Rp. 50,000</p>
+          <div className="card-actions justify-center mt-10">
+            <Link href="/billing-konsultasi">
+              <button className="btn btn-primary">Lanjut ke pembayaran</button>
+            </Link>
           </div>
         </div>
       </div>

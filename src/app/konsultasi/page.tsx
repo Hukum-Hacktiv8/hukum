@@ -6,6 +6,7 @@ import { useState } from "react";
 export default function KonsultasiPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [selectedInterval, setSelectedInterval] = useState("");
 
   const router = useRouter();
 
@@ -27,7 +28,21 @@ export default function KonsultasiPage() {
         participants: [lawyerId],
       }),
     }).then(() => {
-      router.push("/chats");
+      const searchParamsData = new URLSearchParams();
+      searchParamsData.append("interval", selectedInterval);
+      searchParamsData.append("time", selectedTime);
+      searchParamsData.append("date", selectedDate);
+
+      // searchParamsData = ?interval=[value]&time=[value]&date=[value]
+      if (selectedInterval === "One-time") {
+        router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
+      }
+
+      if (selectedInterval === "Monthly") {
+        router.push(`/konfirmasi/subscription?${searchParamsData.toString()}`);
+      }
+
+      // router.push("/chats");
     });
   }
 
@@ -63,6 +78,21 @@ export default function KonsultasiPage() {
           </p>
           <div className="mt-6">
             <p className="font-semibold mb-2">Booking Slots:</p>
+            <div className="flex flex-wrap gap-4 mb-4">
+              {["One-time", "Monthly"].map((interval) => (
+                <button
+                  key={interval}
+                  onClick={() => setSelectedInterval(interval)}
+                  className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                    selectedInterval === interval
+                      ? "btn-primary text-white"
+                      : ""
+                  }`}
+                >
+                  {interval}
+                </button>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-4 mb-4">
               {[
                 "Wed 3",
