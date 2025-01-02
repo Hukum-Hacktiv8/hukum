@@ -19,8 +19,8 @@ export default function KonsultasiConfirmCard() {
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
           <img
-            src="https://images.pexels.com/photos/4427610/pexels-photo-4427610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            alt="Lawyer"
+            src="https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="Law-Subscription"
             className="h-96 rounded-lg p-5"
           />
         </figure>
