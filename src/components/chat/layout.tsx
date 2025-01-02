@@ -64,27 +64,60 @@ export default function Chat() {
 
   useEffect(() => {
     async function fetchContacts() {
-      const response = await fetch("http://localhost:3000/api/myrooms", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      const rooms: Room[] = data.data;
-
-      const contactsPromises = rooms?.map(async (el) => {
-        const participantIds = el.participants.participants;
-        const response = await fetch("/api/participant-details", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ participantIds }),
+      try {
+        const response = await fetch("http://localhost:3000/api/myrooms", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
-        return await response.json();
-      });
-      const fetchedContacts = await Promise.all(contactsPromises);
 
-      setContacts(fetchedContacts.filter(Boolean));
+        if (!response.ok) {
+          throw new Error("Failed to fetch rooms");
+        }
+
+        const data = await response.json();
+        const rooms: Room[] = data.data;
+
+        if (!rooms || rooms.length === 0) {
+          console.log("No rooms found");
+          setContacts([]);
+          return;
+        }
+
+        const contactsPromises = rooms.map(async (room) => {
+          const participantIds = room.participants.participants;
+          // console.log(participantIds, "ini untuk check isinya apa ");
+
+          if (!participantIds || participantIds.length === 0) {
+            // console.log(`No participants found for room `);
+            return null;
+          }
+
+          try {
+            const response = await fetch("/api/participant-details", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ participantIds }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to fetch participant details");
+            }
+
+            return await response.json();
+          } catch (error) {
+            // console.error("Error fetching participant details:", error);
+            return null;
+          }
+        });
+
+        const fetchedContacts = await Promise.all(contactsPromises);
+        setContacts(fetchedContacts.filter(Boolean));
+      } catch (error) {
+        // console.error("Error fetching contacts:", error);
+        setContacts([]);
+      }
     }
 
     fetchContacts();
