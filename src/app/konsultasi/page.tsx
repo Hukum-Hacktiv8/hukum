@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function KonsultasiPage() {
@@ -9,13 +9,11 @@ export default function KonsultasiPage() {
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
 
-  const searchParamsData = useSearchParams();
+  const searchParamsData = new URLSearchParams(window.location.search);
 
   const router = useRouter();
 
-  const fetchData = async () => {
-    const response = await fetch("http://localhost:3001/lawyers");
-  };
+  router.refresh();
 
   useEffect(() => {
     const lawyer = searchParamsData.get("lawyer");
@@ -34,7 +32,9 @@ export default function KonsultasiPage() {
     // const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
     const lawyerId = "6774f0beadcd850b98b70412"; // ID user dgn username : user2
 
-    // ! kelvin payment
+    // ! kenny dan grace after payment bikin function untuk status pembayaran
+    //  todo: ambil status pembayaran midtrans
+    // todo:
 
     //if (!data ){
     //   throw "payment failed"
@@ -56,12 +56,10 @@ export default function KonsultasiPage() {
 
       // searchParamsData = ?interval=[value]&time=[value]&date=[value]
       if (selectedInterval === "One-time") {
-        // router.refresh();
         router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
       }
 
       if (selectedInterval === "Monthly") {
-        // router.refresh();
         router.push(`/konfirmasi/subscription?${searchParamsData.toString()}`);
       }
 
