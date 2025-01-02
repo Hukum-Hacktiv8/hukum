@@ -22,7 +22,7 @@ export default function KonsultasiPage() {
     // ! kelvin payment
 
     //if (!data ){
-    //   throw "payment fai"
+    //   throw "payment failed"
     // }
     fetch("http://localhost:3000/api/roomchats", {
       method: "POST",
