@@ -8,7 +8,13 @@ export default function KonsultasiPage() {
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedInterval, setSelectedInterval] = useState("");
 
+  const searchParamsData = new URLSearchParams(window.location.search);
+
+  const lawyer = searchParamsData.get("lawyer");
+
   const router = useRouter();
+
+  router.refresh();
 
   function handleBooking() {
     if (!selectedDate || !selectedTime) {
@@ -57,7 +63,7 @@ export default function KonsultasiPage() {
           />
         </figure>
         <div className="card-body lg:w-2/3 w-full">
-          <h2 className="card-title text-2xl font-bold">Dr. Andria Pratama</h2>
+          <h2 className="card-title text-2xl font-bold">{lawyer}</h2>
           <p className="text-lg font-medium text-gray-600">
             Ph.D - Ahli Hukum (4 Years)
           </p>

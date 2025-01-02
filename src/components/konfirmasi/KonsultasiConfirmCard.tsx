@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function KonsultasiConfirmCard() {
-  const searchParamsData = new URLSearchParams();
+  const searchParamsData = new URLSearchParams(window.location.search);
+  const router = useRouter();
 
+  const interval = searchParamsData.get("interval");
+  const time = searchParamsData.get("time");
+  const date = searchParamsData.get("date");
+
+  router.refresh();
   return (
     <main className="">
       <div className="card lg:card-side bg-base-100 shadow-xl">
@@ -18,8 +25,9 @@ export default function KonsultasiConfirmCard() {
         <div className="card-body">
           <h2 className="card-title">Jasa Konsultasi (One-time)</h2>
           <p>Lawyer Name</p>
-          <p>Chosen Date</p>
-          <p>One-time</p>
+          <p>{date}</p>
+          <p>{time}</p>
+          <p>{interval}</p>
           <p>30 minutes chat</p>
           <p>Rp. 50,000</p>
           <div className="card-actions justify-center mt-10">
