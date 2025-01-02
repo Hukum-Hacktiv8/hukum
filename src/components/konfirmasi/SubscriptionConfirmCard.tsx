@@ -10,6 +10,7 @@ export default function KonsultasiConfirmCard() {
   const interval = searchParamsData.get("interval");
   const time = searchParamsData.get("time");
   const date = searchParamsData.get("date");
+  const lawyer = searchParamsData.get("lawyer");
 
   router.refresh();
 
@@ -25,7 +26,7 @@ export default function KonsultasiConfirmCard() {
         </figure>
         <div className="card-body">
           <h2 className="card-title">Subscription (Monthly)</h2>
-          <p>Lawyer Name</p>
+          <p>{lawyer}</p>
           <p>{date}</p>
           <p>{time}</p>
           <p>{interval}</p>

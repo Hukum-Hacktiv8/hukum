@@ -1,20 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function KonsultasiPage() {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedInterval, setSelectedInterval] = useState("");
+  const [selectedLawyer, setSelectedLawyer] = useState("");
 
   const searchParamsData = new URLSearchParams(window.location.search);
-
-  const lawyer = searchParamsData.get("lawyer");
 
   const router = useRouter();
 
   router.refresh();
+
+  useEffect(() => {
+    const lawyer = searchParamsData.get("lawyer");
+    if (lawyer) {
+      setSelectedLawyer(lawyer);
+    }
+  }, [searchParamsData]);
 
   function handleBooking() {
     if (!selectedDate || !selectedTime) {
@@ -38,6 +44,7 @@ export default function KonsultasiPage() {
       searchParamsData.append("interval", selectedInterval);
       searchParamsData.append("time", selectedTime);
       searchParamsData.append("date", selectedDate);
+      searchParamsData.append("lawyer", selectedLawyer);
 
       // searchParamsData = ?interval=[value]&time=[value]&date=[value]
       if (selectedInterval === "One-time") {
@@ -63,7 +70,7 @@ export default function KonsultasiPage() {
           />
         </figure>
         <div className="card-body lg:w-2/3 w-full">
-          <h2 className="card-title text-2xl font-bold">{lawyer}</h2>
+          <h2 className="card-title text-2xl font-bold">{selectedLawyer}</h2>
           <p className="text-lg font-medium text-gray-600">
             Ph.D - Ahli Hukum (4 Years)
           </p>
