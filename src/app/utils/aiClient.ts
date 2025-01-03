@@ -1,31 +1,40 @@
-import { OpenAI } from "openai";
+import { createGroq } from "@ai-sdk/groq";
 
-const apiKey = "18cf194962aa43b5a8a2373fd33a6fb2";
-const baseURL = "https://api.aimlapi.com/v1";
-
-export const api = new OpenAI({
-  apiKey,
-  baseURL,
+// Initialize Groq with API Key
+const groq = createGroq({
+  apiKey: "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",
 });
 
-export const getAIResponse = async (systemPrompt: string, userPrompt: string): Promise<string> => {
+// Function to simulate AI response with streaming
+export const getAIResponseStream = async (systemPrompt: string, userPrompt: string, onChunk: (chunk: string) => void): Promise<void> => {
   try {
-    const completion = await api.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.7,
-      max_tokens: 256,
+    // Simulate API call using Groq
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer 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`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        stream: false, // API does not support streaming directly, so we simulate it
+      }),
     });
 
-    const choice = completion?.choices?.[0]?.message?.content;
-    if (!choice) {
-      throw new Error("No response received from the AI.");
-    }
+    const result = await response.json();
 
-    return choice.trim();
+    // Extract the AI's response text
+    const text = result.choices[0]?.message?.content || "No response received.";
+
+    // Simulate streaming by chunking the response
+    for (const chunk of text.match(/.{1,50}/g) || []) {
+      onChunk(chunk); // Pass each chunk to the callback
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Increased simulated delay to 100ms
+    }
   } catch (error) {
     console.error("Error fetching AI response:", error);
     throw new Error("Failed to fetch AI response.");
