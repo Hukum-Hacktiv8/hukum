@@ -32,10 +32,8 @@ const plans: Plan[] = [
     color: "from-[#B8860B] to-[#DAA520]",
     features: [
       "Konsultasi Hukum Dasar",
-      "Peninjauan Dokumen (2/bulan)",
-      "Dukungan Email",
       "Template Hukum Dasar",
-      "Dukungan Chat 24/7",
+      "Fitur Google Maps"
     ],
     isDefault: true,
   },
@@ -47,13 +45,14 @@ const plans: Plan[] = [
     color: "from-[#B8860B] to-[#DAA520]",
     popular: true,
     features: [
+      "Semua Fitur Paket Dasar",
       "Konsultasi Hukum Prioritas",
       "Peninjauan Dokumen Tanpa Batas",
       "Dukungan Email & Telepon Prioritas",
       "Template Hukum Premium",
       "Dukungan Chat Prioritas 24/7",
-      "Buletin Hukum Bulanan",
-      "Akses Workshop Hukum",
+      "Video Call dengann Pengacara",
+      "Chat with AI Assistant 24/7",
     ],
   },
 ];
@@ -147,11 +146,11 @@ const SubscriptionCard = ({
           {!plan.isDefault && (
             <button
               onClick={() => console.log(`Selected plan: ${plan.name}`)}
-            className={`w-full py-3 rounded-lg text-white font-semibold
+              className={`w-full py-3 rounded-lg text-white font-semibold
                 bg-gradient-to-r ${plan.color}
                 transition-all duration-200 hover:opacity-90 active:scale-95`}
-          >
-            {plan.price === "Custom" ? "Contact Sales" : "Pilih Paket"}
+            >
+              {plan.price === "Custom" ? "Contact Sales" : "Pilih Paket"}
             </button>
           )}
         </Link>
