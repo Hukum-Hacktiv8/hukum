@@ -14,38 +14,38 @@ import {
 const services = [
   {
     icon: <MdSecurity className="text-5xl" />,
-    title: "Criminal Defense",
-    desc: "Expert defense in criminal cases with proven track record",
+    title: "Hukum Pidana",
+    desc: "Pembelaan ahli dalam kasus pidana dengan rekam jejak terbukti",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
   {
     icon: <MdBusiness className="text-5xl" />,
-    title: "Corporate Law",
-    desc: "Comprehensive legal solutions for your business",
+    title: "Hukum Perusahaan",
+    desc: "Solusi hukum menyeluruh untuk bisnis Anda",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
   {
     icon: <MdFamilyRestroom className="text-5xl" />,
-    title: "Family Law",
-    desc: "Sensitive handling of family legal matters",
+    title: "Hukum Keluarga",
+    desc: "Pemrosesan yang sensitif terkait hukum keluarga",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
   {
     icon: <MdGavel className="text-5xl" />,
-    title: "Civil Litigation",
-    desc: "Professional representation in civil disputes",
+    title: "Litigasi Hukum",
+    desc: "Representasi profesional dalam perselisihan hukum",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
   {
     icon: <MdRealEstateAgent className="text-5xl" />,
-    title: "Real Estate Law",
-    desc: "Expert guidance in property transactions",
+    title: "Hukum Tanah",
+    desc: "Panduan ahli dalam transaksi properti",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
   {
     icon: <MdAttachMoney className="text-5xl" />,
-    title: "Tax Law",
-    desc: "Strategic tax planning and dispute resolution",
+    title: "Hukum Pajak",
+    desc: "Perencanaan pajak strategis dan penyelesaian perselisihan",
     color: "from-[#B8860B]/10 to-[#DAA520]/10",
   },
 ];
@@ -62,10 +62,10 @@ export default function ServicesSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-lora text-[#DAA520] mb-4">
-            Our Legal Services
+            Layanan Hukum Kami
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto">
-            Comprehensive legal solutions tailored to your needs
+            Solusi hukum menyeluruh yang disesuaikan dengan kebutuhan Anda
           </p>
         </motion.div>
 

@@ -43,22 +43,22 @@ export default function HeroSection() {
             className="max-w-3xl"
           >
             <h1 className="text-6xl md:text-7xl font-lora mb-6 leading-tight">
-              <span className="text-white">Protecting Your Rights,</span>
+              <span className="text-white">Melindungi Hak Anda,</span>
               <br />
               <span className="bg-gradient-to-r from-[#FFD700] via-[#DAA520] to-[#B8860B] text-transparent bg-clip-text">
-                Securing Your Future
+                Mengamankan Masa Depan Anda
               </span>
             </h1>
             <p className="text-xl text-white/90 mb-8 max-w-2xl">
-              With over 15 years of experience, we provide expert legal
-              solutions tailored to your unique situation.
+              Dengan pengalaman lebih dari 15 tahun, kami menyediakan solusi
+              hukum yang disesuaikan dengan situasi Anda.
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-gradient-to-r from-[#B8860B] to-[#DAA520] hover:from-[#DAA520] hover:to-[#B8860B] rounded-lg text-white text-lg shadow-lg shadow-[#B8860B]/20 transition-all duration-300"
             >
-              Free Consultation
+              Konsultasi Gratis
             </motion.button>
           </motion.div>
         </div>

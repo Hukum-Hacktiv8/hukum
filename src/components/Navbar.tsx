@@ -3,7 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { HiOutlineMenu, HiOutlineX, HiOutlineHome, HiOutlineInformationCircle, HiOutlineBookOpen, HiOutlineChatAlt2, HiOutlineSearch, HiOutlineUser } from "react-icons/hi";
+import {
+  HiOutlineMenu,
+  HiOutlineX,
+  HiOutlineHome,
+  HiOutlineInformationCircle,
+  HiOutlineBookOpen,
+  HiOutlineChatAlt2,
+  HiOutlineSearch,
+  HiOutlineUser,
+} from "react-icons/hi";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,14 +28,10 @@ export default function Navbar() {
   }, []);
 
   const menuItems = [
-    { text: "Home", href: "/", icon: HiOutlineHome },
-    { text: "About", href: "/about", icon: HiOutlineInformationCircle },
-    {
-      text: "Services",
-      href: "/konsultasi/lawyer",
-      icon: HiOutlineBookOpen,
-    },
-    { text: "Chats", href: "/chats", icon: HiOutlineChatAlt2 },
+    { text: "Beranda", href: "/", icon: HiOutlineHome },
+    { text: "Tentang", href: "/about", icon: HiOutlineInformationCircle },
+    { text: "Layanan", href: "/konsultasi/lawyer", icon: HiOutlineBookOpen },
+    { text: "Percakapan", href: "/chats", icon: HiOutlineChatAlt2 },
   ];
 
   return (

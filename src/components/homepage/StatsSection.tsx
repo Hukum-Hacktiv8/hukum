@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { FaBalanceScale, FaGavel, FaHandshake } from "react-icons/fa";
 
 const stats = [
-  { number: "500+", text: "Cases Won", icon: <FaGavel /> },
-  { number: "15+", text: "Years Experience", icon: <FaBalanceScale /> },
-  { number: "1000+", text: "Happy Clients", icon: <FaHandshake /> },
+  { number: "500+", text: "Total konsultasi", icon: <FaGavel /> },
+  { number: "15+", text: "Tahun Pengalaman", icon: <FaBalanceScale /> },
+  { number: "1000+", text: "Kepuasan Pelanggan", icon: <FaHandshake /> },
 ];
 
 export default function StatsSection() {
