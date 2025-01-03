@@ -18,16 +18,11 @@ const userInput = z.object({
 export const POST = async (request: Request) => {
   try {
     // console.log(request);
-
     const data = await request.json();
-
     const parse = userInput.parse(data);
-
     // console.log(`hehe`);
     const user = await registerUser(parse);
-
     const check = await extractObjectIdString(user.insertedId);
-
     const subsRegister = {
       userId: check,
       type: "free",
@@ -56,7 +51,6 @@ export const POST = async (request: Request) => {
         }
       );
     }
-
     return Response.json(
       {
         statusCode: 500,

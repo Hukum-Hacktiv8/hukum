@@ -50,7 +50,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right Side Icons */}
+          {/* Website Icon Login */}
           <div className="hidden md:flex items-center gap-4">
             <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
               <HiOutlineSearch className="text-xl" />

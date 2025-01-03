@@ -121,7 +121,7 @@ export const handleLogin = async (formData: FormData) => {
   const payload = {
     id: user._id,
     email: user.email,
-    username: user.username,
+    username: user.name,
   };
 
   const token = await createJoseToken(payload);
