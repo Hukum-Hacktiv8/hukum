@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 
 type Lawyer = {
   id: string;
@@ -24,6 +25,7 @@ export default function KonsultasiPage() {
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
   const [lawyers, setLawyers] = useState<Lawyer[]>([]);
+  const [date, setDate] = useState(new Date());
 
   const searchParamsData = useSearchParams();
 
@@ -40,10 +42,10 @@ export default function KonsultasiPage() {
     }
     getLawyers();
   }, []);
-  console.log(lawyers, "<<< line 85");
+  // console.log(lawyers, "<<< line 85");
 
   function handleBooking() {
-    if (!selectedDate || !selectedTime) {
+    if (!date || !selectedTime) {
       alert("Please select a date and time for your booking.");
       return;
     }
@@ -71,7 +73,7 @@ export default function KonsultasiPage() {
       const searchParamsData = new URLSearchParams();
       searchParamsData.append("interval", selectedInterval);
       searchParamsData.append("time", selectedTime);
-      searchParamsData.append("date", selectedDate);
+      searchParamsData.append("date", date.toDateString());
       searchParamsData.append("lawyer", selectedLawyer);
 
       // searchParamsData = ?interval=[value]&time=[value]&date=[value]
@@ -128,25 +130,12 @@ export default function KonsultasiPage() {
                       ))}
                     </div>
                     <div className="flex flex-wrap gap-4 mb-4">
-                      {[
-                        "Wed 3",
-                        "Thu 4",
-                        "Fri 5",
-                        "Sat 6",
-                        "Sun 7",
-                        "Mon 8",
-                        "Tue 9",
-                      ].map((day) => (
-                        <button
-                          key={day}
-                          onClick={() => setSelectedDate(day)}
-                          className={`btn px-4 py-1 text-sm font-medium ${
-                            selectedDate === day ? "btn-primary text-white" : ""
-                          }`}
-                        >
-                          {day}
-                        </button>
-                      ))}
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="rounded-md border"
+                      />
                     </div>
                     <div className="flex flex-wrap gap-4">
                       {["09:00", "18:00"].map((time) => (
