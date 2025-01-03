@@ -54,10 +54,10 @@ const Avatar = async () => {
             <div className="avatar placeholder">
               <div className="bg-neutral text-neutral-content w-8 rounded-full">
                 {/* Inisialisasi inisial dari nama pengguna */}
-                <span>{userLogin.name.charAt(0).toUpperCase()}</span>
+                <span>{userLogin.username.charAt(0).toUpperCase()}</span>
               </div>
             </div>
-            <div className="text-sm font-medium">{userLogin.name}</div>
+            <div className="text-sm font-medium">{userLogin.username}</div>
           </div>
           <ul tabIndex={0} className="absolute top-full menu menu-sm dropdown-content bg-white rounded-box z-10 w-40 p-2 shadow">
             <Link href="/profile" className="p-2 hover:bg-gray-100 rounded-md cursor-pointer">
