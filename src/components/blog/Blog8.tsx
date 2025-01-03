@@ -48,7 +48,7 @@ export default function Blog8() {
                 memperlakukan semua data secara setara tanpa diskriminasi.
               </li>
             </ol>
-
+{/* //////////////////////////// */}
             <p className="font-bold mt-5">
               Peran Hukum Ekonomi dalam Kehidupan Masyarakat
             </p>
