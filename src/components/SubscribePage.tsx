@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { FaCrown, FaCheck, FaStar, FaGem } from "react-icons/fa";
 import { useState } from "react";
+import Link from "next/link";
 
 // Definisi tipe data untuk plan
 type Plan = {
@@ -44,7 +45,7 @@ const plans: Plan[] = [
     color: "from-[#B8860B] to-[#DAA520]",
     popular: true,
     features: [
-      "Priority Legal Consultation", 
+      "Priority Legal Consultation",
       "Unlimited Document Review",
       "Priority Email & Phone Support",
       "Premium Legal Templates",
@@ -65,7 +66,7 @@ const SubscriptionCard = ({
   isSelected: boolean;
   onSelect: () => void;
 }) => {
-//   console.log(plan);
+  //   console.log(plan);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -139,18 +140,20 @@ const SubscriptionCard = ({
         </ul>
 
         {/* Action Button */}
-        <motion.button
-          onClick={(e) => {
-            e.stopPropagation();
-            console.log(`Selected plan: ${plan.name}`);
-          }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full py-3 rounded-lg bg-gradient-to-r ${plan.color} 
+        <Link href="/konfirmasi/subscription">
+          <motion.button
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log(`Selected plan: ${plan.name}`);
+            }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full py-3 rounded-lg bg-gradient-to-r ${plan.color} 
                         text-white font-semibold hover:opacity-90 transition-all`}
-        >
-          {plan.price === "Custom" ? "Contact Sales" : "Get Started"}
-        </motion.button>
+          >
+            {plan.price === "Custom" ? "Contact Sales" : "Get Started"}
+          </motion.button>
+        </Link>
       </div>
     </motion.div>
   );
