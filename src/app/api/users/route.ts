@@ -1,5 +1,5 @@
 import { createSubsFirstRegister, extractObjectIdString } from "@/app/models/subscription";
-import { registerUser } from "@/app/models/user";
+import { getUserByEmail, registerUser } from "@/app/models/user";
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -57,6 +57,26 @@ export const POST = async (request: Request) => {
       );
     }
 
+    return Response.json(
+      {
+        statusCode: 500,
+        message: "Internal server error",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+};
+
+export const GET = async (request: Request) => {
+  try {
+    const data = await request.json();
+    const email = data.email;
+    const user = await getUserByEmail(email);
+    return Response.json(user);
+  } catch (error) {
+    console.log(error);
     return Response.json(
       {
         statusCode: 500,
