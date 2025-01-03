@@ -1,11 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-<<<<<<< HEAD
-import { collection, query, onSnapshot, where, getDocs, doc, updateDoc, arrayUnion } from "firebase/firestore";
-=======
 import { collection, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
->>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 import { db } from "@/lib/firebase";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
@@ -47,13 +43,6 @@ export default function Chat() {
   const [clientId, setClientId] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-<<<<<<< HEAD
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [peerConnection, setPeerConnection] =
-    useState<RTCPeerConnection | null>(null);
-=======
->>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -195,101 +184,10 @@ export default function Chat() {
     setNewMessage("");
   };
 
-<<<<<<< HEAD
-  const startCall = async () => {
-    if (!roomId) return;
-
-    const pc = createPeerConnection();
-    await createRoom(pc, roomId);
-    setPeerConnection(pc);
-
-    setVideoCall({ ...videoCall, isActive: true });
-    await startMedia(pc);
-  };
-
-  const joinCall = async () => {
-    if (!roomId) return;
-
-    const pc = createPeerConnection();
-
-    await joinRoom(pc, roomId);
-    setPeerConnection(pc);
-
-    setVideoCall((prevState) => ({ ...prevState, isActive: true }));
-    await startMedia(pc);
-  };
-
-  const startMedia = async (pc: RTCPeerConnection) => {
-    const localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-
-    if (localVideoRef.current) localVideoRef.current.srcObject = localStream;
-
-    localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
-    pc.ontrack = (event) => {
-      if (remoteVideoRef.current)
-        remoteVideoRef.current.srcObject = event.streams[0];
-    };
-  };
-
-  const endCall = () => {
-    if (peerConnection) {
-      peerConnection.close();
-      setPeerConnection(null);
-    }
-
-    if (localVideoRef.current && localVideoRef.current.srcObject) {
-      const stream = localVideoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach((track) => track.stop());
-      localVideoRef.current.srcObject = null;
-    }
-
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null;
-    }
-
-    setVideoCall({ isActive: false, isMuted: false, isVideoOn: true });
-  };
-
-=======
->>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
   const handleMessageSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
   };
 
-<<<<<<< HEAD
-  const handleToggleMute = () => {
-    setVideoCall((prev) => ({ ...prev, isMuted: !prev.isMuted }));
-  };
-
-  const handleToggleVideo = () => {
-    setVideoCall((prev) => ({ ...prev, isVideoOn: !prev.isVideoOn }));
-  };
-
-  return (
-    <ChatUI
-      contacts={contacts}
-      selectedContact={selectedContact}
-      messages={messages}
-      newMessage={newMessage}
-      videoCall={videoCall}
-      localVideoRef={localVideoRef}
-      remoteVideoRef={remoteVideoRef}
-      messagesEndRef={messagesEndRef}
-      onContactSelect={handleContactSelection}
-      onMessageChange={(msg) => setNewMessage(msg)}
-      onMessageSubmit={handleMessageSubmit}
-      onStartCall={startCall}
-      onJoinCall={joinCall}
-      onEndCall={endCall}
-      onToggleMute={handleToggleMute}
-      onToggleVideo={handleToggleVideo}
-    />
-  );
-=======
   return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
->>>>>>> 31641bf740eab052c28cb773ab28051afbd730ad
 }
