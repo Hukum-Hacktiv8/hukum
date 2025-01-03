@@ -16,6 +16,7 @@ interface Contact {
 }
 
 interface ChatUIProps {
+  clientId: string;
   contacts: Contact[];
   selectedContact: Contact | null;
   messages: Message[];
@@ -26,7 +27,7 @@ interface ChatUIProps {
   onMessageSubmit: (e: React.FormEvent) => void;
 }
 
-export default function ChatUI({ contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
+export default function ChatUI({ clientId, contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
   return (
     <div className="flex h-screen pt-16 bg-gradient-to-br from-[#1a4b69] to-[#1a3f69]">
       <div className="w-80 bg-[#1a4b69]/60 backdrop-blur-sm border-r border-white/10">
@@ -63,8 +64,8 @@ export default function ChatUI({ contacts, selectedContact, messages, newMessage
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((message) => (
-                <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[70%] rounded-lg p-3 ${message.sender === "user" ? "bg-blue-600/80 text-white" : "bg-white/10 text-white"}`}>
+                <div key={message.id} className={`flex ${message.sender === clientId ? "justify-end" : "justify-start"}`}>
+                  <div className={`max-w-[70%] rounded-lg p-3 ${message.sender === clientId ? "bg-blue-600/80 text-white" : "bg-white/10 text-white"}`}>
                     <p>{message.text}</p>
                   </div>
                 </div>

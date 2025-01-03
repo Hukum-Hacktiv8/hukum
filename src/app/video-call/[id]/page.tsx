@@ -1,9 +1,12 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 
-const VideoCall = () => {
+const VideoCallId = () => {
+  const params = useParams();
+  const id = params.id;
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
@@ -22,14 +25,7 @@ const VideoCall = () => {
   const joinCall = async () => {
     if (!peerConnection) return;
 
-    let id = prompt("Enter Room ID:");
-    if (!id) return;
-
-    id = id.trim();
-    if (id.includes("/") || id.includes("http://") || id.includes("https://")) {
-      alert("Invalid Room ID. Please enter a valid ID.");
-      return;
-    }
+    if (Array.isArray(id)) return;
 
     if (!peerConnection) {
       console.error("Peer connection is not initialized.");
@@ -109,7 +105,7 @@ const VideoCall = () => {
       </div>
       {videoRoomId && (
         <p className="room-id">
-          Room Link: <strong>http://localhost:3000/video-call/{videoRoomId}</strong>
+          Room ID: <strong>{videoRoomId}</strong>
         </p>
       )}
       <style jsx>{`
@@ -171,4 +167,4 @@ const VideoCall = () => {
   );
 };
 
-export default VideoCall;
+export default VideoCallId;
