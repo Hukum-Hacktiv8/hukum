@@ -40,7 +40,9 @@ export const checkSubs = async (id: string) => {
 
 export const createSubs = async (body: InputSubscription) => {
   const db = await getDb();
-
+  if (!body.userId) {
+    throw "Login First";
+  }
   const Subs = await checkSubs(body.userId);
 
   if (!Subs) {
@@ -55,8 +57,6 @@ export const createSubs = async (body: InputSubscription) => {
     ...Subs,
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
-    status: "active",
-    type: "premium",
   };
 
   const response = await db.collection(COLLECTION).updateOne({ userId: new ObjectId(body.userId) }, { $set: updatedSubs });

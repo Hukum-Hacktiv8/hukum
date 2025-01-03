@@ -122,3 +122,31 @@ export const getRoomChatByParticipants = async (clientId: string, contactId: str
   });
   return chatroom;
 };
+
+export const activateRoom = async () => {
+  const db = await getDb();
+  await db.collection(COLLECTION).updateMany({ status: "pending" }, { $set: { status: "active" } });
+
+  return {
+    message: "Success Update Room To Active",
+  };
+};
+
+export const deactiveRoom = async () => {
+  const db = await getDb();
+
+  await db.collection(COLLECTION).updateMany({ status: "active" }, { $set: { status: "expired" } });
+
+  return {
+    message: "Success Update Room to Expired",
+  };
+};
+
+export const deleteRoomIfExpired = async () => {
+  const db = await getDb();
+  await db.collection(COLLECTION).deleteMany({ status: "expired" });
+
+  return {
+    message: "Success Delete Room If that room expired",
+  };
+};
