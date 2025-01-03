@@ -179,5 +179,9 @@ export default function Chat() {
     sendMessage();
   };
 
+<<<<<<< HEAD
   return <ChatUI clientId={clientId} contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
+=======
+  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
+>>>>>>> bcacbc56cb49874dd80394dd2310b41678a62472
 }
