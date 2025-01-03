@@ -68,23 +68,3 @@ export const POST = async (request: Request) => {
     );
   }
 };
-
-export const GET = async (request: Request) => {
-  try {
-    const data = await request.json();
-    const email = data.email;
-    const user = await getUserByEmail(email);
-    return Response.json(user);
-  } catch (error) {
-    console.log(error);
-    return Response.json(
-      {
-        statusCode: 500,
-        message: "Internal server error",
-      },
-      {
-        status: 500,
-      }
-    );
-  }
-};

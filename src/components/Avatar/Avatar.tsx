@@ -1,16 +1,37 @@
+// ga perlu import font awesome karena pakai react-icons
+import { HiOutlineUser, HiOutlineLogout } from "react-icons/hi";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { verifyJoseToken } from "@/app/utils/jwt";
-import { redirect } from "next/navigation";
-import { HiOutlineUser, HiOutlineLogout } from "react-icons/hi";
+
+// UserModel butuh ObjectId
 import { ObjectId } from "mongodb";
-import { getUserByEmail } from "./action ";
+
+type Profile = {
+  address: string;
+  birth: string;
+};
 
 type UserModel = {
   _id: ObjectId;
+  name: string;
   email: string;
-  username: string;
+  password: string;
+  role: string;
+  profile: Profile;
+  createdAt: string;
+  updatedAt: string;
+  imageUrl?: string;
 };
+
+// pengganti readpayload
+import { verifyJoseToken } from "@/app/utils/jwt";
+
+import { getUserByEmail } from "@/app/models/user";
+
+import { redirect } from "next/navigation";
+
+// todo: perlu handleLogout dari action.ts
+import { handleLogout } from "./logoutAction";
 
 const fetchUserFromCookies = async (): Promise<UserModel | undefined> => {
   try {
@@ -23,6 +44,8 @@ const fetchUserFromCookies = async (): Promise<UserModel | undefined> => {
     const tokenData = (await verifyJoseToken(token.value)) as UserModel;
     const user = await getUserByEmail(tokenData.email);
 
+    console.log("user", user);
+
     if (!user) {
       throw new Error("User not found");
     }
@@ -32,7 +55,6 @@ const fetchUserFromCookies = async (): Promise<UserModel | undefined> => {
     // Tangani token expired atau invalid
     console.error("Error fetching user from header:", error);
 
-    // Pastikan menggunakan URL absolut
     redirect("/login");
   }
 };
@@ -54,10 +76,10 @@ const Avatar = async () => {
             <div className="avatar placeholder">
               <div className="bg-neutral text-neutral-content w-8 rounded-full">
                 {/* Inisialisasi inisial dari nama pengguna */}
-                <span>{userLogin.name.charAt(0).toUpperCase()}</span>
+                <span>{userLogin.username.charAt(0).toUpperCase()}</span>
               </div>
             </div>
-            <div className="text-sm font-medium">{userLogin.name}</div>
+            <div className="text-sm font-medium">{userLogin.username}</div>
           </div>
           <ul tabIndex={0} className="absolute top-full menu menu-sm dropdown-content bg-white rounded-box z-10 w-40 p-2 shadow">
             <Link href="/profile" className="p-2 hover:bg-gray-100 rounded-md cursor-pointer">
