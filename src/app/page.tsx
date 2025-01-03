@@ -7,6 +7,7 @@ import HeroSection from "@/components/homepage/HeroSection";
 import StatsSection from "@/components/homepage/StatsSection";
 import ServicesSection from "@/components/homepage/ServicesSection";
 import LegalTipsSection from "@/components/homepage/LegalTipsSection";
+import MapSection from "@/components/homepage/MapSection";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <StatsSection />
       <ServicesSection />
       <LegalTipsSection />
+      <MapSection />
 
       <div className="bg-slate-900">
         <WaveDivider />
