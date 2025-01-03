@@ -3,6 +3,7 @@ import truncateString from "@/lib/truncateString";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 
 type Lawyer = {
   id: string;
@@ -54,13 +55,6 @@ export default function LawyersCard() {
 
   const router = useRouter();
   const searchParamsData = useSearchParams();
-
-  // useEffect(() => {
-  //   const lawyer = searchParamsData.get("lawyer");
-  //   if (lawyer) {
-  //     setSelectedLawyer(lawyer);
-  //   }
-  // }, [searchParamsData]);
 
   function handleSubmit() {
     const searchParamsData = new URLSearchParams();
