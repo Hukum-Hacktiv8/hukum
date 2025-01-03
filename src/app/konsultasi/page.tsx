@@ -117,7 +117,7 @@ export default function KonsultasiPage() {
                         <button
                           key={interval}
                           onClick={() => setSelectedInterval(interval)}
-                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                          className={`btn px-4 py-1 text-sm font-medium ${
                             selectedInterval === interval
                               ? "btn-primary text-white"
                               : ""
@@ -140,7 +140,7 @@ export default function KonsultasiPage() {
                         <button
                           key={day}
                           onClick={() => setSelectedDate(day)}
-                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                          className={`btn px-4 py-1 text-sm font-medium ${
                             selectedDate === day ? "btn-primary text-white" : ""
                           }`}
                         >
@@ -149,18 +149,11 @@ export default function KonsultasiPage() {
                       ))}
                     </div>
                     <div className="flex flex-wrap gap-4">
-                      {[
-                        "05:00 PM",
-                        "06:00 PM",
-                        "06:30 PM",
-                        "07:00 PM",
-                        "07:30 PM",
-                        "08:00 PM",
-                      ].map((time) => (
+                      {["09:00", "18:00"].map((time) => (
                         <button
                           key={time}
                           onClick={() => setSelectedTime(time)}
-                          className={`btn btn-outline rounded-full px-4 py-1 text-sm font-medium ${
+                          className={`btn px-4 py-1 text-sm font-medium ${
                             selectedTime === time
                               ? "btn-primary text-white"
                               : ""
