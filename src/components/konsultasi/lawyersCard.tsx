@@ -3,6 +3,7 @@ import truncateString from "@/lib/truncateString";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
 
 type Lawyer = {
   id: string;
@@ -55,13 +56,6 @@ export default function LawyersCard() {
   const router = useRouter();
   const searchParamsData = useSearchParams();
 
-  // useEffect(() => {
-  //   const lawyer = searchParamsData.get("lawyer");
-  //   if (lawyer) {
-  //     setSelectedLawyer(lawyer);
-  //   }
-  // }, [searchParamsData]);
-
   function handleSubmit() {
     const searchParamsData = new URLSearchParams();
 
@@ -85,8 +79,11 @@ export default function LawyersCard() {
               <div className="card-actions justify-center p-5">
                 <button
                   onClick={() => setSelectedLawyerId(lawyer.id)}
-                  className={`btn  ${
-                    selectedLawyer === lawyer.name ? "bg-gray-400" : ""
+                  aria-pressed={selectedLawyerId === lawyer.id}
+                  className={`btn ${
+                    selectedLawyerId === lawyer.id
+                      ? "bg-gray-400 text-white"
+                      : ""
                   } hover:bg-gray-400 active:scale-95 transition-all duration-200 ease-in-out`}
                 >
                   Booking Appointment

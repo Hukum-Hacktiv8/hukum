@@ -39,9 +39,7 @@ export default function Chat() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
-
   const [clientId, setClientId] = useState("");
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -77,7 +75,6 @@ export default function Chat() {
 
         const contactsPromises = rooms.map(async (room) => {
           const participantIds = room.participants.participants;
-          // console.log(participantIds, "ini untuk check isinya apa ");
 
           if (!participantIds || participantIds.length === 0) {
             // console.log(`No participants found for room `);
@@ -97,15 +94,14 @@ export default function Chat() {
 
             return await response.json();
           } catch (error) {
-            // console.error("Error fetching participant details:", error);
             return null;
           }
         });
 
         const fetchedContacts = await Promise.all(contactsPromises);
+
         setContacts(fetchedContacts.filter(Boolean));
       } catch (error) {
-        // console.error("Error fetching contacts:", error);
         setContacts([]);
       }
     }
@@ -127,7 +123,7 @@ export default function Chat() {
     const data = await response.json();
     const roomId = data?.roomId;
     const clientId = data?.clientId;
-    await setClientId(clientId);
+    setClientId(clientId);
 
     const chatroom = await findChatRoomInFirestore(clientId, contact.id);
 
@@ -146,16 +142,10 @@ export default function Chat() {
     }
   };
 
-  const findChatRoomInFirestore = async (
-    clientId: string,
-    contactId: string
-  ) => {
+  const findChatRoomInFirestore = async (clientId: string, contactId: string) => {
     const chatroomsRef = collection(db, "chat-rooms");
 
-    const q = query(
-      chatroomsRef,
-      where("participants", "array-contains", clientId)
-    );
+    const q = query(chatroomsRef, where("participants", "array-contains", clientId));
     const querySnapshot = await getDocs(q);
 
     for (let doc of querySnapshot.docs) {
@@ -189,5 +179,5 @@ export default function Chat() {
     sendMessage();
   };
 
-  return <ChatUI contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
+  return <ChatUI clientId={clientId} contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
 }
