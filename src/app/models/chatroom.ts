@@ -18,6 +18,7 @@ export type RoomChat = {
 
 export type InputRoomChat = {
   participants: string[];
+  bookDate: string;
 };
 
 export type InputMessage = {
@@ -33,13 +34,20 @@ export const getDb = async () => {
   return db;
 };
 
-export const createRoom = async (participants: InputRoomChat) => {
+export const createRoom = async (props: InputRoomChat) => {
   const db = await getDb();
+
+  const participants = props?.participants;
+  const bookDate = props?.bookDate;
+
   const bodyInput = {
     participants,
     createdAt: new Date().toISOString(),
+    bookDate,
     messages: [],
+    status: "pending",
   };
+
   const response = await db.collection(COLLECTION).insertOne(bodyInput);
 
   return response;

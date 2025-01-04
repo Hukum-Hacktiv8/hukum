@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function KonsultasiConfirmCard() {
@@ -13,18 +12,14 @@ export default function KonsultasiConfirmCard() {
   const lawyer = searchParamsData.get("lawyer");
 
   const handleSubmit = async () => {
-    router.push("/billing-konsultasi");
+    router.push(`/billing-konsultasi?lawyer=${lawyer}&date=${date}`);
   };
 
   return (
     <main className="">
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
-          <img
-            src="https://images.pexels.com/photos/6077519/pexels-photo-6077519.jpeg?auto=compress&cs=tinysrgb&w=800"
-            alt="Law-Konsultasi"
-            className="h-96 rounded-lg p-5"
-          />
+          <img src="https://images.pexels.com/photos/6077519/pexels-photo-6077519.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Law-Konsultasi" className="h-96 rounded-lg p-5" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">Jasa Konsultasi (One-time)</h2>
