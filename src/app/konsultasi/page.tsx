@@ -11,6 +11,12 @@ type Lawyer = {
   bio: string;
   fee: number;
 };
+type CalendarProps = {
+  mode: "single";
+  selected: Date | undefined;
+  onSelect: (date: Date | undefined) => void;
+  className?: string;
+};
 
 async function fetchLawyer(): Promise<Lawyer[]> {
   const response = await fetch("http://localhost:3001/lawyers");
@@ -25,7 +31,8 @@ export default function KonsultasiPage() {
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
   const [lawyers, setLawyers] = useState<Lawyer[]>([]);
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date | undefined>(undefined);
 
   const searchParamsData = useSearchParams();
   const router = useRouter();
