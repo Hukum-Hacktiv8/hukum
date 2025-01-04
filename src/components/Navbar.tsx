@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { HiOutlineMenu, HiOutlineX, HiOutlineHome, HiOutlineInformationCircle, HiOutlineBookOpen, HiOutlineChatAlt2, HiOutlineSearch, HiOutlineUser } from "react-icons/hi";
+import { HiOutlineMenu, HiOutlineX, HiOutlineHome, HiOutlineInformationCircle, HiOutlineBookOpen, HiOutlineChatAlt2, HiOutlineSearch } from "react-icons/hi";
 import Avatar from "@/components/Avatar/Avatar";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-export default function Navbar() {
+export default function Navbar({ token }: { token: RequestCookie | undefined }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -55,7 +56,7 @@ export default function Navbar() {
             <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
               <HiOutlineSearch className="text-xl" />
             </button>
-            <Avatar />
+            <Avatar token={token} />
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,9 +80,7 @@ export default function Navbar() {
               <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                 <HiOutlineSearch className="text-xl" />
               </button>
-              <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                <HiOutlineUser className="text-xl" />
-              </button>
+              <Avatar token={token} />
             </div>
           </div>
         )}
