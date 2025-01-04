@@ -1,12 +1,16 @@
 import { Db, ObjectId } from "mongodb";
 import { connectToDatabase } from "../config/config";
 
-export type Message = {
-  _id: ObjectId;
-  senderId: ObjectId;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+interface Message {
+  id: string;
+  text: string;
+  sender: string;
+  timestamp: Date | { seconds: number; nanoseconds: number };
+}
+
+type keepChatHistoryProp = {
+  messages: Message[];
+  mongoDbRoomId: string;
 };
 
 export type RoomChat = {
@@ -60,33 +64,6 @@ export const deleteRoom = async (id: string) => {
 
   return {
     message: `Success Delete Room`,
-  };
-};
-
-export const createMessage = async (id: string, body: InputMessage) => {
-  //id di params peratama adalah id room chat
-  //body nya adalah Input an dari message nya
-  const db = await getDb();
-
-  const roomchat = await db.collection(COLLECTION).findOne({ _id: new ObjectId(id) });
-
-  if (!roomchat) {
-    throw `Room Not Found`;
-  }
-
-  const messageInput = {
-    senderId: new ObjectId(body.senderId),
-    content: body.content,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  roomchat.messages.push(messageInput);
-
-  await db.collection(COLLECTION).updateOne({ _id: new ObjectId(id) }, { $set: { messages: roomchat.messages } });
-
-  return {
-    messages: `Success add new Chat`,
   };
 };
 
@@ -156,5 +133,24 @@ export const deleteRoomIfExpired = async () => {
 
   return {
     message: "Success Delete Room If that room expired",
+  };
+};
+
+export const keepChatHistory = async (props: keepChatHistoryProp) => {
+  const messages = props?.messages;
+  const mongoDbRoomId = props?.mongoDbRoomId;
+
+  const db = await getDb();
+  await db.collection(COLLECTION).updateOne(
+    { _id: new ObjectId(mongoDbRoomId) }, // Match stage
+    {
+      $set: {
+        messages,
+      },
+    }
+  );
+
+  return {
+    message: "Success keep chat history.",
   };
 };
