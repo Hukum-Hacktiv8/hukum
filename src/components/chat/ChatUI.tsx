@@ -4,7 +4,7 @@ import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, v
 interface Message {
   id: string;
   text: string;
-  sender: "user" | "lawyer";
+  sender: string;
   timestamp: Date | { seconds: number; nanoseconds: number };
 }
 
@@ -16,6 +16,7 @@ interface Contact {
 }
 
 interface ChatUIProps {
+  closeRoom: (e: React.FormEvent) => void;
   clientId: string;
   contacts: Contact[];
   selectedContact: Contact | null;
@@ -27,7 +28,7 @@ interface ChatUIProps {
   onMessageSubmit: (e: React.FormEvent) => void;
 }
 
-export default function ChatUI({ clientId, contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
+export default function ChatUI({ closeRoom, clientId, contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
   return (
     <div className="flex h-screen pt-16 bg-gradient-to-br from-[#1a4b69] to-[#1a3f69]">
       <div className="w-80 bg-[#1a4b69]/60 backdrop-blur-sm border-r border-white/10">
@@ -37,6 +38,9 @@ export default function ChatUI({ clientId, contacts, selectedContact, messages, 
             <div key={contact.id} onClick={() => onContactSelect(contact)} className={`p-3 rounded-lg cursor-pointer transition-colors ${selectedContact?.id === contact.id ? "bg-white/20" : "hover:bg-white/10"}`}>
               <h3 className="text-white">{contact.name}</h3>
               <p className="text-sm text-white/60">{contact.role}</p>
+              <form onSubmit={closeRoom}>
+                <button type="submit">Close</button>
+              </form>
             </div>
           ))}
         </div>
