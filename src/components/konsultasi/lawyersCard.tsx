@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
+import Image from "next/image";
 
 type Lawyer = {
   id: string;
@@ -70,7 +71,7 @@ export default function LawyersCard() {
         {lawyers.map((lawyer) => (
           <div className="card bg-base-100 w-96 shadow-xl">
             <figure>
-              <img src={lawyer.image} alt="Photo" className="h-80" />
+              <Image src={lawyer.image} alt="Photo" width={320} height={520} />
             </figure>
             <div className="card-body">
               <h2 className="card-title justify-center">{lawyer.name}</h2>
