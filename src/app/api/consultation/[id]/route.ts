@@ -1,4 +1,4 @@
-import { readConsul } from "@/app/models/consultation";
+import { readConsul } from "@/models/consultation";
 
 export const GET = async (_request: Request, { params }: { params: { id: string } }) => {
   const id = params.id;

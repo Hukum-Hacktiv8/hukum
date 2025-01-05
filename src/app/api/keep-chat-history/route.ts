@@ -1,4 +1,4 @@
-import { keepChatHistory } from "@/app/models/chatroom";
+import { keepChatHistory } from "@/models/chatroom";
 
 export const POST = async (request: Request) => {
   const { messages, mongoDbRoomId } = await request.json();

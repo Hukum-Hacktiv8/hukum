@@ -1,4 +1,4 @@
-import { deactiveRoom } from "@/app/models/chatroom";
+import { deactiveRoom } from "@/models/chatroom";
 
 export const PATCH = async () => {
   const result = await deactiveRoom();

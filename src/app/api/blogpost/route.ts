@@ -1,4 +1,4 @@
-import { createBlog, readBlogAll } from "@/app/models/blogpost";
+import { createBlog, readBlogAll } from "@/models/blogpost";
 
 export const POST = async (request: Request) => {
   const data = await request.json();

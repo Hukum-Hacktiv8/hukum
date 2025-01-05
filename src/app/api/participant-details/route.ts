@@ -1,4 +1,4 @@
-import { getUserById } from "@/app/models/user";
+import { getUserById } from "@/models/user";
 
 export const POST = async (request: Request) => {
   const clientId = request.headers.get("rg-user-id");

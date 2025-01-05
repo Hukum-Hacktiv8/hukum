@@ -1,6 +1,6 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { CheckRoomLogin, createRoom, findRoom } from "@/app/models/chatroom";
+import { CheckRoomLogin, createRoom, findRoom } from "@/models/chatroom";
 import { ObjectId } from "mongodb";
 
 export const POST = async (request: Request) => {

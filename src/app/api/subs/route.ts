@@ -1,4 +1,4 @@
-import { createSubs } from "@/app/models/subscription";
+import { createSubs } from "@/models/subscription";
 
 export const POST = async (request: Request) => {
   const userId = request.headers.get("rg-user-id");

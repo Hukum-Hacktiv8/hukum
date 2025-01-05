@@ -1,12 +1,7 @@
 "use client";
 
 import { IonIcon } from "@ionic/react";
-import {
-  mailOutline,
-  callOutline,
-  locationOutline,
-  timeOutline,
-} from "ionicons/icons";
+import { callOutline, locationOutline, timeOutline } from "ionicons/icons";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -17,13 +12,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-lora mb-4 text-white">
-              Kantor Hukum Hacktivist Indonesia
-            </h3>
-            <p className="text-sm text-white/80">
-              Partner terpercaya untuk kebutuhan hukum anda. Kami berkomitmen
-              memberikan layanan konsultasi & pendampingan hukum terbaik.
-            </p>
+            <h3 className="text-xl font-lora mb-4 text-white">Kantor Hukum Hacktivist Indonesia</h3>
+            <p className="text-sm text-white/80">Partner terpercaya untuk kebutuhan hukum anda. Kami berkomitmen memberikan layanan konsultasi & pendampingan hukum terbaik.</p>
           </div>
 
           {/* Layanan */}
@@ -39,9 +29,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-lora mb-4 text-white">
-              Informasi Kontak
-            </h3>
+            <h3 className="text-xl font-lora mb-4 text-white">Informasi Kontak</h3>
             <div className="space-y-3 text-sm text-white/80">
               <p className="flex items-center gap-2">
                 <IonIcon icon={locationOutline} className="text-lg" />

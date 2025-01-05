@@ -1,4 +1,4 @@
-import { getAIResponseStream } from "@/app/utils/aiClient";
+import { getAIResponseStream } from "@/utils/aiClient";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

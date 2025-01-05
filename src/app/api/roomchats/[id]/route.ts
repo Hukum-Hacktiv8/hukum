@@ -1,4 +1,4 @@
-import { roomDetail } from "@/app/models/chatroom";
+import { roomDetail } from "@/models/chatroom";
 
 export const GET = async (_request: Request, { params }: { params: { id: string } }) => {
   const id = params.id;

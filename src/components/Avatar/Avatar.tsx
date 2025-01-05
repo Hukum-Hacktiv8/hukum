@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { verifyJoseToken } from "@/app/utils/jwt";
+import { verifyJoseToken } from "@/utils/jwt";
 import { redirect } from "next/navigation";
 import { HiOutlineUser, HiOutlineLogout } from "react-icons/hi";
 import { ObjectId } from "mongodb";
