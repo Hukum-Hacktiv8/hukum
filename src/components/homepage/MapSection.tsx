@@ -160,7 +160,7 @@ export default function MapSection() {
                 {lawyers.map((lawyer) => (
                   <Marker key={lawyer.id} width={50} anchor={lawyer.coordinates} onClick={() => handleLawyerClick(lawyer)}>
                     <div className="relative group">
-                      <Image src={lawyer.image} alt={lawyer.name} className={`w-10 h-10 rounded-full border-2 transition-all ${selectedLawyer?.id === lawyer.id ? "border-[#DAA520] scale-125" : "border-[#B8860B] group-hover:scale-110"}`} />
+                      <Image src={lawyer.image} alt={lawyer.name} className={`w-10 h-10 rounded-full border-2 transition-all ${selectedLawyer?.id === lawyer.id ? "border-[#DAA520] scale-125" : "border-[#B8860B] group-hover:scale-110"}`} fill sizes="100vw" />
                       <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-slate-800 p-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity w-48">
                         <p className="text-white text-sm font-semibold">{lawyer.name}</p>
                         <p className="text-[#DAA520] text-xs">{lawyer.specialty}</p>
@@ -182,7 +182,7 @@ export default function MapSection() {
             {lawyers.map((lawyer) => (
               <motion.div key={lawyer.id} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} whileHover={{ scale: 1.02 }} className={`p-4 rounded-xl mb-3 cursor-pointer transition-all ${selectedLawyer?.id === lawyer.id ? "bg-[#B8860B]/20 border-[#DAA520]" : "bg-slate-800/50 border-[#B8860B]/20"} border`} onClick={() => handleLawyerClick(lawyer)}>
                 <div className="flex items-center gap-4">
-                  <Image src={lawyer.image} alt={lawyer.name} className="w-16 h-16 rounded-full object-cover border-2 border-[#B8860B]" />
+                  <Image src={lawyer.image} alt={lawyer.name} className="w-16 h-16 rounded-full object-cover border-2 border-[#B8860B]" fill sizes="100vw" />
                   <div>
                     <h3 className="text-white font-semibold text-lg">{lawyer.name}</h3>
                     <p className="text-[#DAA520] text-sm mb-2">{lawyer.specialty}</p>

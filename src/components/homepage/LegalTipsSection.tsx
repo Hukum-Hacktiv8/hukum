@@ -41,7 +41,7 @@ export default function LegalTipsSection() {
             <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }} className="group relative overflow-hidden rounded-xl bg-slate-800 hover:bg-slate-700/80 transition-all duration-300">
               <Link href={tip.link} className="block">
                 <div className="aspect-[16/9] overflow-hidden">
-                  <Image src={tip.image} alt={tip.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <Image src={tip.image} alt={tip.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" fill sizes="100vw" />
                 </div>
                 <div className="p-4">
                   <div className="bg-slate-900/90 backdrop-blur-sm rounded-lg p-4">
