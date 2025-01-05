@@ -66,7 +66,7 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
               <HiOutlineUser className="text-xl" />
               Hallo, {userLogin?.username}
             </div>
-            <ul tabIndex={0} className="dropdown-content menu text-white/80 hover:text-white bg-white/10 transition-colors rounded-box z-[1] w-52 p-2 shadow">
+            <ul tabIndex={0} className="dropdown-content menu border-white border text-white/80 hover:text-white bg-slate-900/95 transition-colors rounded-box z-[1] w-52 p-2 shadow">
               <li>
                 <Link href="/profile" className="flex gap-1">
                   <HiOutlineUser className="text-xl" />
