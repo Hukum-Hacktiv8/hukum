@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Lora } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
-const lora = Lora({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-lora",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Hacktivist Indonesia",
-  description: "Hacktivist Indonesia",
-  icons: "/logo.png",
+  title: "Hacktivist",
+  description: "Platform yang menyediakan informasi & solusi hukum untuk melindungi hak & masa depan Anda",
 };
 
 export default function RootLayout({
@@ -23,10 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lora.variable} font-lora`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-900`}
+      >
         <Navbar />
-        {children}
-        <Footer />
+        <div className="mt-16">
+          {children}
+        </div>
       </body>
     </html>
   );
