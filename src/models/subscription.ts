@@ -14,21 +14,21 @@ export type InputSubscriptionRegister = {
 
 const COLLECTION = "subscriptions";
 
-export const createSubsFirstRegister = async (body: InputSubscriptionRegister) => {
-  const db = await getDb();
+// export const createSubsFirstRegister = async (body: InputSubscriptionRegister) => {
+//   const db = await getDb();
 
-  const bodyInput = {
-    ...body,
-    userId: new ObjectId(body.userId),
-    startDate: null,
-    endDate: null,
-    status: "expired",
-  };
+//   const bodyInput = {
+//     ...body,
+//     userId: new ObjectId(body.userId),
+//     startDate: null,
+//     endDate: null,
+//     status: "expired",
+//   };
 
-  const response = await db.collection(COLLECTION).insertOne(bodyInput);
+//   const response = await db.collection(COLLECTION).insertOne(bodyInput);
 
-  return response;
-};
+//   return response;
+// };
 
 export const checkSubs = async (id: string) => {
   const db = await getDb();
@@ -64,19 +64,19 @@ export const createSubs = async (body: InputSubscription) => {
   return response;
 };
 
-export async function extractObjectIdString(input: any) {
-  // Jika input adalah object dengan toString method (ObjectId)
-  if (typeof input === "object" && input !== null) {
-    return input.toString();
-  }
+// export async function extractObjectIdString(input: any) {
+//   // Jika input adalah object dengan toString method (ObjectId)
+//   if (typeof input === "object" && input !== null) {
+//     return input.toString();
+//   }
 
-  // Jika input sudah berupa string
-  if (typeof input === "string") {
-    return input;
-  }
+//   // Jika input sudah berupa string
+//   if (typeof input === "string") {
+//     return input;
+//   }
 
-  return null;
-}
+//   return null;
+// }
 
 // Fungsi untuk memeriksa dan memperbarui status langganan
 export const updateSubscriptionStatus = async () => {

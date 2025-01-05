@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  // orderBy,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+  // setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
@@ -20,11 +32,11 @@ interface Contact {
   isOnline: boolean;
 }
 
-interface VideoCallState {
-  isActive: boolean;
-  isMuted: boolean;
-  isVideoOn: boolean;
-}
+// interface VideoCallState {
+//   isActive: boolean;
+//   isMuted: boolean;
+//   isVideoOn: boolean;
+// }
 
 type Room = {
   _id: ObjectId;
@@ -43,9 +55,9 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [mongoDbRoomId, setMongoDbRoomId] = useState<string | null>("");
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -95,6 +107,7 @@ export default function Chat() {
 
             return await response.json();
           } catch (error) {
+            console.log(error);
             return null;
           }
         });
@@ -103,6 +116,7 @@ export default function Chat() {
 
         setContacts(fetchedContacts.filter(Boolean));
       } catch (error) {
+        console.log(error);
         setContacts([]);
       }
     }
@@ -151,7 +165,7 @@ export default function Chat() {
     const q = query(chatroomsRef, where("participants", "array-contains", clientId));
     const querySnapshot = await getDocs(q);
 
-    for (let doc of querySnapshot.docs) {
+    for (const doc of querySnapshot.docs) {
       const data = doc.data();
       if (data.participants.includes(contactId)) {
         return { id: doc.id, ...data };

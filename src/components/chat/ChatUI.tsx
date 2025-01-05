@@ -1,5 +1,13 @@
 import { IonIcon } from "@ionic/react";
-import { sendOutline, videocamOutline, callOutline, micOutline, micOffOutline, videocamOffOutline, closeCircleOutline } from "ionicons/icons";
+import {
+  sendOutline,
+  videocamOutline,
+  callOutline,
+  // micOutline,
+  // micOffOutline,
+  // videocamOffOutline,
+  // closeCircleOutline
+} from "ionicons/icons";
 
 interface Message {
   id: string;

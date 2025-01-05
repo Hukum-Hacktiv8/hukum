@@ -48,7 +48,7 @@ const VideoCall = () => {
 
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = localStream;
-      console.log("INI LOCACL VIDEO ELEMENT :", localVideoRef.current);
+      // console.log("INI LOCACL VIDEO ELEMENT :", localVideoRef.current);
     } else {
       console.log("LOCAL VIDEO GAADA BOY");
     }

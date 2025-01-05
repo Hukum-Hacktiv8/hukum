@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
+import Image from "next/image";
 
 type Lawyer = {
   id: string;
@@ -11,12 +12,12 @@ type Lawyer = {
   bio: string;
   fee: number;
 };
-type CalendarProps = {
-  mode: "single";
-  selected: Date | undefined;
-  onSelect: (date: Date | undefined) => void;
-  className?: string;
-};
+// type CalendarProps = {
+//   mode: "single";
+//   selected: Date | undefined;
+//   onSelect: (date: Date | undefined) => void;
+//   className?: string;
+// };
 
 async function fetchLawyer(): Promise<Lawyer[]> {
   const response = await fetch("http://localhost:3001/lawyers");
@@ -26,7 +27,7 @@ async function fetchLawyer(): Promise<Lawyer[]> {
 }
 
 export default function KonsultasiPage() {
-  const [selectedDate, setSelectedDate] = useState("");
+  // const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedInterval, setSelectedInterval] = useState("");
   const [selectedLawyer, setSelectedLawyer] = useState("");
@@ -34,7 +35,7 @@ export default function KonsultasiPage() {
   // const [date, setDate] = useState(new Date());
   const [date, setDate] = useState<Date | undefined>(undefined);
 
-  const searchParamsData = useSearchParams();
+  // const searchParamsData = useSearchParams();
   const router = useRouter();
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export default function KonsultasiPage() {
             lawyers.map((lawyer) => (
               <div key={lawyer.id}>
                 <figure className="flex justify-center items-center lg:w-1/3 w-full">
-                  <img src={lawyer.image} alt="Photo" className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80" />
+                  <Image src={lawyer.image} alt="Photo" className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80" fill sizes="100vw" />
                 </figure>
                 <div className="card-body lg:w-2/3 w-full">
                   <h2 className="card-title text-2xl font-bold">{lawyer.name}</h2>

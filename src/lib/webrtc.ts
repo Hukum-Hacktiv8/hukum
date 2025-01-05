@@ -1,4 +1,12 @@
-import { addDoc, collection, doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  // setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
 
 // STUN Server
