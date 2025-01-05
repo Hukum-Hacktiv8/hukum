@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -25,8 +25,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lora.variable} font-lora`}>
         <Navbar />
-        {children}
-        <Footer />
+        <div className="mt-16">{children}</div>
+        {/* <Footer /> */}
       </body>
     </html>
   );
