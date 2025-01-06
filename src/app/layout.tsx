@@ -16,15 +16,19 @@ export const metadata: Metadata = {
   icons: "/logo.png",
 };
 
+import { cookies } from "next/headers";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token: RequestCookie | undefined = cookies().get("token");
   return (
     <html lang="en">
       <body className={`${lora.variable} font-lora`}>
-        <Navbar />
+        <Navbar token={token} />
         <div className="mt-16">{children}</div>
         {/* <Footer /> */}
       </body>

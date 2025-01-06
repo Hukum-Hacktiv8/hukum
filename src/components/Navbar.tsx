@@ -4,10 +4,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import AIChatModal from "./AIChatModal";
-import { IoChatbubblesOutline, IoNewspaperOutline, IoCalendarOutline, IoPersonCircleOutline, IoBusinessOutline, IoSparklesOutline } from "react-icons/io5";
+import {
+  IoChatbubblesOutline,
+  IoNewspaperOutline,
+  IoCalendarOutline,
+  // IoPersonCircleOutline,
+  IoBusinessOutline,
+  IoSparklesOutline,
+} from "react-icons/io5";
 import Hacktivist from "@/assets/icons/logo.png";
+import Avatar from "@/app/(profile)/Avatar/Avatar";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-export default function Navbar() {
+export default function Navbar({ token }: { token: RequestCookie | undefined }) {
   const [isAIChatOpen, setIsAIChatOpen] = useState(false);
   const [aiQuery, setAIQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -56,9 +65,7 @@ export default function Navbar() {
               <IoBusinessOutline className="w-6 h-6" title="About" />
             </Link>
 
-            <Link href="/my-profile" className="text-gray-400 hover:text-white">
-              <IoPersonCircleOutline className="w-6 h-6" title="Profile" />
-            </Link>
+            <Avatar token={token} />
           </div>
         </div>
       </nav>
