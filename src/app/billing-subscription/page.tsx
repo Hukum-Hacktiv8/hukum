@@ -17,18 +17,16 @@ export default function BillingPage() {
   // ! ini hardcode
   const searchParams = useSearchParams();
 
-  const lawyerId = searchParams.get("lawyer");
-  const date = searchParams.get("date");
-  const amount = 50000;
+  const lawyerId = "gaada";
+  const date = "gaada";
+  const amount = 299000;
 
   if (!lawyerId || !date) return null;
 
   return (
     <main className="flex justify-center p-10">
       <div className="  card bg-base-100 w-96 shadow-xl">
-        <figure className="px-10 pt-10">
-          <Image src="https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Law-Billing" className="rounded-xl h-40" fill sizes="100vw" />
-        </figure>
+        <figure className="px-10 pt-10">{/* <Image src="https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Law-Billing" className="rounded-xl h-40" fill sizes="100vw" /> */}</figure>
         <div className=" flex justify-center align-center text-center px-10 pt-10 text-5xl font-bold">Subscription</div>
         <div className="card-body items-center text-center">
           <h2 className="card-title">Pembayaran</h2>
@@ -44,7 +42,8 @@ export default function BillingPage() {
               mode: "payment",
               amount: convertToSubcurrency(amount),
               currency: "idr",
-            }}>
+            }}
+          >
             <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
           </Elements>
         </div>

@@ -4,7 +4,7 @@ export const GET = async (request: Request) => {
   const clientId = request.headers.get("rg-user-id");
 
   if (!clientId) {
-    throw "Authorization";
+    return new Response("Unauthorized", { status: 401 });
   }
 
   const data = await CheckRoomLogin(clientId);
