@@ -16,7 +16,12 @@ import Hacktivist from "@/assets/icons/logo.png";
 import Avatar from "@/app/(profile)/Avatar/Avatar";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-export default function Navbar({ token }: { token: RequestCookie | undefined }) {
+type Props = {
+  token: RequestCookie | undefined;
+  // profileName: string;
+};
+
+export default function Navbar({ token }: Props) {
   const [isAIChatOpen, setIsAIChatOpen] = useState(false);
   const [aiQuery, setAIQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);

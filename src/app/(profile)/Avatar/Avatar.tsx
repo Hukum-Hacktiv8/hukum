@@ -53,10 +53,15 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
     <div className="relative dropdown dropdown-end flex items-center p-1">
       {/* // ? kalau usernya sudah login dan status codenya sudah benar */}
       {!userLogin || userLogin?.statusCode !== 200 ? (
-        <Link href="/login" className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1">
-          <RiLoginBoxLine />
-          Login
-        </Link>
+        <div className="flex gap-4">
+          <Link href="/login" className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1">
+            <RiLoginBoxLine />
+            Login
+          </Link>
+          <Link href="/register" className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1">
+            Register
+          </Link>
+        </div>
       ) : (
         <>
           <div className="dropdown dropdown-hover">
