@@ -40,7 +40,7 @@ type Article = {
   }[];
 };
 
-type Props = {
+export type Props = {
   article: {
     data: Article;
   };
@@ -120,6 +120,17 @@ export default function NewsArticle({ article }: Props) {
                             <li key={i}>{item.replace(/^[a-z]\)\s*/i, "")}</li>
                           ))}
                         </ol>
+                      );
+                    }
+
+                    if (paragraph.trim().match(/^-/)) {
+                      const items = paragraph.split("\n").map((item) => item.trim());
+                      return (
+                        <ul key={idx} className="list-disc pl-6 space-y-2">
+                          {items.map((item, i) => (
+                            <li key={i}>{item.replace(/^-+\s*/, "")}</li>
+                          ))}
+                        </ul>
                       );
                     }
 
