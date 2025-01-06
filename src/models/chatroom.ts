@@ -110,7 +110,10 @@ export const getRoomChatByParticipants = async (clientId: string, contactId: str
 
 export const activateRoom = async () => {
   const db = await getDb();
-  await db.collection(COLLECTION).updateMany({ status: "pending" }, { $set: { status: "active" } });
+
+  const today = new Date();
+  const todayFormatted = today.toISOString().split("T")[0];
+  await db.collection(COLLECTION).updateMany({ status: "pending", bookDate: todayFormatted }, { $set: { status: "active" } });
 
   return {
     message: "Success Update Room To Active",
@@ -127,9 +130,9 @@ export const deactiveRoom = async () => {
   };
 };
 
-export const deleteRoomIfExpired = async () => {
+export const savedRoom = async () => {
   const db = await getDb();
-  await db.collection(COLLECTION).deleteMany({ status: "expired" });
+  await db.collection(COLLECTION).updateMany({ status: "expired" }, { $set: { status: "saved" } });
 
   return {
     message: "Success Delete Room If that room expired",
@@ -153,4 +156,26 @@ export const keepChatHistory = async (props: keepChatHistoryProp) => {
   return {
     message: "Success keep chat history.",
   };
+};
+
+export const roomSchedule = async (id: string) => {
+  const db = await getDb();
+  const query = {
+    participants: id,
+    status: "pending",
+  };
+  const data = await db.collection(COLLECTION).find(query).toArray();
+
+  return data;
+};
+
+export const roomDeactive = async () => {
+  const db = await getDb();
+
+  const data = await db
+    .collection(COLLECTION)
+    .aggregate([{ $match: { status: "expired" } }, { $project: { participants: 1, _id: 0 } }])
+    .toArray();
+
+  return data;
 };
