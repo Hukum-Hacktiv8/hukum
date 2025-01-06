@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 import { cookies } from "next/headers";
-import { verifyJoseToken } from "@/utils/jwt";
+// import { verifyJoseToken } from "@/utils/jwt";
 
 startCronJobs();
 export default async function RootLayout({
@@ -28,14 +28,14 @@ export default async function RootLayout({
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
-  if (token?.value) {
-    const payload = await verifyJoseToken<{
-      id: string;
-      email: string;
-      username: string;
-    }>(token.value);
-    console.log("payload: ", payload);
-  }
+  // if (token?.value) {
+  //   const payload = await verifyJoseToken<{
+  //     id: string;
+  //     email: string;
+  //     username: string;
+  //   }>(token.value);
+  //   console.log("payload: ", payload);
+  // }
 
   return (
     <html lang="en">
