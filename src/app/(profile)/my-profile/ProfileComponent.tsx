@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +30,14 @@ interface ConsultationHistory {
   duration: string;
   status: "completed" | "upcoming" | "cancelled";
 }
+export interface Payment {
+  _id: string;
+  amount: number;
+  paymentType: string;
+  status: string;
+  userId: string | null;
+  transactionDate: string;
+}
 
 interface SavedArticle {
   id: number;
@@ -45,7 +53,21 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   const router = useRouter();
   console.log("user yang ada di ProfileComponent nih Bang: ", user);
 
+  const [Payment, setPayment] = useState<Payment[]>([]);
+  useEffect(() => {
+    fetchPayment();
+  }, []);
   // Dummy data
+  const fetchPayment = async () => {
+    const response = await fetch(`http://localhost:3000/api/payment`, {
+      method: "GET",
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data, "ini di data yak bro");
+    setPayment(data.data);
+    // console.log(Payment, "ini tuh di payment");
+  };
   const consultations: ConsultationHistory[] = [
     {
       id: 1,
@@ -331,6 +353,18 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">Pembayaran</h3>
                     {/* Add payments component here */}
+                    {Payment?.map((payment) => (
+                      <div key={payment._id} className="bg-slate-700 rounded-xl overflow-hidden flex items-center gap-4 hover:bg-slate-600 transition-colors">
+                        {/* <div className="w-24 h-24 relative flex-shrink-0">
+                          <Image src={payment.thumbnail} alt={payment.title} fill className="object-cover" unoptimized />
+                        </div> */}
+                        <div className="flex-1 p-4">
+                          <span className="text-yellow-500 text-sm mb-1">{payment.status}</span>
+                          <h3 className="text-white font-medium mb-1">{payment.paymentType}</h3>
+                          <span className="text-gray-400 text-sm">{payment.transactionDate}</span>
+                        </div>
+                      </div>
+                    ))}
                   </motion.div>
                 )}
 
