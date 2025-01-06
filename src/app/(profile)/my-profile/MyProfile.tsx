@@ -16,6 +16,7 @@ import {
   // IoHelpCircleOutline
 } from "react-icons/io5";
 import { handleLogoutAction } from "../Avatar/action";
+import { UserType } from "./types/profileTypes";
 
 interface ConsultationHistory {
   id: number;
@@ -36,7 +37,7 @@ interface SavedArticle {
   thumbnail: string;
 }
 
-export default function ProfileComponent() {
+export default function ProfileComponent({ user }: { user: UserType }) {
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
 
   // Dummy data
