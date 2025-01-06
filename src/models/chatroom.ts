@@ -130,9 +130,9 @@ export const deactiveRoom = async () => {
   };
 };
 
-export const deleteRoomIfExpired = async () => {
+export const savedRoom = async () => {
   const db = await getDb();
-  await db.collection(COLLECTION).deleteMany({ status: "expired" });
+  await db.collection(COLLECTION).updateMany({ status: "expired" }, { $set: { status: "saved" } });
 
   return {
     message: "Success Delete Room If that room expired",
@@ -165,6 +165,17 @@ export const roomSchedule = async (id: string) => {
     status: "pending",
   };
   const data = await db.collection(COLLECTION).find(query).toArray();
+
+  return data;
+};
+
+export const roomDeactive = async () => {
+  const db = await getDb();
+
+  const data = await db
+    .collection(COLLECTION)
+    .aggregate([{ $match: { status: "expired" } }, { $project: { participants: 1, _id: 0 } }])
+    .toArray();
 
   return data;
 };

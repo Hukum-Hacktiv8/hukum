@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { activateRoom, deactiveRoom, deleteRoomIfExpired } from "@/models/chatroom";
+import { activateRoom, deactiveRoom, roomDeactive, savedRoom } from "@/models/chatroom";
 export function startCronJobs() {
   // Create chat room every day at 9 Pagi
   cron.schedule(
@@ -26,6 +26,7 @@ export function startCronJobs() {
       try {
         await deactiveRoom();
         console.log("bisa ni deactive room");
+        // lu harus simpan semua data chat kedalam history
       } catch (error) {
         console.error("Gagal deactive room:", error);
       }
@@ -41,8 +42,39 @@ export function startCronJobs() {
     async () => {
       console.log("Menjalankan penghapusan room yang tidak aktif...");
       try {
-        await deleteRoomIfExpired();
-        console.log("Berhasil menghapus room yang tidak aktif");
+        // await deleteRoomIfExpired();
+        const data = await roomDeactive();
+        console.log(data);
+
+        // console.log("Berhasil menghapus room yang tidak aktif");
+        //kenny isi tengah data yang dia butuh kan ada di lane 46
+
+        await savedRoom();
+        console.log(`Success Cron Job Di jam 18.01`);
+      } catch (error) {
+        console.error("Gagal menghapus room yang tidak aktif:", error);
+      }
+    },
+    {
+      timezone: "Asia/Jakarta",
+    }
+  );
+
+  // CRON JOB UNTUK KENNY TESTING APABILA GA DIPAKAI TOLONG DI COMMEND
+  cron.schedule(
+    "*/1 * * * *",
+    async () => {
+      console.log("Menjalankan penghapusan room yang tidak aktif...");
+      try {
+        // await deleteRoomIfExpired();
+        const data = await roomDeactive();
+        console.log(data);
+
+        // console.log("Berhasil menghapus room yang tidak aktif");
+        //kenny isi tengah data yang dia butuh kan ada di lane 46
+
+        // await savedRoom();
+        console.log(`Success Jalan`);
       } catch (error) {
         console.error("Gagal menghapus room yang tidak aktif:", error);
       }
