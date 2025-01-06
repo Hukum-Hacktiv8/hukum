@@ -125,7 +125,7 @@ export const handleLogin = async (formData: FormData) => {
   };
 
   const token = await createJoseToken(payload);
-  console.log(token);
+  // console.log(token);
 
   cookies().set("token", token, {
     httpOnly: true,

@@ -1,7 +1,7 @@
-import HeroSection from "@/app/(home)/HeroSection";
-import StatsSection from "@/app/(home)/StatsSection";
-import ServicesSection from "@/app/(home)/ServicesSection";
-import LegalTipsSection from "@/app/(home)/LegalTipsSection";
+import HeroSection from "@/components/HeroSection";
+import StatsSection from "@/components/StatsSection";
+import ServicesSection from "@/components/ServicesSection";
+import LegalTipsSection from "@/components/LegalTipsSection";
 import Footer from "@/components/Footer";
 import SubscribePage from "@/components/SubscribePage";
 

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { fetchUserLogin } from "./action";
-import ProfileComponent from "./ProfileComponent";
+import ProfileComponent from "../../../components/profile/ProfileComponent";
 
 const MyProfile = async () => {
   const user = await fetchUserLogin();

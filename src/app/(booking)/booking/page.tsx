@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { IoStar, IoTimeOutline, IoLocationOutline, IoSchoolOutline } from "react-icons/io5";
-import MapSection from "../MapSection";
+import MapSection from "../../../components/MapSection";
 
 interface Lawyer {
   id: string;

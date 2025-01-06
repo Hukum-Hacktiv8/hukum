@@ -15,8 +15,8 @@ import {
   IoWalletOutline,
   // IoHelpCircleOutline
 } from "react-icons/io5";
-import { handleLogoutAction } from "../Avatar/action";
-import { SafeUserType } from "../../../types/userType";
+import { handleLogoutAction } from "./Avatar/action";
+import { SafeUserType } from "../../types/userType";
 import { UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
 
@@ -59,14 +59,16 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
   const oldUrl = user.profile.picture;
   const router = useRouter();
-  console.log("user yang ada di ProfileComponent nih Bang: ", user);
+  // console.log("user yang ada di ProfileComponent nih Bang: ", user);
 
   const [Payment, setPayment] = useState<Payment[]>([]);
   const [Schedule, setSchedule] = useState<ScheduleUser[]>([]);
+
   useEffect(() => {
     fetchPayment();
     fetchSchedule();
   }, []);
+
   // Dummy data
   const fetchPayment = async () => {
     const response = await fetch(`http://localhost:3000/api/payment`, {
@@ -85,9 +87,10 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
     });
     // console.log(response);
     const data = await response.json();
-    console.log(data, "ini di data yak bro");
+    // console.log(data, "ini di data yak bro");
     setSchedule(data.data);
   };
+
   const consultations: ConsultationHistory[] = [
     {
       id: 1,
@@ -138,11 +141,11 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   // ? ketika file input berubah maka upload ke cloudinary
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log("oldUrl: ", oldUrl);
     if (file) {
       // 1. hapus file yang sudah ada di cloudinary
       // untuk coba hapus harus coba upload dulu file ke cloudinary dan database
       // supaya menghapusnya dari
-      console.log("oldUrl: ", oldUrl);
 
       // 2. upload file baru ke cloudinary
       const { secure_url } = await UploadImage(file);
@@ -260,7 +263,9 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                         .map((consultation) => (
                           <div key={consultation.id} className="flex items-center justify-between bg-slate-600 p-4 rounded-lg">
                             <div className="flex items-center gap-4">
-                              <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} width={48} height={48} className="rounded-full" unoptimized />
+                              {/* <div className="w-10 aspect-square rounded-full bg-red-500 flex items-center"> */}
+                              <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} className="rounded-full object-cover" width={48} height={48} unoptimized />
+                              {/* </div> */}
                               <div>
                                 <h4 className="text-white font-medium">{consultation.lawyer.name}</h4>
                                 <p className="text-sm text-gray-400">{consultation.date}</p>
@@ -302,7 +307,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     {consultations.map((consultation) => (
                       <div key={consultation.id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
                         <div className="flex items-center gap-4">
-                          <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} width={48} height={48} className="rounded-full" unoptimized />
+                          <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} width={48} height={48} className="rounded-full object-cover" unoptimized />
                           <div>
                             <h4 className="text-white font-medium">{consultation.lawyer.name}</h4>
                             <div className="text-sm text-gray-400">
@@ -325,7 +330,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                       {savedArticles.map((article) => (
                         <Link key={article.id} href={`/news/${article.id}`} className="bg-slate-700 rounded-xl overflow-hidden flex items-center gap-4 hover:bg-slate-600 transition-colors">
                           <div className="w-24 h-24 relative flex-shrink-0">
-                            <Image src={article.thumbnail} alt={article.title} fill className="object-cover" unoptimized />
+                            <Image src={article.thumbnail} alt={article.title} width={48} height={48} className="rounded-full unoptimized" unoptimized />
                           </div>
                           <div className="flex-1 p-4">
                             <span className="text-yellow-500 text-sm mb-1">{article.category}</span>
