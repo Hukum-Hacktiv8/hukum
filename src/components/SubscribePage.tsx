@@ -47,8 +47,8 @@ const plans: Plan[] = [
 
 // Komponen untuk card subscription
 const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelected: boolean; onSelect: () => void }) => {
-  //   console.log(plan);
   const router = useRouter();
+
   const handleSubs = async () => {
     await fetch("http://localhost:3000/api/subs", {
       method: "POST",
@@ -57,6 +57,7 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
 
     router.push("http://localhost:3000/");
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -117,13 +118,12 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
         </ul>
 
         {/* Action Button */}
-        <Link href="/">
+        <Link href="/konfirmasi/subscription">
           {!plan.isDefault && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(`Selected plan: ${plan.name}`);
-                handleSubs();
+                console.log(`Selected plan: ${plan.name}, INI SELECTED PAN BOI`);
               }}
               className={`w-full py-3 rounded-lg text-white font-semibold
                 bg-gradient-to-r ${plan.color}
