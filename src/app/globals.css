@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,7 +5,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Lora", Arial, Helvetica, sans-serif;
+  font-family: var(--font-lora), Arial, Helvetica, sans-serif;
 }
 
 /* Autocomplete Override Styles */
