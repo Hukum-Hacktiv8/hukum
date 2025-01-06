@@ -1,5 +1,13 @@
-import { createSubsFirstRegister, extractObjectIdString } from "@/models/subscription";
-import { getUserByEmail, registerUser } from "@/models/user";
+import // createSubsFirstRegister,
+// extractObjectIdString
+"@/models/subscription";
+import {
+  getUserByEmail,
+  registerUser,
+  updateUser,
+  // updateUser
+} from "@/models/user";
+import { UserUpdateType } from "@/types/userType";
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -24,15 +32,16 @@ export const POST = async (request: Request) => {
     const parse = userInput.parse(data);
 
     // console.log(`hehe`);
-    const user = await registerUser(parse);
+    // const user =
+    await registerUser(parse);
 
-    const check = await extractObjectIdString(user.insertedId);
+    // const check = await extractObjectIdString(user.insertedId);
 
-    const subsRegister = {
-      userId: check,
-      type: "free",
-    };
-    await createSubsFirstRegister(subsRegister); //pada setiap kali akun register maka akan membuat subs
+    // const subsRegister = {
+    //   userId: check,
+    //   type: "free",
+    // };
+    // await createSubsFirstRegister(subsRegister); //pada setiap kali akun register maka akan membuat subs
     return Response.json(
       {
         statusCode: 201,
@@ -75,6 +84,56 @@ export const GET = async (request: Request) => {
     const email = data.email;
     const user = await getUserByEmail(email);
     return Response.json(user);
+  } catch (error) {
+    console.log(error);
+    return Response.json(
+      {
+        statusCode: 500,
+        message: "Internal server error",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+};
+
+export const PUT = async (request: Request) => {
+  try {
+    console.log("masuk put nih bang!");
+    const data = await request.json();
+    console.log("data: ", data);
+    const { email, picture } = data;
+    console.log("email: ", email);
+    console.log("picture: ", picture);
+
+    if (!email || !picture) {
+      return Response.json(
+        {
+          statusCode: 400,
+          message: "Email and picture are required",
+        },
+        { status: 400 }
+      );
+    }
+
+    const user = await getUserByEmail(email);
+    if (!user) {
+      return Response.json(
+        {
+          statusCode: 404,
+          message: "User not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    if (picture !== undefined) user.profile.picture = picture;
+    user.updatedAt = new Date().toISOString();
+
+    const updatedUser = await updateUser(user as UserUpdateType);
+
+    return Response.json(updatedUser);
   } catch (error) {
     console.log(error);
     return Response.json(

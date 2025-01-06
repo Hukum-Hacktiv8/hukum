@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation";
 import { fetchUserLogin } from "./action";
-import ProfileComponent from "./MyProfile";
-import { UserType } from "./types/profileTypes";
+import ProfileComponent from "./ProfileComponent";
 
 const MyProfile = async () => {
   const user = await fetchUserLogin();
   if (!user) return redirect("/login");
+  // console.log("user yang ada di My Profile nih Bang: ", user);
 
   return (
     <div>
-      <ProfileComponent user={user as UserType} />
+      <ProfileComponent user={user} />
     </div>
   );
 };
