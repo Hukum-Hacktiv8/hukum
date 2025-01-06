@@ -26,7 +26,7 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
       const responseJson = await response.json();
 
       setUserLogin(responseJson);
-      console.log(responseJson);
+      // console.log(responseJson);
     } catch (error) {
       console.log(error);
 
@@ -45,7 +45,7 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
   };
 
   useEffect(() => {
-    console.log(token);
+    // console.log(token);
     fetchUserLogin();
   }, [token]);
 
@@ -65,7 +65,7 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
       ) : (
         <>
           <div className="dropdown dropdown-hover">
-            <div tabIndex={0} role="button" className="flex text-white/80 hover:text-white hover:bg-white/10 transition-colors m-1 p-2 rounded-md">
+            <div tabIndex={0} role="button" className="flex text-white/80 hover:text-white hover:bg-white/10 transition-colors m-1 p-2 rounded-md gap-1">
               <HiOutlineUser className="text-xl" />
               {userLogin?.username}
             </div>
