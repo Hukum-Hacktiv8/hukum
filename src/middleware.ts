@@ -3,7 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyJoseToken } from "./utils/jwt";
 
 export const middleware = async (request: NextRequest) => {
-  if (request.url.includes("/api/roomchats") || request.url.includes("/api/myrooms") || request.url.includes("/api/participant-details") || request.url.includes("/api/find-chatroom") || request.url.includes("/api/subs")) {
+  if (
+    request.url.includes("/api/roomchats") ||
+    request.url.includes("/api/myrooms") ||
+    request.url.includes("/api/participant-details") ||
+    request.url.includes("/api/find-chatroom") ||
+    request.url.includes("/api/subs") ||
+    request.url.includes("/api/userlogin")
+    // userlogin api untuk login
+  ) {
     const token = cookies().get("token");
 
     if (!token) {
