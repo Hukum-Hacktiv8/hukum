@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJoseToken } from "./utils/jwt";
+import { redirect } from "next/navigation";
 
 export const middleware = async (request: NextRequest) => {
   if (

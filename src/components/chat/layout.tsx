@@ -17,6 +17,7 @@ import {
 import { db } from "@/lib/firebase";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
+import { useRouter } from "next/navigation";
 
 interface Message {
   id: string;
@@ -48,6 +49,7 @@ export default function Chat() {
   const [clientId, setClientId] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [mongoDbRoomId, setMongoDbRoomId] = useState<string | null>("");
+  const router = useRouter();
 
   // const scrollToBottom = () => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,10 +74,14 @@ export default function Chat() {
         }
 
         const data = await response.json();
+
+        if (data?.statusCode === 401) {
+          router.push("/login");
+        }
+
         const rooms: Room[] = data.data;
 
         if (!rooms || rooms.length === 0) {
-          // console.log("No rooms found");
           setContacts([]);
           return;
         }
@@ -110,7 +116,6 @@ export default function Chat() {
 
         setContacts(fetchedContacts.filter(Boolean));
       } catch (error) {
-        console.log(error);
         setContacts([]);
       }
     }
