@@ -8,7 +8,7 @@ export default function PaymentSuccess({ searchParams: { amount } }: { searchPar
           <h2 className="card-title">Terima kasih!</h2>
           <p>pembayaran anda telah berhasil Rp.{amount}</p>
           <div className="card-actions justify-center p-5">
-            <Link href="/">
+            <Link href="/tanda-tangan">
               <button className="btn btn-primary"> Continue </button>
             </Link>
           </div>
