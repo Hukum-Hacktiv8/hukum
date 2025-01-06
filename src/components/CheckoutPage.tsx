@@ -63,18 +63,10 @@ const CheckoutPage = (props: CheckoutPageProp) => {
     if (error) {
       setErrorMessage(error.message || "Payment failed. Please try again.");
     } else {
-      await fetch("/api/roomchats", {
+      await fetch("http://localhost:3000/api/subs", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          participants: [lawyerId],
-          bookDate,
-        }),
       });
-
-      router.push("/payment-success");
+      router.push("/");
     }
 
     setLoading(false);
@@ -90,7 +82,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-      <h1 className="text-xl font-bold mb-4">Jasa Konsultasi</h1>
+      <h1 className="text-xl font-bold mb-4">{lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}</h1>
       <p className="mb-4 text-gray-600">Total Harga: Rp.{amount}</p>
 
       <div className="space-y-4">
