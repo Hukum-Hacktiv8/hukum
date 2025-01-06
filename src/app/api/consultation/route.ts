@@ -1,4 +1,4 @@
-import { createConsul, readConsulAll } from "@/app/models/consultation";
+import { createConsul, readConsulAll } from "@/models/consultation";
 
 export const POST = async (request: Request) => {
   const data = await request.json();

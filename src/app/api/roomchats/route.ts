@@ -1,14 +1,13 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { CheckRoomLogin, createRoom, findRoom } from "@/app/models/chatroom";
+import { CheckRoomLogin, createRoom, findRoom } from "@/models/chatroom";
 import { ObjectId } from "mongodb";
 
 export const POST = async (request: Request) => {
-  const data = await request.json();
+  let data = await request.json();
   const clientId = request.headers.get("rg-user-id");
-  // console.log(clientId);
 
-  data.participants.push(clientId);
+  data?.participants?.push(clientId);
 
   // Create room di mongodb
   await createRoom(data);
@@ -30,16 +29,6 @@ export const POST = async (request: Request) => {
     }
   );
 };
-
-// export const GET = async (request: Request) => {
-//   const data = await findRoom();
-//   const clientId = request.headers.get("rg-user-id");
-//   // console.log(clientId, `INI DISNI`);
-//   return Response.json({
-//     statusCode: 200,
-//     data,
-//   });
-// };
 
 export const GET = async (request: Request) => {
   const clientId = request.headers.get("rg-user-id");

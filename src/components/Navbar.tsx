@@ -1,121 +1,86 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useRef } from "react";
+import AIChatModal from "./AIChatModal";
 import {
-  HiOutlineMenu,
-  HiOutlineX,
-  HiOutlineHome,
-  HiOutlineInformationCircle,
-  HiOutlineBookOpen,
-  HiOutlineChatAlt2,
-  HiOutlineSearch,
-  HiOutlineUser,
-} from "react-icons/hi";
+  IoChatbubblesOutline,
+  IoNewspaperOutline,
+  IoCalendarOutline,
+  // IoPersonCircleOutline,
+  IoBusinessOutline,
+  IoSparklesOutline,
+} from "react-icons/io5";
+import Hacktivist from "@/assets/icons/logo.png";
+import Avatar from "@/app/(profile)/Avatar/Avatar";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+export default function Navbar({ token }: { token: RequestCookie | undefined }) {
+  const [isAIChatOpen, setIsAIChatOpen] = useState(false);
+  const [aiQuery, setAIQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const menuItems = [
-    { text: "Beranda", href: "/", icon: HiOutlineHome },
-    { text: "Tentang", href: "/about", icon: HiOutlineInformationCircle },
-    { text: "Layanan", href: "/konsultasi/lawyer", icon: HiOutlineBookOpen },
-    { text: "Percakapan", href: "/chats", icon: HiOutlineChatAlt2 },
-  ];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAIQuery(value);
+    if (!isAIChatOpen && value.length > 0) {
+      setIsAIChatOpen(true);
+      e.target.value = "";
+      setAIQuery(value);
+    }
+  };
 
   return (
-    <nav
-      className={`fixed top-0 w-full transition-all duration-300 z-50 ${
-        isScrolled
-          ? "bg-slate-900/95 backdrop-blur-sm border-b border-white/10"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo with Image */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/logo.png"
-              alt="Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
-            />
-            <span className="font-lora text-xl text-white">Hacktivist</span>
+    <>
+      <nav className="fixed top-0 w-full bg-slate-900 shadow-sm z-50">
+        <div className="container mx-auto px-4 h-16 flex items-center">
+          {/* Left side - Logo */}
+          <Link href="/" className="flex items-center gap-3">
+            <Image src={Hacktivist} alt="KONTAS Logo" width={120} height={40} className="w-auto h-8 object-contain" priority />
+            <span className="text-xl font-bold text-white">Hacktivist</span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {menuItems.map((item) => (
-              <Link
-                key={item.text}
-                href={item.href}
-                className="text-white/80 hover:text-white transition-colors flex items-center gap-2"
-              >
-                <item.icon className="text-2xl" />
-                {item.text}
-              </Link>
-            ))}
+          {/* Center - Search Input */}
+          <div className="hidden md:flex items-center bg-slate-800 rounded-lg mx-auto">
+            <input ref={inputRef} type="search" placeholder="Ask AI before consulting a lawyer..." onChange={handleInputChange} className="bg-transparent px-4 py-2 text-base focus:outline-none text-white placeholder-gray-400 w-[350px]" />
+            <IoSparklesOutline className="w-5 h-5 mr-3 text-gray-400" />
           </div>
 
-          {/* Right Side Icons */}
-          <div className="hidden md:flex items-center gap-4">
-            <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-              <HiOutlineSearch className="text-xl" />
-            </button>
-            <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-              <HiOutlineUser className="text-xl" />
-            </button>
-          </div>
+          {/* Right side - Icons */}
+          <div className="flex items-center gap-6">
+            <Link href="/chat" className="text-gray-400 hover:text-white">
+              <IoChatbubblesOutline className="w-6 h-6" title="Chat" />
+            </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <HiOutlineX className={`text-2xl ${isOpen ? "hidden" : ""}`} />
-            <HiOutlineMenu className={`text-2xl ${isOpen ? "hidden" : ""}`} />
-          </button>
+            <Link href="/news" className="text-gray-400 hover:text-white">
+              <IoNewspaperOutline className="w-6 h-6" title="Legal News" />
+            </Link>
+
+            <Link href="/booking" className="text-gray-400 hover:text-white">
+              <IoCalendarOutline className="w-6 h-6" title="Book Lawyer Consultation" />
+            </Link>
+
+            <Link href="/about" className="text-gray-400 hover:text-white">
+              <IoBusinessOutline className="w-6 h-6" title="About" />
+            </Link>
+
+            <Avatar token={token} />
+          </div>
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden py-4 space-y-2 bg-slate-900/95 backdrop-blur-sm border-t border-white/10">
-            {menuItems.map((item) => (
-              <Link
-                key={item.text}
-                href={item.href}
-                className="flex items-center gap-2 px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-colors rounded-lg"
-                onClick={() => setIsOpen(false)}
-              >
-                <item.icon className="text-2xl" />
-                {item.text}
-              </Link>
-            ))}
-            <hr className="my-4 border-white/10" />
-            <div className="flex justify-around px-4">
-              <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                <HiOutlineSearch className="text-xl" />
-              </button>
-              <button className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                <HiOutlineUser className="text-xl" />
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </nav>
+      <AIChatModal
+        isOpen={isAIChatOpen}
+        onClose={() => {
+          setIsAIChatOpen(false);
+          setAIQuery("");
+          if (inputRef.current) {
+            inputRef.current.value = "";
+          }
+        }}
+        initialQuery={aiQuery}
+      />
+    </>
   );
 }

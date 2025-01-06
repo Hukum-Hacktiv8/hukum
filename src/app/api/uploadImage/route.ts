@@ -1,4 +1,4 @@
-import handleUpload from "@/app/config/cloudinary";
+import handleUpload from "@/config/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {

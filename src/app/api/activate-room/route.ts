@@ -1,4 +1,4 @@
-import { activateRoom } from "@/app/models/chatroom";
+import { activateRoom } from "@/models/chatroom";
 
 export const PATCH = async (request: Request) => {
   const result = await activateRoom();

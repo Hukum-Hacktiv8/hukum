@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy, where, getDocs, doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  // orderBy,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+  // setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
@@ -9,7 +21,7 @@ import ChatUI from "./ChatUI";
 interface Message {
   id: string;
   text: string;
-  sender: "user" | "lawyer";
+  sender: string;
   timestamp: Date | { seconds: number; nanoseconds: number };
 }
 
@@ -18,12 +30,6 @@ interface Contact {
   name: string;
   role: string;
   isOnline: boolean;
-}
-
-interface VideoCallState {
-  isActive: boolean;
-  isMuted: boolean;
-  isVideoOn: boolean;
 }
 
 type Room = {
@@ -41,10 +47,11 @@ export default function Chat() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [clientId, setClientId] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [mongoDbRoomId, setMongoDbRoomId] = useState<string | null>("");
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -94,6 +101,7 @@ export default function Chat() {
 
             return await response.json();
           } catch (error) {
+            console.log(error);
             return null;
           }
         });
@@ -102,6 +110,7 @@ export default function Chat() {
 
         setContacts(fetchedContacts.filter(Boolean));
       } catch (error) {
+        console.log(error);
         setContacts([]);
       }
     }
@@ -121,7 +130,9 @@ export default function Chat() {
     });
 
     const data = await response.json();
-    const roomId = data?.roomId;
+    const mongoDbRoomId = data?.roomId;
+    if (mongoDbRoomId) setMongoDbRoomId(mongoDbRoomId);
+
     const clientId = data?.clientId;
     setClientId(clientId);
 
@@ -148,7 +159,7 @@ export default function Chat() {
     const q = query(chatroomsRef, where("participants", "array-contains", clientId));
     const querySnapshot = await getDocs(q);
 
-    for (let doc of querySnapshot.docs) {
+    for (const doc of querySnapshot.docs) {
       const data = doc.data();
       if (data.participants.includes(contactId)) {
         return { id: doc.id, ...data };
@@ -179,5 +190,36 @@ export default function Chat() {
     sendMessage();
   };
 
-  return <ChatUI clientId={clientId} contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
+  const fetchMessagesFromFirestore = async (roomId: string) => {
+    if (!roomId) return;
+
+    const roomDoc = doc(db, "chat-rooms", roomId);
+    const roomSnapshot = await getDoc(roomDoc);
+
+    if (roomSnapshot) {
+      const data = roomSnapshot.data();
+      return data?.messages;
+    }
+
+    return [];
+  };
+
+  const closeRoom = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!roomId) return;
+
+    const messages: Message[] = await fetchMessagesFromFirestore(roomId);
+    await fetch("/api/keep-chat-history", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages,
+        mongoDbRoomId,
+      }),
+    });
+  };
+
+  return <ChatUI closeRoom={closeRoom} clientId={clientId} contacts={contacts} selectedContact={selectedContact} messages={messages} newMessage={newMessage} messagesEndRef={messagesEndRef} onContactSelect={handleContactSelection} onMessageChange={(msg) => setNewMessage(msg)} onMessageSubmit={handleMessageSubmit} />;
 }

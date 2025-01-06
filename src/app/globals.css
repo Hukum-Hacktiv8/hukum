@@ -5,7 +5,9 @@
 @tailwind utilities;
 
 body {
-  font-family: Lora, Arial, Helvetica, sans-serif;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Lora", Arial, Helvetica, sans-serif;
 }
 
 /* Autocomplete Override Styles */
@@ -94,6 +96,10 @@ input:-webkit-autofill:active {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #daa520;
+}
+:root {
+  --background: #0f172a; /* slate-900 */
+  --foreground: #ffffff;
 }
 @layer base {
   :root {

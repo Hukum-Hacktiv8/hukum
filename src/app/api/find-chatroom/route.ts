@@ -1,4 +1,4 @@
-import { getRoomChatByParticipants } from "@/app/models/chatroom";
+import { getRoomChatByParticipants } from "@/models/chatroom";
 
 export const POST = async (request: Request) => {
   const { contactId } = await request.json();

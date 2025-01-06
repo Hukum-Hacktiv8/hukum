@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -16,17 +16,21 @@ export const metadata: Metadata = {
   icons: "/logo.png",
 };
 
+import { cookies } from "next/headers";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token: RequestCookie | undefined = cookies().get("token");
   return (
     <html lang="en">
       <body className={`${lora.variable} font-lora`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <Navbar token={token} />
+        <div className="mt-16">{children}</div>
+        {/* <Footer /> */}
       </body>
     </html>
   );

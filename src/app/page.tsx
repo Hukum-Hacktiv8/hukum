@@ -1,34 +1,27 @@
-"use client";
+import HeroSection from "@/app/(home)/HeroSection";
+import StatsSection from "@/app/(home)/StatsSection";
+import ServicesSection from "@/app/(home)/ServicesSection";
+import LegalTipsSection from "@/app/(home)/LegalTipsSection";
+import Footer from "@/components/Footer";
+import SubscribePage from "@/components/SubscribePage";
 
-import { FaComments } from "react-icons/fa";
-import { motion } from "framer-motion";
-import WaveDivider from "@/components/wave-divider";
-import HeroSection from "@/components/homepage/HeroSection";
-import StatsSection from "@/components/homepage/StatsSection";
-import ServicesSection from "@/components/homepage/ServicesSection";
-import LegalTipsSection from "@/components/homepage/LegalTipsSection";
-import MapSection from "@/components/homepage/MapSection";
-
+  
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <motion.a
-        href="/chats"
-        whileHover={{ scale: 1.1 }}
-        className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-[#1a4b69] to-[#1a3f69] p-4 rounded-full shadow-lg hover:from-[#153d57] hover:to-[#153557] transition-all duration-300"
-      >
-        <FaComments className="text-white text-2xl" />
-      </motion.a>
+    <>
+      <main>
+        <HeroSection />
+        <div className="h-24 bg-gradient-to-b from-slate-900/95 to-slate-900" />
+        <StatsSection />
+        <ServicesSection />
+        <LegalTipsSection />
+        {/* <SubscriptionSection /> */}
+        <SubscribePage />
+      </main>
 
-      <HeroSection />
-      <StatsSection />
-      <ServicesSection />
-      <LegalTipsSection />
-      <MapSection />
-
-      <div className="bg-slate-900">
-        <WaveDivider />
-      </div>
-    </main>
+      <footer>
+        <Footer />
+      </footer>
+    </>
   );
 }

@@ -1,5 +1,5 @@
-export const getUserByEmail = (email: string) => {
-  try {
-    
-  }
-};
+// export const getUserByEmail = (email: string) => {
+//   try {
+
+//   }
+// };

@@ -1,4 +1,4 @@
-import { registerLawyer } from "@/app/models/user";
+import { registerLawyer } from "@/models/user";
 import { z } from "zod";
 
 const profileSchema = z.object({

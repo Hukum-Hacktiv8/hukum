@@ -1,4 +1,4 @@
-import { createPayment, readPayment } from "@/app/models/payment";
+import { createPayment, readPayment } from "@/models/payment";
 
 export const POST = async (request: Request) => {
   const data = await request.json();
