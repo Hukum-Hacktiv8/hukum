@@ -160,7 +160,9 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                       <IoCamera className="w-4 h-4" />
                     </label>
                   </div>
-                  <h2 className="text-xl font-semibold text-white mb-1">{user.name}</h2>
+                  <h2 className="text-xl font-semibold text-white mb-1">
+                    {user.name} ({user.role})
+                  </h2>
                   <p className="text-gray-400 text-sm">{user.email}</p>
                   <input type="file" id="file-upload" onChange={handleFileChange} hidden />
                 </div>
