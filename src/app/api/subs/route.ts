@@ -5,11 +5,9 @@ export const POST = async (request: Request) => {
   if (!userId) {
     throw "Please Login First";
   }
-  const type = "premium";
-  const status = "active";
 
-  await createSubs({ userId, type, status });
-  console.log(`masuk kah disni `);
+  await createSubs(userId);
+  // console.log(`masuk kah disni `);
 
   return Response.json({
     message: "Success Premium ",
