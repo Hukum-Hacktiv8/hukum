@@ -36,7 +36,7 @@ export default function HeroSection() {
                         <span className="text-yellow-500">Mengamankan Masa <br/>Depan Anda</span>
                     </h1>
                     <p className="text-lg md:text-xl text-gray-200 mb-8">
-                        Dengan pengalaman lebih dari 15 tahun, kami menyediakan solusi hukum yang disesuaikan dengan situasi Anda.
+                        Dengan pengalaman lebih dari 5 tahun, kami menyediakan solusi hukum yang disesuaikan dengan situasi Anda.
                     </p>
                     <button className="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition-colors">
                         Konsultasi Gratis
