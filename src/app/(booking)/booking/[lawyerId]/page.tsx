@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { IoStar, IoTimeOutline, IoLocationOutline, IoSchoolOutline, IoChevronBack } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 interface TimeSlot {
   time: string;
@@ -16,6 +17,9 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
+
+  const lawyerId = params?.lawyerId;
+  const router = useRouter();
 
   // Handle duration change & reset selected time
   const handleDurationChange = (duration: number) => {
@@ -46,15 +50,7 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
       { time: "14:00", duration: 2 }, // Ada yg book jam 14 selama 2 jam
     ];
 
-    const slots: TimeSlot[] = [
-      { time: "09:00", available: true },
-      { time: "10:00", available: true },
-      { time: "11:00", available: true },
-      { time: "13:00", available: true },
-      { time: "14:00", available: true },
-      { time: "15:00", available: true },
-      { time: "16:00", available: true },
-    ];
+    const slots: TimeSlot[] = [{ time: "09:00", available: true }];
 
     // Check overlapping bookings
     existingBookings.forEach((booking) => {
@@ -123,6 +119,21 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
     return date.toDateString() === selectedDate.toDateString();
   };
 
+  const handleBooking = () => {
+    if (!selectedDate || !selectedTime || !lawyerId) {
+      alert("Please make sure you have a date, lawyer and time selected.");
+      return;
+    }
+
+    const searchParamsData = new URLSearchParams();
+    searchParamsData.append("time", selectedTime);
+    searchParamsData.append("date", selectedDate.toLocaleDateString("en-CA"));
+    searchParamsData.append("lawyer", lawyerId);
+    searchParamsData.append("total", lawyer.price.toLocaleString("id-ID"));
+
+    router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
+  };
+
   return (
     <div className="bg-slate-900 min-h-screen pb-12">
       {/* Back Button */}
@@ -174,18 +185,6 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                   {selectedDuration > 1 && <p className="mt-3 text-sm text-gray-400">*Menampilkan slot yg tersedia utk durasi {selectedDuration} jam</p>}
                 </div>
 
-                {/* Duration - Updated */}
-                <div className="mb-8">
-                  <h2 className="text-lg font-semibold text-white mb-4">Durasi Konsultasi</h2>
-                  <div className="grid grid-cols-3 gap-3">
-                    {[1, 2, 3].map((hours) => (
-                      <button key={hours} onClick={() => handleDurationChange(hours)} className={`p-4 rounded-lg text-center transition-colors ${selectedDuration === hours ? "bg-yellow-500 text-slate-900" : "bg-slate-700 text-gray-300 hover:bg-slate-600"}`}>
-                        {hours} Jam
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 {/* Summary - Only show if all selections are made */}
                 {selectedDate && selectedTime && selectedDuration && (
                   <div className="bg-slate-700 rounded-xl p-6">
@@ -198,21 +197,23 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                         </span>
                       </div>
                       <div className="flex justify-between text-gray-300">
-                        <span>Durasi</span>
-                        <span className="text-white">{selectedDuration} Jam</span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Harga per Jam</span>
+                        <span>Harga per Konsultasi</span>
                         <span className="text-white">Rp {lawyer.price.toLocaleString("id-ID")}</span>
                       </div>
                       <div className="pt-3 border-t border-slate-600">
                         <div className="flex justify-between text-white font-semibold">
                           <span>Total</span>
-                          <span>Rp {(lawyer.price * selectedDuration).toLocaleString("id-ID")}</span>
+                          <span>Rp {lawyer.price.toLocaleString("id-ID")}</span>
                         </div>
                       </div>
                     </div>
-                    <button className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-semibold rounded-lg transition-colors">Konfirmasi Booking</button>
+                    <button
+                      className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900 
+                    font-semibold rounded-lg transition-colors"
+                      onClick={handleBooking}
+                    >
+                      Konfirmasi Booking
+                    </button>
                   </div>
                 )}
               </div>

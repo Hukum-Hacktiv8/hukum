@@ -7,8 +7,8 @@ import remarkGfm from "remark-gfm";
 export default function Home() {
   const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[]>([]);
   const [userPrompt, setUserPrompt] = useState("");
-  const [loading, setLoading] = useState(false);
   const [currentResponse, setCurrentResponse] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!userPrompt) return;
