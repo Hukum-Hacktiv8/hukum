@@ -18,17 +18,12 @@ export const fetchUserLogin = async (): Promise<SafeUserType | undefined | null>
 
     const email = tokenData.email;
     const user = await getUserByEmail(email);
-<<<<<<< HEAD
+
     console.log("user: ", user);
     if (!user) {
       NextResponse.redirect("/login");
       return null;
     }
-=======
-
-    // console.log("user: ", user);
-    if (!user) NextResponse.redirect("/login");
->>>>>>> 560cdf26afda503e8c9f82d68262bdfa0b433c10
 
     if (user) {
       const safeUser: SafeUserType = {

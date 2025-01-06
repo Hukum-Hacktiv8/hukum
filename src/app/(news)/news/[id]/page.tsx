@@ -31,15 +31,17 @@ type Props = {
 };
 
 const comotDataArticle = async (id: string): Promise<Article> => {
-  const response = await fetch(`http://localhost:3001/news/${id}`);
+  const response = await fetch(`http://localhost:3000/api/blogpost/${id}`);
   const responseJson = await response.json();
-
+  // console.log(responseJson, "<<< 36");
   return responseJson;
 };
 
 const Page = async (props: Props) => {
   const article = await comotDataArticle(props.params.id);
-
+  // console.log(props.params.id, "<<< 42");
+  // console.log(article.data.author.name, "<<< 42");
+  // return <NewsArticle article={{ data: article }} />;
   return <NewsArticle article={article} />;
 };
 

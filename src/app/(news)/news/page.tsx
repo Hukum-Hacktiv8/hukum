@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { IoBookmarkOutline, IoBookmark } from "react-icons/io5";
+import { readBlogAll } from "@/models/blogpost";
 
 interface NewsArticle {
   id: number;
+  _id: string;
   category: string;
   title: string;
   excerpt: string;
@@ -22,168 +24,184 @@ interface NewsArticle {
 }
 
 export default function News() {
-  const [articles, setArticles] = useState<NewsArticle[]>([
-    {
-      id: 1,
-      category: "Hukum Bisnis",
-      title:
-        "Perubahan Signifikan UU Perseroan Terbatas: Dampak Terhadap Startup & UKM",
-      excerpt:
-        "Regulasi baru membawa angin segar bagi pelaku usaha kecil & menengah dlm pendirian & pengelolaan PT",
-      author: {
-        name: "Dr. Sarah Wijaya, S.H., M.H.",
-        title: "Partner, Wijaya & Associates",
-      },
-      publishedAt: "28 Feb 2024",
-      readTime: "8 min read",
-      thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
-      isSaved: false,
-    },
-    {
-      id: 2,
-      category: "Perkembangan Hukum",
-      title: "MA Terbitkan PERMA Baru tentang Persidangan Elektronik",
-      excerpt:
-        "Modernisasi sistem peradilan melalui adopsi teknologi digital utk tingkatkan efisiensi persidangan",
-      author: {
-        name: "Prof. Budi Santoso, S.H., LL.M.",
-        title: "Pengamat Hukum",
-      },
-      publishedAt: "27 Feb 2024",
-      readTime: "6 min read",
-      thumbnail: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f",
-      isSaved: true,
-    },
-    {
-      id: 3,
-      category: "Regulasi",
-      title: "Panduan Lengkap Implementasi UU Perlindungan Data Pribadi",
-      excerpt:
-        "Hal-hal yg perlu diperhatikan perusahaan dlm menerapkan UU PDP yg baru berlaku",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "26 Feb 2024",
-      readTime: "10 min read",
-      thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
-      isSaved: false,
-    },
-    {
-      id: 4,
-      category: "Perkembangan Hukum",
-      title: "Mengenal Hukum: Pilar Penting Kehidupan Bermasyarakat",
-      excerpt:
-        "Membahas pengertian, tujuan, dan jenis-jenis hukum yang berlaku.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "25 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://images.unsplash.com/photo-1447023029226-ef8f6b52e3ea?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 5,
-      category: "Perkembangan Hukum",
-      title: "Peranan Hukum dalam Membangun Masyarakat yang Berkeadaban",
-      excerpt:
-        "Artikel ini akan membahas peranan hukum dalam kehidupan bermasyarakat serta bagaimana hukum dapat menjadi katalisator perubahan sosial.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "24 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://plus.unsplash.com/premium_photo-1661497281000-b5ecb39a2114?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 6,
-      category: "Perkembangan Hukum",
-      title:
-        "Implementasi Hukum dalam Kehidupan Sehari-Hari: Tantangan dan Solusi",
-      excerpt:
-        "Artikel ini akan mengulas bagaimana hukum diterapkan dalam kehidupan sehari-hari, apa saja hambatan yang dihadapi, dan langkah-langkah untuk mengatasinya.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "24 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 7,
-      category: "Perkembangan Hukum",
-      title: "Hukum dan Teknologi: Tantangan dan Peluang di Era Digital",
-      excerpt:
-        "Artikel ini akan membahas bagaimana teknologi memengaruhi hukum, tantangan yang muncul, serta peluang yang dapat dimanfaatkan untuk menciptakan sistem hukum yang lebih efektif.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "23 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 8,
-      category: "Perkembangan Hukum",
-      title: "Hukum dan Hak Asasi Manusia: Pilar Kebebasan dan Keadilan",
-      excerpt:
-        "Artikel ini akan membahas hubungan antara hukum dan HAM, tantangan dalam penegakannya, serta langkah-langkah yang dapat diambil untuk memperkuat perlindungan HAM.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "22 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://plus.unsplash.com/premium_photo-1661542759930-9cf315dae451?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 9,
-      category: "Perkembangan Hukum",
-      title: "Hukum Adat: Menjaga Tradisi di Tengah Modernisasi",
-      excerpt:
-        "Artikel ini akan membahas peran hukum adat,tantangannya, serta relevansinya dalam sistem hukum nasional.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "20 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://plus.unsplash.com/premium_photo-1694281930432-18b307e102b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-    {
-      id: 10,
-      category: "Perkembangan Hukum",
-      title:
-        "Hukum Ekonomi: Pilar Stabilitas dan Pertumbuhan dalam Dunia Bisnis",
-      excerpt:
-        "Artikel ini akan membahas peran hukum ekonomi, tantangan yang dihadapi, serta strategi untuk memperkuat sistem hukum ekonomi.",
-      author: {
-        name: "Linda Kusuma, S.H., M.H.",
-        title: "Legal Consultant",
-      },
-      publishedAt: "10 Feb 2024",
-      readTime: "10 min read",
-      thumbnail:
-        "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      isSaved: false,
-    },
-  ]);
+  // const [articles, setArticles] = useState<NewsArticle[]>([
+  //   {
+  //     id: 1,
+  //     category: "Hukum Bisnis",
+  //     title:
+  //       "Perubahan Signifikan UU Perseroan Terbatas: Dampak Terhadap Startup & UKM",
+  //     excerpt:
+  //       "Regulasi baru membawa angin segar bagi pelaku usaha kecil & menengah dlm pendirian & pengelolaan PT",
+  //     author: {
+  //       name: "Dr. Sarah Wijaya, S.H., M.H.",
+  //       title: "Partner, Wijaya & Associates",
+  //     },
+  //     publishedAt: "28 Feb 2024",
+  //     readTime: "8 min read",
+  //     thumbnail: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     category: "Perkembangan Hukum",
+  //     title: "MA Terbitkan PERMA Baru tentang Persidangan Elektronik",
+  //     excerpt:
+  //       "Modernisasi sistem peradilan melalui adopsi teknologi digital utk tingkatkan efisiensi persidangan",
+  //     author: {
+  //       name: "Prof. Budi Santoso, S.H., LL.M.",
+  //       title: "Pengamat Hukum",
+  //     },
+  //     publishedAt: "27 Feb 2024",
+  //     readTime: "6 min read",
+  //     thumbnail: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f",
+  //     isSaved: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     category: "Regulasi",
+  //     title: "Panduan Lengkap Implementasi UU Perlindungan Data Pribadi",
+  //     excerpt:
+  //       "Hal-hal yg perlu diperhatikan perusahaan dlm menerapkan UU PDP yg baru berlaku",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "26 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 4,
+  //     category: "Perkembangan Hukum",
+  //     title: "Mengenal Hukum: Pilar Penting Kehidupan Bermasyarakat",
+  //     excerpt:
+  //       "Membahas pengertian, tujuan, dan jenis-jenis hukum yang berlaku.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "25 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://images.unsplash.com/photo-1447023029226-ef8f6b52e3ea?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 5,
+  //     category: "Perkembangan Hukum",
+  //     title: "Peranan Hukum dalam Membangun Masyarakat yang Berkeadaban",
+  //     excerpt:
+  //       "Artikel ini akan membahas peranan hukum dalam kehidupan bermasyarakat serta bagaimana hukum dapat menjadi katalisator perubahan sosial.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "24 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://plus.unsplash.com/premium_photo-1661497281000-b5ecb39a2114?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 6,
+  //     category: "Perkembangan Hukum",
+  //     title:
+  //       "Implementasi Hukum dalam Kehidupan Sehari-Hari: Tantangan dan Solusi",
+  //     excerpt:
+  //       "Artikel ini akan mengulas bagaimana hukum diterapkan dalam kehidupan sehari-hari, apa saja hambatan yang dihadapi, dan langkah-langkah untuk mengatasinya.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "24 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 7,
+  //     category: "Perkembangan Hukum",
+  //     title: "Hukum dan Teknologi: Tantangan dan Peluang di Era Digital",
+  //     excerpt:
+  //       "Artikel ini akan membahas bagaimana teknologi memengaruhi hukum, tantangan yang muncul, serta peluang yang dapat dimanfaatkan untuk menciptakan sistem hukum yang lebih efektif.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "23 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://images.unsplash.com/photo-1473186505569-9c61870c11f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 8,
+  //     category: "Perkembangan Hukum",
+  //     title: "Hukum dan Hak Asasi Manusia: Pilar Kebebasan dan Keadilan",
+  //     excerpt:
+  //       "Artikel ini akan membahas hubungan antara hukum dan HAM, tantangan dalam penegakannya, serta langkah-langkah yang dapat diambil untuk memperkuat perlindungan HAM.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "22 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://plus.unsplash.com/premium_photo-1661542759930-9cf315dae451?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 9,
+  //     category: "Perkembangan Hukum",
+  //     title: "Hukum Adat: Menjaga Tradisi di Tengah Modernisasi",
+  //     excerpt:
+  //       "Artikel ini akan membahas peran hukum adat,tantangannya, serta relevansinya dalam sistem hukum nasional.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "20 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://plus.unsplash.com/premium_photo-1694281930432-18b307e102b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  //   {
+  //     id: 10,
+  //     category: "Perkembangan Hukum",
+  //     title:
+  //       "Hukum Ekonomi: Pilar Stabilitas dan Pertumbuhan dalam Dunia Bisnis",
+  //     excerpt:
+  //       "Artikel ini akan membahas peran hukum ekonomi, tantangan yang dihadapi, serta strategi untuk memperkuat sistem hukum ekonomi.",
+  //     author: {
+  //       name: "Linda Kusuma, S.H., M.H.",
+  //       title: "Legal Consultant",
+  //     },
+  //     publishedAt: "10 Feb 2024",
+  //     readTime: "10 min read",
+  //     thumbnail:
+  //       "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     isSaved: false,
+  //   },
+  // ]);
+
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+
+  const fetchArticle = async () => {
+    const response = await fetch("http://localhost:3000/api/blogpost");
+
+    const responseJson = await response.json();
+    setArticles(responseJson.data);
+    // console.log(responseJson.data, "<<<196");
+
+    return responseJson;
+  };
+
+  useEffect(() => {
+    fetchArticle();
+  }, []);
 
   const handleSave = (articleId: number) => {
     setArticles(
@@ -230,7 +248,7 @@ export default function News() {
           <div className="col-span-12 lg:col-span-8">
             {articles.map((article, idx) => (
               <motion.article
-                key={article.id}
+                key={article._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
@@ -239,7 +257,7 @@ export default function News() {
                 }`}
               >
                 <Link
-                  href={`/news/${article.id}`}
+                  href={`/news/${article._id}`}
                   className="grid md:grid-cols-12 gap-6 p-4"
                 >
                   {/* Thumbnail - Updated with padding */}

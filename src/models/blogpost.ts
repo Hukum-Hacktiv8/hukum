@@ -1,4 +1,4 @@
-import { Db } from "mongodb";
+import { Db, ObjectId } from "mongodb";
 import { connectToDatabase } from "../config/config";
 
 export type InputBlog = {
@@ -11,7 +11,7 @@ export type InputBlog = {
   updatedAt: string;
 };
 const DATABASE_NAME = "hacktivist";
-const COLLECTION = "blogposts";
+const COLLECTION = "news";
 
 export const getDb = async () => {
   const client = await connectToDatabase();
@@ -36,6 +36,16 @@ export const readBlogAll = async () => {
   const db = await getDb();
 
   const response = await db.collection(COLLECTION).find().toArray();
+
+  return response;
+};
+
+export const readDetail = async (id: string) => {
+  const db = await getDb();
+
+  const response = await db
+    .collection(COLLECTION)
+    .findOne({ _id: new ObjectId(id) });
 
   return response;
 };
