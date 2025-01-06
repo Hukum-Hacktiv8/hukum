@@ -129,7 +129,53 @@ export default function NewsArticle({ article }: Props) {
               {/* Article Body */}
               <div className="p-6 md:p-8">
                 <div className="text-gray-300 space-y-6">
-                  {article.data.content}
+                  {article.data.content.split("\n\n").map((paragraph, idx) => {
+                    if (!paragraph.trim()) return null;
+
+                    if (paragraph.trim().match(/^\d+\./)) {
+                      const items = paragraph
+                        .split("\n")
+                        .map((item) => item.trim());
+                      return (
+                        <ol key={idx} className="list-decimal pl-6 space-y-2">
+                          {items.map((item, i) => (
+                            <li key={i}>{item.replace(/^\d+\.\s*/, "")}</li>
+                          ))}
+                        </ol>
+                      );
+                    }
+
+                    if (paragraph.trim().match(/^[a-z]\)/i)) {
+                      const items = paragraph
+                        .split("\n")
+                        .map((item) => item.trim());
+                      return (
+                        <ol
+                          key={idx}
+                          className="list-[lower-alpha] pl-6 space-y-2"
+                        >
+                          {items.map((item, i) => (
+                            <li key={i}>{item.replace(/^[a-z]\)\s*/i, "")}</li>
+                          ))}
+                        </ol>
+                      );
+                    }
+
+                    if (
+                      paragraph.trim().split("\n").length === 1 &&
+                      (paragraph.includes("Dampak") ||
+                        paragraph.includes("Kesimpulan") ||
+                        paragraph.includes("Langkah"))
+                    ) {
+                      return (
+                        <h2 key={idx} className="text-xl font-bold text-white">
+                          {paragraph}
+                        </h2>
+                      );
+                    }
+
+                    return <p key={idx}>{paragraph}</p>;
+                  })}
                 </div>
               </div>
             </motion.div>
