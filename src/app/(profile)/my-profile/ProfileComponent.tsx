@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import {
   // IoPersonOutline,
   IoLogOutOutline,
   IoCalendarOutline,
-  IoBookmarkOutline,
+  // IoBookmarkOutline,
   IoCamera,
   IoHomeOutline,
   IoNotificationsOutline,
@@ -16,7 +16,9 @@ import {
   // IoHelpCircleOutline
 } from "react-icons/io5";
 import { handleLogoutAction } from "../Avatar/action";
-import { UserType } from "./types/profileTypes";
+import { SafeUserType } from "../../../types/userType";
+import { UploadImage } from "@/components/auth/uploadImageAction";
+import { useRouter } from "next/navigation";
 
 interface ConsultationHistory {
   id: number;
@@ -28,6 +30,14 @@ interface ConsultationHistory {
   duration: string;
   status: "completed" | "upcoming" | "cancelled";
 }
+export interface Payment {
+  _id: string;
+  amount: number;
+  paymentType: string;
+  status: string;
+  userId: string | null;
+  transactionDate: string;
+}
 
 interface SavedArticle {
   id: number;
@@ -37,10 +47,27 @@ interface SavedArticle {
   thumbnail: string;
 }
 
-export default function ProfileComponent({ user }: { user: UserType }) {
+export default function ProfileComponent({ user }: { user: SafeUserType }) {
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
+  const oldUrl = user.profile.picture;
+  const router = useRouter();
+  console.log("user yang ada di ProfileComponent nih Bang: ", user);
 
+  const [Payment, setPayment] = useState<Payment[]>([]);
+  useEffect(() => {
+    fetchPayment();
+  }, []);
   // Dummy data
+  const fetchPayment = async () => {
+    const response = await fetch(`http://localhost:3000/api/payment`, {
+      method: "GET",
+    });
+    // console.log(response);
+    const data = await response.json();
+    // console.log(data, "ini di data yak bro");
+    setPayment(data.data);
+    // console.log(Payment, "ini tuh di payment");
+  };
   const consultations: ConsultationHistory[] = [
     {
       id: 1,
@@ -88,6 +115,41 @@ export default function ProfileComponent({ user }: { user: UserType }) {
     console.log("masuk sini nih bang!");
   };
 
+  // ? ketika file input berubah maka upload ke cloudinary
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 1. hapus file yang sudah ada di cloudinary
+      // untuk coba hapus harus coba upload dulu file ke cloudinary dan database
+      // supaya menghapusnya dari
+      console.log("oldUrl: ", oldUrl);
+
+      // 2. upload file baru ke cloudinary
+      const { secure_url } = await UploadImage(file);
+
+      // 3. ambil url baru dari cloudinary
+      console.log("response dari Upload Image: ", secure_url);
+
+      // 4. update profile.picture di database
+      // kita harus ambil url dari cloudinary dan update profile.picture di database
+      // supaya update profile.picture di database
+      // kita harus buat put /api/users/:id
+      const response = await fetch("/api/users/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          picture: secure_url,
+        }),
+      });
+
+      console.log(response);
+      router.refresh();
+    }
+  };
+
   const menuItems: Array<{
     id: "overview" | "edit-profile" | "history" | "saved" | "notifications" | "payments" | "help";
     label: string;
@@ -96,7 +158,7 @@ export default function ProfileComponent({ user }: { user: UserType }) {
     { id: "overview", label: "Overview", icon: <IoHomeOutline className="w-5 h-5" /> },
     // { id: "edit-profile", label: "Edit Profile", icon: <IoPersonOutline className="w-5 h-5" /> },
     { id: "history", label: "Riwayat Konsultasi", icon: <IoCalendarOutline className="w-5 h-5" /> },
-    { id: "saved", label: "Artikel Tersimpan", icon: <IoBookmarkOutline className="w-5 h-5" /> },
+    // { id: "saved", label: "Artikel Tersimpan", icon: <IoBookmarkOutline className="w-5 h-5" /> },
     { id: "notifications", label: "Notifikasi", icon: <IoNotificationsOutline className="w-5 h-5" /> },
     { id: "payments", label: "Pembayaran", icon: <IoWalletOutline className="w-5 h-5" /> },
     // { id: "help", label: "Bantuan", icon: <IoHelpCircleOutline className="w-5 h-5" /> },
@@ -114,14 +176,19 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                 <div className="text-center mb-6">
                   <div className="relative inline-block mb-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden">
-                      <Image src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde" alt="Profile" width={96} height={96} className="object-cover" unoptimized />
+                      {/* // ! harus di handle kalau user.profile.picture bernilai null */}
+                      {!user.profile.picture && <Image src="/user.jpg" alt="Profile" width={96} height={96} className="object-cover" unoptimized />}
+                      {user.profile.picture && <Image src={user.profile.picture} alt="Profile" width={96} height={96} className="object-cover" unoptimized />}
                     </div>
-                    <button className="absolute bottom-0 right-0 p-2 bg-yellow-500 rounded-full text-slate-900 hover:bg-yellow-600">
+                    <label htmlFor="file-upload" className="absolute bottom-0 right-0 p-2 bg-yellow-500 rounded-full text-slate-900 hover:bg-yellow-600 cursor-pointer">
                       <IoCamera className="w-4 h-4" />
-                    </button>
+                    </label>
                   </div>
-                  <h2 className="text-xl font-semibold text-white mb-1">John Doe</h2>
-                  <p className="text-gray-400 text-sm">john.doe@example.com</p>
+                  <h2 className="text-xl font-semibold text-white mb-1">
+                    {user.name} ({user.role})
+                  </h2>
+                  <p className="text-gray-400 text-sm">{user.email}</p>
+                  <input type="file" id="file-upload" onChange={handleFileChange} hidden />
                 </div>
 
                 {/* Navigation Menu */}
@@ -146,15 +213,15 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                 {activeTab === "overview" && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
                     <h3 className="text-xl font-semibold text-white mb-4">Overview</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Total Konsultasi</h4>
                         <p className="text-2xl font-bold text-yellow-500">12</p>
                       </div>
-                      <div className="bg-slate-700 rounded-lg p-4">
+                      {/* <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Artikel Tersimpan</h4>
                         <p className="text-2xl font-bold text-yellow-500">8</p>
-                      </div>
+                      </div> */}
                       <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Jam Konsultasi</h4>
                         <p className="text-2xl font-bold text-yellow-500">24</p>
@@ -185,7 +252,7 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                     </div>
 
                     {/* Artikel Terbaru */}
-                    <div className="bg-slate-700 rounded-lg p-4">
+                    {/* <div className="bg-slate-700 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-white font-medium">Artikel Tersimpan Terbaru</h4>
                         <button onClick={() => setActiveTab("saved")} className="text-yellow-500 text-sm hover:underline">
@@ -205,7 +272,7 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                           </Link>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
                   </motion.div>
                 )}
 
@@ -288,6 +355,18 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">Pembayaran</h3>
                     {/* Add payments component here */}
+                    {Payment?.map((payment) => (
+                      <div key={payment._id} className="bg-slate-700 rounded-xl overflow-hidden flex items-center gap-4 hover:bg-slate-600 transition-colors">
+                        {/* <div className="w-24 h-24 relative flex-shrink-0">
+                          <Image src={payment.thumbnail} alt={payment.title} fill className="object-cover" unoptimized />
+                        </div> */}
+                        <div className="flex-1 p-4">
+                          <span className="text-yellow-500 text-sm mb-1">{payment.status}</span>
+                          <h3 className="text-white font-medium mb-1">{payment.paymentType}</h3>
+                          <span className="text-gray-400 text-sm">{payment.transactionDate}</span>
+                        </div>
+                      </div>
+                    ))}
                   </motion.div>
                 )}
 

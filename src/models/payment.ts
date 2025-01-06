@@ -14,6 +14,7 @@ export const createPayment = async (body: InputPayments) => {
   const db = await getDb();
   const bodyInput = {
     ...body,
+    userId: new ObjectId(body?.userId),
     transactionDate: new Date().toISOString(),
   };
 
@@ -25,8 +26,13 @@ export const createPayment = async (body: InputPayments) => {
 export const readPayment = async (id: string) => {
   //ini untuk melihat payment dari user yang sedang login
   const db = await getDb();
+  // console.log("cek dlu masuk apa gak");
 
-  const response = await db.collection(COLLECTION).findOne({ userId: new ObjectId(id) });
+  const response = await db
+    .collection(COLLECTION)
+    .find({ userId: new ObjectId(id) })
+    .toArray();
+  // console.log(response, "ini di model ya");
 
   return response;
 };

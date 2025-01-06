@@ -1,6 +1,7 @@
 import { Db, ObjectId } from "mongodb";
 import { connectToDatabase } from "../config/config";
 import { hashPass } from "../utils/bcrypt";
+import { UserUpdateType } from "@/types/userType";
 
 export type Profile = {
   address: string;
@@ -77,4 +78,11 @@ export const getUserById = async (id: string) => {
   const user = await db.collection("users").findOne({ _id: new ObjectId(id) });
 
   return user ? { id: user._id, name: user.name, email: user.email } : null;
+};
+
+export const updateUser = async (user: UserUpdateType) => {
+  const db = await getDb();
+  const result = await db.collection("users").updateOne({ _id: user._id }, { $set: user });
+
+  return result;
 };

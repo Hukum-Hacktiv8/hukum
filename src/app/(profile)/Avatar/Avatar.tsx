@@ -53,28 +53,23 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
     <div className="relative dropdown dropdown-end flex items-center p-1">
       {/* // ? kalau usernya sudah login dan status codenya sudah benar */}
       {!userLogin || userLogin?.statusCode !== 200 ? (
-        <Link
-          href="/login"
-          className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1"
-        >
-          <RiLoginBoxLine />
-          Sign In
-        </Link>
+        <div className="flex gap-4">
+          <Link href="/login" className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1">
+            <RiLoginBoxLine />
+            Login
+          </Link>
+          <Link href="/register" className="flex items-center rounded-md text-white/80 hover:text-white transition-colors cursor-pointer gap-1">
+            Register
+          </Link>
+        </div>
       ) : (
         <>
           <div className="dropdown dropdown-hover">
-            <div
-              tabIndex={0}
-              role="button"
-              className="flex text-white/80 hover:text-white hover:bg-white/10 transition-colors m-1 p-2 rounded-md"
-            >
+            <div tabIndex={0} role="button" className="flex text-white/80 hover:text-white hover:bg-white/10 transition-colors m-1 p-2 rounded-md">
               <HiOutlineUser className="text-xl" />
               {userLogin?.username}
             </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu border-white border text-white/80 hover:text-white bg-slate-900/95 transition-colors rounded-box z-[1] w-52 p-2 shadow"
-            >
+            <ul tabIndex={0} className="dropdown-content menu border-white border text-white/80 hover:text-white bg-slate-900/95 transition-colors rounded-box z-[1] w-52 p-2 shadow">
               <li>
                 <Link href="/my-profile" className="flex gap-1">
                   <HiOutlineUser className="text-xl" />

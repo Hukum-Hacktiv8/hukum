@@ -25,4 +25,6 @@ export const GET = async () => {
     statusCode: 200,
     data,
   });
+
+  // return Response.json(data);
 };

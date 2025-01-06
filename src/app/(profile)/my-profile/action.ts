@@ -3,11 +3,11 @@
 import { cookies } from "next/headers";
 import { verifyJoseToken } from "@/utils/jwt";
 import { getUserByEmail } from "@/models/user";
-import { UserType } from "./types/profileTypes";
+import { SafeUserType } from "../../../types/userType";
 import { NextResponse } from "next/server";
 
 // todo: harusnya dari sini untuk ngambil cookies dan cari data usernya
-export const fetchUserLogin = async (): Promise<UserType | undefined | null> => {
+export const fetchUserLogin = async (): Promise<SafeUserType | undefined | null> => {
   try {
     const token = cookies().get("token");
     if (!token) {
@@ -18,11 +18,29 @@ export const fetchUserLogin = async (): Promise<UserType | undefined | null> => 
 
     const email = tokenData.email;
     const user = await getUserByEmail(email);
-
     console.log("user: ", user);
-    if (!user) NextResponse.redirect("/login");
+    if (!user) {
+      NextResponse.redirect("/login");
+      return null;
+    }
 
-    return user;
+    if (user) {
+      const safeUser: SafeUserType = {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profile: {
+          picture: user.profile.picture ?? null,
+          address: user.profile.address,
+          birth: user.profile.birth,
+        },
+        credentials: user.credentials ?? null,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      };
+      return safeUser as SafeUserType;
+    }
   } catch (error) {
     console.log(error);
   }

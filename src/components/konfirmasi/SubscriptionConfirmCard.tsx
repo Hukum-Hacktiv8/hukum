@@ -21,7 +21,7 @@ export default function KonsultasiConfirmCard() {
     <main className="">
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
-          <Image src="https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Law-Subscription" className="h-96 rounded-lg p-5" />
+          <Image src="https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Law-Subscription" className="h-96 rounded-lg p-5" width={100} height={100} />
         </figure>
         <div className="card-body">
           <h2 className="card-title">Subscription (Monthly)</h2>
@@ -29,8 +29,8 @@ export default function KonsultasiConfirmCard() {
           <p>{date}</p>
           <p>{time}</p>
           <p>{interval}</p>
-          <p>30 minutes chat</p>
-          <p>Rp. 50,000</p>
+          <p>1 Month</p>
+          <p>Rp. 299,000</p>
           <div className="card-actions justify-center mt-10">
             <button onClick={handleSubmit} className="btn btn-primary">
               Lanjut ke pembayaran

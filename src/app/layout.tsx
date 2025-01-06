@@ -17,14 +17,21 @@ export const metadata: Metadata = {
 };
 
 import { cookies } from "next/headers";
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { verifyJoseToken } from "@/utils/jwt";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const token: RequestCookie | undefined = cookies().get("token");
+  const cookieStore = cookies();
+  const token = cookieStore.get("token");
+
+  if (token?.value) {
+    const payload = await verifyJoseToken<{ id: string; email: string; username: string }>(token.value);
+    console.log("payload: ", payload);
+  }
+
   return (
     <html lang="en">
       <body className={`${lora.variable} font-lora`}>
