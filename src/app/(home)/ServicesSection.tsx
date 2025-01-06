@@ -24,8 +24,7 @@ const services = [
   {
     icon: HiUserGroup,
     title: "Hukum Keluarga",
-    description:
-      "Solusi ahli untuk kasus perceraian, warisan & hak asuh anak",
+    description: "Solusi ahli untuk kasus perceraian, warisan & hak asuh anak",
     href: "/services/family",
     gradient: "from-blue-500/20 to-purple-500/20",
   },
@@ -94,7 +93,8 @@ export default function ServicesSection() {
               variants={fadeInUp}
               className="text-lg text-white/80 max-w-2xl mx-auto"
             >
-              Solusi hukum komprehensif yg dirancang untuk melindungi hak dan kepentingan Anda
+              Solusi hukum komprehensif yg dirancang untuk melindungi hak dan
+              kepentingan Anda
             </motion.p>
           </div>
 
@@ -147,7 +147,9 @@ export default function ServicesSection() {
                     className="mt-8 flex items-center gap-2 text-amber-400 
                                 group-hover:translate-x-2 transition-transform duration-500"
                   >
-                    <span className="text-sm font-medium">Pelajari Lebih Lanjut</span>
+                    <span className="text-sm font-medium">
+                      Pelajari Lebih Lanjut
+                    </span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
