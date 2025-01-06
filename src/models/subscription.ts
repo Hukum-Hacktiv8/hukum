@@ -3,8 +3,6 @@ import { getDb } from "./user";
 
 export type InputSubscription = {
   userId: string;
-  type: string;
-  status: string;
 };
 
 export type InputSubscriptionRegister = {
@@ -38,28 +36,31 @@ export const checkSubs = async (id: string) => {
   return response;
 };
 
-export const createSubs = async (body: InputSubscription) => {
+export const createSubs = async (userId: string) => {
   const db = await getDb();
-  if (!body.userId) {
-    throw "Login First";
-  }
-  const Subs = await checkSubs(body.userId);
+  // if (!body.userId) {
+  //   throw "Login First";
+  // }
+  // const Subs = await checkSubs(body.userId);
 
-  if (!Subs) {
-    throw `Not Found User`;
-  }
+  // if (!Subs) {
+  //   throw `Not Found User`;
+  // }
 
   const startDate = new Date();
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 30);
 
-  const updatedSubs = {
-    ...Subs,
+  const InputcreateSubs = {
+    userId: new ObjectId(userId),
+    type: "premium",
+    status: "active",
     startDate: startDate.toISOString(),
     endDate: endDate.toISOString(),
   };
 
-  const response = await db.collection(COLLECTION).updateOne({ userId: new ObjectId(body.userId) }, { $set: updatedSubs });
+  const response = await db.collection(COLLECTION).insertOne(InputcreateSubs);
+  console.log(`pakah lolos`);
 
   return response;
 };

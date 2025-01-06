@@ -32,12 +32,6 @@ interface Contact {
   isOnline: boolean;
 }
 
-// interface VideoCallState {
-//   isActive: boolean;
-//   isMuted: boolean;
-//   isVideoOn: boolean;
-// }
-
 type Room = {
   _id: ObjectId;
   participants: { participants: string[] };
