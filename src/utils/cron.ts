@@ -60,27 +60,26 @@ export function startCronJobs() {
     }
   );
 
-  // CRON JOB UNTUK KENNY TESTING APABILA GA DIPAKAI TOLONG DI COMMEND
-  cron.schedule(
-    "*/1 * * * *",
-    async () => {
-      console.log("Menjalankan penghapusan room yang tidak aktif...");
-      try {
-        // await deleteRoomIfExpired();
-        const data = await roomDeactive();
-        console.log(data);
+  // // CRON JOB UNTUK KENNY TESTING APABILA GA DIPAKAI TOLONG DI COMMEND
+  // cron.schedule(
+  //   "*/1 * * * *",
+  //   async () => {
+  //     console.log("Menjalankan penghapusan room yang tidak aktif...");
+  //     try {
+  //       // await deleteRoomIfExpired();
+  //       const data = await roomDeactive();
+  //       console.log(data);
 
-        // console.log("Berhasil menghapus room yang tidak aktif");
-        //kenny isi tengah data yang dia butuh kan ada di lane 46
+  //       // console.log("Berhasil menghapus room yang tidak aktif");
+  //       //kenny isi tengah data yang dia butuh kan ada di lane 46
 
-        // await savedRoom();
-        console.log(`Success Jalan`);
-      } catch (error) {
-        console.error("Gagal menghapus room yang tidak aktif:", error);
-      }
-    },
-    {
-      timezone: "Asia/Jakarta",
-    }
-  );
+  //       console.log(`Success Jalan`);
+  //     } catch (error) {
+  //       console.error("Gagal menghapus room yang tidak aktif:", error);
+  //     }
+  //   },
+  //   {
+  //     timezone: "Asia/Jakarta",
+  //   }
+  // );
 }
