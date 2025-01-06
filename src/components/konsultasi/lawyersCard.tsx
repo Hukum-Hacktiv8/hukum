@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 // import truncateString from "@/lib/truncateString";
 // import Link from "next/link";
 import {
@@ -11,6 +10,7 @@ import {
   useState,
 } from "react";
 // import { Calendar } from "@/components/ui/calendar";
+import Image from "next/image";
 
 type Lawyer = {
   id: string;
@@ -72,7 +72,7 @@ export default function LawyersCard() {
         {lawyers.map((lawyer) => (
           <div key={lawyer.id} className="card bg-base-100 w-96 shadow-xl">
             <figure>
-              <Image src={lawyer.image} alt="Photo" className="h-80" fill sizes="100vw" />
+              <Image src={lawyer.image} alt="Photo" width={320} height={520} />
             </figure>
             <div className="card-body">
               <h2 className="card-title justify-center">{lawyer.name}</h2>
