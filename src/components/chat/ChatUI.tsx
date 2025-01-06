@@ -9,6 +9,7 @@ import {
   // closeCircleOutline
 } from "ionicons/icons";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface Message {
   id: string;
@@ -39,6 +40,16 @@ interface ChatUIProps {
 
 export default function ChatUI({ closeRoom, clientId, contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
   const router = useRouter();
+
+  const checkPremium = async () => {
+    console.log(clientId, "INI ADALAH CLIENT ID");
+
+    // const data = await fetch(`/api/subs/1`);
+  };
+
+  useEffect(() => {
+    checkPremium();
+  }, []);
 
   return (
     <div className="flex h-screen pt-16 bg-gradient-to-br from-[#1a4b69] to-[#1a3f69]">

@@ -8,7 +8,7 @@ import { IoStar, IoTimeOutline, IoLocationOutline, IoSchoolOutline } from "react
 import MapSection from "../MapSection";
 
 interface Lawyer {
-  id: number;
+  id: string;
   name: string;
   specialization: string;
   rating: number;
@@ -30,7 +30,7 @@ export default function Booking() {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [lawyers] = useState<Lawyer[]>([
     {
-      id: 1,
+      id: "677bb385708867a17e06ac4d",
       name: "Dr. Sarah Wijaya, S.H., M.H.",
       specialization: "Hukum Bisnis",
       rating: 4.9,
@@ -46,7 +46,7 @@ export default function Booking() {
       lng: 106.8135,
     },
     {
-      id: 2,
+      id: "677bb385708867a17e06ac4e",
       name: "Budi Santoso, S.H., LL.M.",
       specialization: "Hukum Pidana",
       rating: 4.8,
@@ -62,7 +62,7 @@ export default function Booking() {
       lng: 106.8456,
     },
     {
-      id: 3,
+      id: "3",
       name: "Linda Kusuma, S.H.",
       specialization: "Hukum Keluarga",
       rating: 4.7,

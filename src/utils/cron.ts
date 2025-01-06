@@ -1,5 +1,15 @@
 import cron from "node-cron";
 import { activateRoom, deactiveRoom, roomDeactive, savedRoom } from "@/models/chatroom";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+interface Message {
+  id: string;
+  text: string;
+  sender: string;
+  timestamp: Date | { seconds: number; nanoseconds: number };
+}
+
 export function startCronJobs() {
   // Create chat room every day at 9 Pagi
   cron.schedule(
@@ -44,9 +54,27 @@ export function startCronJobs() {
       try {
         // await deleteRoomIfExpired();
         const data = await roomDeactive();
-        console.log(data);
 
         // Nyimpen history room. ( dari firebase )
+        data?.map(async (el) => {
+          const chatroom = await findChatRoomInFirestore(el?.participants[0], el?.participants[1]);
+          const roomId = chatroom?.id;
+          const mongoDbRoomId = el?._id?.toString();
+
+          if (!roomId) return;
+
+          const messages: Message[] = await fetchMessagesFromFirestore(roomId);
+          await fetch("http://localhost:3000/api/keep-chat-history", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              messages,
+              mongoDbRoomId,
+            }),
+          });
+        });
 
         await savedRoom();
         console.log(`Success Cron Job Di jam 18.01`);
@@ -67,12 +95,28 @@ export function startCronJobs() {
   //     try {
   //       // await deleteRoomIfExpired();
   //       const data = await roomDeactive();
-  //       console.log(data);
 
-  //       // console.log("Berhasil menghapus room yang tidak aktif");
-  //       //kenny isi tengah data yang dia butuh kan ada di lane 46
+  //       data?.map(async (el) => {
+  //         const chatroom = await findChatRoomInFirestore(el?.participants[0], el?.participants[1]);
+  //         const roomId = chatroom?.id;
+  //         const mongoDbRoomId = el?._id?.toString();
 
-  //       console.log(`Success Jalan`);
+  //         if (!roomId) return;
+
+  //         const messages: Message[] = await fetchMessagesFromFirestore(roomId);
+  //         await fetch("http://localhost:3000/api/keep-chat-history", {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({
+  //             messages,
+  //             mongoDbRoomId,
+  //           }),
+  //         });
+  //       });
+
+  //       console.log("Cron jalan");
   //     } catch (error) {
   //       console.error("Gagal menghapus room yang tidak aktif:", error);
   //     }
@@ -82,3 +126,35 @@ export function startCronJobs() {
   //   }
   // );
 }
+
+export const findChatRoomInFirestore = async (contactId: string, clientId: string) => {
+  console.log(contactId, clientId, "INI TESSSS");
+  const chatRoomsRef = collection(db, "chat-rooms");
+  const result = [];
+
+  const q = query(chatRoomsRef, where("participants", "array-contains", clientId));
+  const querySnapshot = await getDocs(q);
+
+  for (const doc of querySnapshot.docs) {
+    const data = doc.data();
+    if (data.participants.includes(contactId)) {
+      return { id: doc.id, ...data };
+    }
+  }
+
+  return null;
+};
+
+const fetchMessagesFromFirestore = async (roomId: string) => {
+  if (!roomId) return;
+
+  const roomDoc = doc(db, "chat-rooms", roomId);
+  const roomSnapshot = await getDoc(roomDoc);
+
+  if (roomSnapshot) {
+    const data = roomSnapshot.data();
+    return data?.messages;
+  }
+
+  return [];
+};

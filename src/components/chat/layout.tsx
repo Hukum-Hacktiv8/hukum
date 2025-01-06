@@ -35,7 +35,7 @@ interface Contact {
 
 type Room = {
   _id: ObjectId;
-  participants: { participants: string[] };
+  participants: string[];
   createdAt: string;
   messages: Message[];
 };
@@ -79,7 +79,7 @@ export default function Chat() {
           router.push("/login");
         }
 
-        const rooms: Room[] = data.data;
+        const rooms: Room[] = data?.data;
 
         if (!rooms || rooms.length === 0) {
           setContacts([]);
@@ -87,10 +87,9 @@ export default function Chat() {
         }
 
         const contactsPromises = rooms.map(async (room) => {
-          const participantIds = room.participants.participants;
+          const participantIds = room.participants;
 
           if (!participantIds || participantIds.length === 0) {
-            // console.log(`No participants found for room `);
             return null;
           }
 

@@ -91,7 +91,8 @@ export const CheckRoomLogin = async (id: string) => {
     .aggregate([
       {
         $match: {
-          "participants.participants": id,
+          participants: id,
+          status: "active",
         },
       },
     ])
@@ -174,7 +175,7 @@ export const roomDeactive = async () => {
 
   const data = await db
     .collection(COLLECTION)
-    .aggregate([{ $match: { status: "expired" } }, { $project: { participants: 1, _id: 0 } }])
+    .aggregate([{ $match: { status: "expired" } }, { $project: { participants: 1 } }])
     .toArray();
 
   return data;
