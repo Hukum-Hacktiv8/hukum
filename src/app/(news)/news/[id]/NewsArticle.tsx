@@ -16,7 +16,7 @@ import {
   IoLogoWhatsapp,
 } from "react-icons/io5";
 
-interface Article {
+type Article = {
   id: number;
   category: string;
   title: string;
@@ -38,10 +38,13 @@ interface Article {
     category: string;
     thumbnail: string;
   }[];
-}
+};
 
 type Props = {
-  article: Article;
+  article: {
+    data: Article;
+  };
+  // article: Article;
 };
 
 export default function NewsArticle({ article }: Props) {
@@ -73,37 +76,40 @@ export default function NewsArticle({ article }: Props) {
               {/* Article Header */}
               <div className="p-6">
                 <span className="inline-block px-3 py-1 bg-yellow-500/10 text-yellow-500 text-sm font-medium rounded-lg mb-4">
-                  {article.category}
+                  {article.data.category}
                 </span>
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
-                  {article.title}
+                  {article.data.title}
                 </h1>
-                <p className="text-xl text-gray-300 mb-6">{article.subtitle}</p>
+                <p className="text-xl text-gray-300 mb-6">
+                  {article.data.subtitle}
+                </p>
                 <div className="flex items-center justify-between border-t border-slate-700 pt-6">
                   <div className="flex items-center gap-4">
                     <Image
-                      src={article.author.avatar}
-                      alt={article.author.name}
+                      src={article.data.author.avatar}
+                      alt={article.data.author.name}
                       width={48}
                       height={48}
                       className="w-12 h-12 rounded-full"
                       unoptimized
                     />
+
                     <div>
                       <h3 className="font-medium text-white">
-                        {article.author.name}
+                        {article.data.author.name}
                       </h3>
                       <p className="text-sm text-gray-400">
-                        {article.author.title}
+                        {article.data.author.title}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6 text-sm text-gray-400">
                     <div className="flex items-center gap-2">
                       <IoTimeOutline className="w-5 h-5" />
-                      <span>{article.readTime}</span>
+                      <span>{article.data.readTime}</span>
                     </div>
-                    <span>{article.publishedAt}</span>
+                    <span>{article.data.publishedAt}</span>
                   </div>
                 </div>
               </div>
@@ -111,8 +117,8 @@ export default function NewsArticle({ article }: Props) {
               {/* Featured Image */}
               <div className="relative aspect-[21/9] w-full">
                 <Image
-                  src={article.thumbnail}
-                  alt={article.title}
+                  src={article.data.thumbnail}
+                  alt={article.data.title}
                   fill
                   className="object-cover"
                   priority
@@ -123,85 +129,7 @@ export default function NewsArticle({ article }: Props) {
               {/* Article Body */}
               <div className="p-6 md:p-8">
                 <div className="text-gray-300 space-y-6">
-                  {article.content.split("\n\n").map((paragraph, idx) => {
-                    // Jika paragraf kosong, skip
-                    if (!paragraph.trim()) return null;
-
-                    // Jika berisi list dengan angka (1. 2. dst)
-                    if (paragraph.trim().match(/^\d+\./)) {
-                      const items = paragraph.split("\n");
-                      return (
-                        <ol key={idx} className="list-decimal pl-6 space-y-2">
-                          {items.map((item, i) => (
-                            <li key={i}>{item.replace(/^\d+\.\s*/, "")}</li>
-                          ))}
-                        </ol>
-                      );
-                    }
-
-                    // Jika berisi list dengan huruf (a) b) dst)
-                    if (paragraph.trim().match(/^[a-z]\)/i)) {
-                      const items = paragraph.split("\n");
-                      return (
-                        <ol
-                          key={idx}
-                          className="list-[lower-alpha] pl-6 space-y-2"
-                        >
-                          {items.map((item, i) => (
-                            <li key={i}>{item.replace(/^[a-z]\)\s*/i, "")}</li>
-                          ))}
-                        </ol>
-                      );
-                    }
-
-                    // Jika sepertinya heading (1 baris & diawali dgn kata2 tertentu)
-                    if (
-                      paragraph.trim().split("\n").length === 1 &&
-                      (paragraph.includes("Dampak") ||
-                        paragraph.includes("Kesimpulan") ||
-                        paragraph.includes("Langkah"))
-                    ) {
-                      return (
-                        <h2 key={idx} className="text-xl font-bold text-white">
-                          {paragraph}
-                        </h2>
-                      );
-                    }
-
-                    // Paragraf biasa
-                    return <p key={idx}>{paragraph}</p>;
-                  })}
-                </div>
-
-                {/* Tags & Share */}
-                <div className="mt-8 pt-8 border-t border-slate-700">
-                  <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag, idx) => (
-                        <Link
-                          key={idx}
-                          href={`/news/tag/${tag.toLowerCase()}`}
-                          className="px-3 py-1 bg-slate-700 text-sm text-gray-300 rounded-lg hover:bg-slate-600"
-                        >
-                          #{tag}
-                        </Link>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <button className="p-2 text-gray-400 hover:text-blue-400">
-                        <IoLogoTwitter className="w-5 h-5" />
-                      </button>
-                      <button className="p-2 text-gray-400 hover:text-blue-600">
-                        <IoLogoLinkedin className="w-5 h-5" />
-                      </button>
-                      <button className="p-2 text-gray-400 hover:text-blue-500">
-                        <IoLogoFacebook className="w-5 h-5" />
-                      </button>
-                      <button className="p-2 text-gray-400 hover:text-green-500">
-                        <IoLogoWhatsapp className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
+                  {article.data.content}
                 </div>
               </div>
             </motion.div>
@@ -236,29 +164,46 @@ export default function NewsArticle({ article }: Props) {
                 Related Articles
               </h3>
               <div className="space-y-4">
-                {article.relatedArticles.map((related) => (
-                  <Link
-                    key={related.id}
-                    href={`/news/${related.id}`}
-                    className="group block"
-                  >
-                    <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-3">
-                      <Image
-                        src={related.thumbnail}
-                        alt={related.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        unoptimized
-                      />
-                    </div>
-                    <span className="text-sm text-yellow-500">
-                      {related.category}
-                    </span>
-                    <h4 className="text-white font-medium group-hover:text-yellow-500 transition-colors line-clamp-2">
-                      {related.title}
-                    </h4>
-                  </Link>
-                ))}
+                {/* {article.data.relatedArticles.map((related) => ( */}
+                <Link
+                  // key={related.id}
+                  href={`http://localhost:3000/news/677bb455708867a17e06ac73`}
+                  className="group block"
+                >
+                  <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-3">
+                    <Image
+                      src="https://images.pexels.com/photos/4427556/pexels-photo-4427556.jpeg?auto=compress&cs=tinysrgb&w=800"
+                      alt="news 2"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                  </div>
+                  <span className="text-sm text-yellow-500">Startup</span>
+                  <h4 className="text-white font-medium group-hover:text-yellow-500 transition-colors line-clamp-2">
+                    5 Aspek Hukum yang Wajib Diperhatikan Startup
+                  </h4>
+                </Link>
+                <Link
+                  // key={related.id}
+                  href={`http://localhost:3000/news/677bb455708867a17e06ac74`}
+                  className="group block"
+                >
+                  <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-3">
+                    <Image
+                      src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40"
+                      alt="news 3"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                  </div>
+                  <span className="text-sm text-yellow-500">Regulasi</span>
+                  <h4 className="text-white font-medium group-hover:text-yellow-500 transition-colors line-clamp-2">
+                    Panduan Lengkap Perizinan Usaha di Era Digital
+                  </h4>
+                </Link>
+                {/* ))} */}
               </div>
             </div>
           </aside>
