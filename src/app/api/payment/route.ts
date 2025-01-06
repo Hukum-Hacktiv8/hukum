@@ -17,6 +17,7 @@ export const POST = async (request: Request) => {
 
 export const GET = async (request: Request) => {
   const userId = request.headers.get("rg-user-id");
+  // console.log(`masuk sini bro`);
 
   if (!userId) {
     throw "Login First";
@@ -24,6 +25,7 @@ export const GET = async (request: Request) => {
 
   //sementara di hardcode dlu tolong perbaiki nanti
   const data = await readPayment(userId);
+  // console.log(data);
 
   return Response.json({
     statusCode: 200,

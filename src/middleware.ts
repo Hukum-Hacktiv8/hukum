@@ -9,7 +9,8 @@ export const middleware = async (request: NextRequest) => {
     request.url.includes("/api/participant-details") ||
     request.url.includes("/api/find-chatroom") ||
     request.url.includes("/api/subs") ||
-    request.url.includes("/api/userlogin")
+    request.url.includes("/api/userlogin") ||
+    request.url.includes("/api/payment")
     // userlogin api untuk login
   ) {
     const token = cookies().get("token");

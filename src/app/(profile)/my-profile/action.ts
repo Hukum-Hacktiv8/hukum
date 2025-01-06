@@ -19,7 +19,7 @@ export const fetchUserLogin = async (): Promise<UserType | undefined | null> => 
     const email = tokenData.email;
     const user = await getUserByEmail(email);
 
-    console.log("user: ", user);
+    // console.log("user: ", user);
     if (!user) NextResponse.redirect("/login");
 
     return user;
