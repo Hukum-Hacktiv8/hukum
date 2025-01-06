@@ -85,6 +85,7 @@ export const roomDetail = async (id: string) => {
 
 export const CheckRoomLogin = async (id: string) => {
   const db = await getDb();
+  console.log(id);
 
   const data = await db
     .collection(COLLECTION)
@@ -97,6 +98,7 @@ export const CheckRoomLogin = async (id: string) => {
       },
     ])
     .toArray();
+  // console.log(data);
 
   return data;
 };

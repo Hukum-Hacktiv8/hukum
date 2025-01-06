@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { IoStar, IoTimeOutline, IoLocationOutline, IoSchoolOutline, IoChevronBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { Lawyer } from "../page";
 
 interface TimeSlot {
   time: string;
@@ -17,7 +18,7 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
-
+  const [lawyer, setLawyer] = useState<Lawyer>();
   const lawyerId = params?.lawyerId;
   const router = useRouter();
 
@@ -28,18 +29,31 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   };
 
   // Dummy lawyer data
-  const lawyer = {
-    id: 1,
-    name: "Dr. Sarah Wijaya, S.H., M.H.",
-    specialization: "Hukum Bisnis",
-    rating: 4.9,
-    reviews: 128,
-    experience: "15 tahun",
-    location: "Jakarta Selatan",
-    education: "Harvard Law School",
-    price: 1500000,
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-    badges: ["Verified", "Top Rated", "Premium"],
+  // const lawyer = {
+  //   id: 1,
+  //   name: "Dr. Sarah Wijaya, S.H., M.H.",
+  //   specialization: "Hukum Bisnis",
+  //   rating: 4.9,
+  //   reviews: 128,
+  //   experience: "15 tahun",
+  //   location: "Jakarta Selatan",
+  //   education: "Harvard Law School",
+  //   price: 1500000,
+  //   avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
+  //   badges: ["Verified", "Top Rated", "Premium"],
+  // };
+
+  useEffect(() => {
+    fetchDetailLawyer();
+    // console.log(lawyerId, "ini di atas effect");
+  }, []);
+
+  const fetchDetailLawyer = async () => {
+    const response = await fetch(`http://localhost:3000/api/lawyers/${lawyerId}`, { method: "GET" });
+
+    const data = await response.json();
+    // console.log(data);
+    setLawyer(data.data);
   };
 
   // Update generateTimeSlots berdasarkan durasi yg dipilih
@@ -129,7 +143,9 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
     searchParamsData.append("time", selectedTime);
     searchParamsData.append("date", selectedDate.toLocaleDateString("en-CA"));
     searchParamsData.append("lawyer", lawyerId);
-    searchParamsData.append("total", lawyer.price.toLocaleString("id-ID"));
+    if (lawyer) {
+      searchParamsData.append("total", lawyer.price.toLocaleString("id-ID"));
+    }
 
     router.push(`/konfirmasi/konsultasi?${searchParamsData.toString()}`);
   };
@@ -198,17 +214,17 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                       </div>
                       <div className="flex justify-between text-gray-300">
                         <span>Harga per Konsultasi</span>
-                        <span className="text-white">Rp {lawyer.price.toLocaleString("id-ID")}</span>
+                        <span className="text-white">Rp {lawyer?.price.toLocaleString("id-ID")}</span>
                       </div>
                       <div className="pt-3 border-t border-slate-600">
                         <div className="flex justify-between text-white font-semibold">
                           <span>Total</span>
-                          <span>Rp {lawyer.price.toLocaleString("id-ID")}</span>
+                          <span>Rp {lawyer?.price.toLocaleString("id-ID")}</span>
                         </div>
                       </div>
                     </div>
                     <button
-                      className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900 
+                      className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900
                     font-semibold rounded-lg transition-colors"
                       onClick={handleBooking}
                     >
@@ -224,38 +240,32 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
           <aside className="col-span-12 lg:col-span-4 space-y-6">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-slate-800 rounded-xl p-6">
               <div className="flex items-start gap-4 mb-6">
-                <Image src={lawyer.avatar} alt={lawyer.name} width={80} height={80} className="w-20 h-20 rounded-xl object-cover" unoptimized />
+                {lawyer && <Image src={lawyer?.credentials.certification} alt={lawyer?.name} width={80} height={80} className="w-20 h-20 rounded-xl object-cover" unoptimized />}
                 <div>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {lawyer.badges.map((badge, idx) => (
-                      <span key={idx} className={`px-2 py-1 rounded text-xs font-medium ${badge === "Premium" ? "bg-yellow-500/10 text-yellow-500" : badge === "Top Rated" ? "bg-green-500/10 text-green-500" : "bg-blue-500/10 text-blue-500"}`}>
-                        {badge}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-1">{lawyer.name}</h3>
-                  <p className="text-yellow-500 text-sm">{lawyer.specialization}</p>
+                  <div className="flex flex-wrap gap-2 mb-2"></div>
+                  <h3 className="text-lg font-semibold text-white mb-1">{lawyer?.name}</h3>
+                  <p className="text-yellow-500 text-sm">{lawyer?.specialization}</p>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm">
                 <div className="flex items-center gap-2 text-gray-300">
                   <IoTimeOutline className="w-4 h-4 text-gray-400" />
-                  <span>{lawyer.experience} pengalaman</span>
+                  <span> Sudah Berpengalaman </span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-300">
                   <IoLocationOutline className="w-4 h-4 text-gray-400" />
-                  <span>{lawyer.location}</span>
+                  <span>{lawyer?.profile.birth}</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-300">
                   <IoSchoolOutline className="w-4 h-4 text-gray-400" />
-                  <span>{lawyer.education}</span>
+                  <span>Ini Education untuk hardcode</span>
                 </div>
                 <div className="flex items-center gap-2 text-yellow-500">
                   <IoStar className="w-4 h-4" />
-                  <span>
+                  {/* <span>
                     {lawyer.rating} ({lawyer.reviews} reviews)
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </motion.div>

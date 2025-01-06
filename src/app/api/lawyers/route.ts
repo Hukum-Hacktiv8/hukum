@@ -1,4 +1,4 @@
-import { registerLawyer } from "@/models/user";
+import { findUserRoleLawyer, registerLawyer } from "@/models/user";
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -52,4 +52,15 @@ export const POST = async (request: Request) => {
       );
     }
   }
+};
+
+export const GET = async () => {
+  console.log(`masuk sini`);
+
+  const data = await findUserRoleLawyer();
+
+  return Response.json({
+    statusCode: 200,
+    data,
+  });
 };
