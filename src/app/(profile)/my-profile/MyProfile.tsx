@@ -44,13 +44,22 @@ interface SavedArticle {
   date: string;
   thumbnail: string;
 }
-
+interface ScheduleUser {
+  _id: string;
+  bookDate: string;
+  messages: [];
+  participants: [string];
+  status: string;
+  createdAt: string;
+}
 export default function ProfileComponent({ user }: { user: UserType }) {
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
 
   const [Payment, setPayment] = useState<Payment[]>([]);
+  const [Schedule, setSchedule] = useState<ScheduleUser[]>([]);
   useEffect(() => {
     fetchPayment();
+    fetchSchedule();
   }, []);
   // Dummy data
   const fetchPayment = async () => {
@@ -62,6 +71,16 @@ export default function ProfileComponent({ user }: { user: UserType }) {
     // console.log(data, "ini di data yak bro");
     setPayment(data.data);
     // console.log(Payment, "ini tuh di payment");
+  };
+
+  const fetchSchedule = async () => {
+    const response = await fetch(`http://localhost:3000/api/schedule`, {
+      method: "GET",
+    });
+    // console.log(response);
+    const data = await response.json();
+    console.log(data, "ini di data yak bro");
+    setSchedule(data.data);
   };
   const consultations: ConsultationHistory[] = [
     {
@@ -300,10 +319,21 @@ export default function ProfileComponent({ user }: { user: UserType }) {
                 )} */}
 
                 {activeTab === "notifications" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white mb-4">Notifikasi</h3>
-                    {/* Add notifications component here */}
-                  </motion.div>
+                  <div className="bg-slate-700 rounded-lg p-4">
+                    <h4 className="text-white font-medium mb-4">Konsultasi Mendatang</h4>
+                    {Schedule.map((el) => (
+                      <div key={el._id} className="flex items-center justify-between bg-slate-600 p-4 rounded-lg">
+                        <div className="flex items-center gap-4">
+                          {/* <Image src={el.lawyer.avatar} alt={el.lawyer.name} width={48} height={48} className="rounded-full" unoptimized /> */}
+                          <div>
+                            <h4 className="text-white font-medium">INI NAMA LAWYER TAPI HARDCODE Karena Blom Di look up</h4>
+                            <p className="text-sm text-gray-400">{el.bookDate}</p>
+                          </div>
+                        </div>
+                        <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600">UpComing</button>
+                      </div>
+                    ))}
+                  </div>
                 )}
 
                 {activeTab === "payments" && (

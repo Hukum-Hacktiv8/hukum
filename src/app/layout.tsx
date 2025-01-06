@@ -3,7 +3,7 @@ import { Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
-
+import { startCronJobs } from "@/utils/cron";
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 import { cookies } from "next/headers";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
+startCronJobs();
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -110,7 +110,10 @@ export const getRoomChatByParticipants = async (clientId: string, contactId: str
 
 export const activateRoom = async () => {
   const db = await getDb();
-  await db.collection(COLLECTION).updateMany({ status: "pending" }, { $set: { status: "active" } });
+
+  const today = new Date();
+  const todayFormatted = today.toISOString().split("T")[0];
+  await db.collection(COLLECTION).updateMany({ status: "pending", bookDate: todayFormatted }, { $set: { status: "active" } });
 
   return {
     message: "Success Update Room To Active",
@@ -153,4 +156,15 @@ export const keepChatHistory = async (props: keepChatHistoryProp) => {
   return {
     message: "Success keep chat history.",
   };
+};
+
+export const roomSchedule = async (id: string) => {
+  const db = await getDb();
+  const query = {
+    participants: id,
+    status: "pending",
+  };
+  const data = await db.collection(COLLECTION).find(query).toArray();
+
+  return data;
 };

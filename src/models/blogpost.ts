@@ -39,3 +39,11 @@ export const readBlogAll = async () => {
 
   return response;
 };
+
+export const readDetail = async (id: string) => {
+  const db = await getDb();
+
+  const response = await db.collection(COLLECTION).findOne({ id });
+
+  return response;
+};
