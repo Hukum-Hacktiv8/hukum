@@ -1,4 +1,4 @@
-import NewsArticle from "./NewsArticle";
+import NewsArticle from "../../NewsArticle";
 
 interface Article {
   id: number;
