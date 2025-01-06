@@ -3,7 +3,7 @@ import { Lora } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
-
+import { startCronJobs } from "@/utils/cron";
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -19,7 +19,8 @@ export const metadata: Metadata = {
 import { cookies } from "next/headers";
 import { verifyJoseToken } from "@/utils/jwt";
 
-export default async function RootLayout({
+startCronJobs();
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { FaCrown, FaCheck, FaStar } from "react-icons/fa";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Definisi tipe data untuk plan
@@ -18,12 +18,6 @@ type Plan = {
   isDefault?: boolean;
 };
 
-// Data plans
-/* 
-    seharusnya card sudah pertama free 
-    yang kedua premium dan semua fitur yang ada + ada video call dan chat with AI
-*/
-
 const plans: Plan[] = [
   {
     name: "Dasar",
@@ -31,7 +25,7 @@ const plans: Plan[] = [
     price: "IDR 99,000",
     yearlyPrice: "IDR 990,000",
     color: "from-[#B8860B] to-[#DAA520]",
-    features: ["Konsultasi Hukum Dasar", "Template Hukum Dasar", "Fitur Google Maps"],
+    features: ["Konsultasi Hukum Dasar", "Template Hukum Dasar", "Blog Hukum", "Fitur Google Maps", "Chat with AI Assistant 24/7"],
     isDefault: true,
   },
   {
@@ -47,16 +41,17 @@ const plans: Plan[] = [
 
 // Komponen untuk card subscription
 const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelected: boolean; onSelect: () => void }) => {
-  const router = useRouter();
+  //   console.log(plan);
+  // const router = useRouter();
 
-  const handleSubs = async () => {
-    await fetch("http://localhost:3000/api/subs", {
-      method: "POST",
-    });
-    console.log(`udh bisa`);
+  // const handleSubs = async () => {
+  //   await fetch("http://localhost:3000/api/subs", {
+  //     method: "POST",
+  //   });
+  //   console.log(`udh bisa`);
 
-    router.push("http://localhost:3000/");
-  };
+  //   router.push("http://localhost:3000/");
+  // };
 
   return (
     <motion.div
@@ -67,14 +62,12 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
       whileTap={plan.isDefault ? {} : { scale: 0.98 }}
       className={`relative rounded-2xl bg-slate-800/50 backdrop-blur-sm overflow-hidden group 
         ${plan.isDefault ? "cursor-default" : "cursor-pointer"}  
-        ${isSelected ? "ring-2 ring-[#DAA520] border-transparent" : plan.popular ? "ring-2 ring-[#DAA520]/50 border-transparent" : "border border-slate-700/50 hover:border-[#DAA520]/30"}`}
-    >
+        ${isSelected ? "ring-2 ring-[#DAA520] border-transparent" : plan.popular ? "ring-2 ring-[#DAA520]/50 border-transparent" : "border border-slate-700/50 hover:border-[#DAA520]/30"}`}>
       {/* Popular Badge */}
       {plan.popular && (
         <div
           className={`absolute top-0 right-0 text-white text-sm px-4 py-1 rounded-bl-lg
-                    ${isSelected ? "bg-[#DAA520]" : "bg-[#DAA520]/70"}`}
-        >
+                    ${isSelected ? "bg-[#DAA520]" : "bg-[#DAA520]/70"}`}>
           Most Popular
         </div>
       )}
@@ -127,8 +120,7 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
               }}
               className={`w-full py-3 rounded-lg text-white font-semibold
                 bg-gradient-to-r ${plan.color}
-                transition-all duration-200 hover:opacity-90 active:scale-95`}
-            >
+                transition-all duration-200 hover:opacity-90 active:scale-95`}>
               {plan.price === "Custom" ? "Contact Sales" : "Pilih Paket"}
             </button>
           )}
@@ -147,12 +139,12 @@ export default function SubscribePage() {
       <div className="container mx-auto px-4">
         {/* Page Header */}
         <div className="text-center mb-16">
-          {/* <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-lora text-white mb-4"> */}
-          Pilih Paket Perlindungan Hukum Anda
-          {/* </motion.h1> */}
-          {/* <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-white/80 max-w-2xl mx-auto"> */}
-          Pilih paket yang sesuai dengan kebutuhan hukum Anda melalui opsi berlangganan yang fleksibel
-          {/* </motion.p> */}
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl font-lora text-white mb-4">
+            Pilih Paket Perlindungan Hukum Anda
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-white/80 max-w-2xl mx-auto">
+            Pilih paket yang sesuai dengan kebutuhan hukum Anda melalui opsi berlangganan yang fleksibel
+          </motion.p>
         </div>
 
         {/* Subscription Cards */}

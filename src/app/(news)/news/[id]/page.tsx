@@ -1,4 +1,4 @@
-import NewsArticle from "./NewsArticle";
+import NewsArticle from "../../NewsArticle";
 
 interface Article {
   id: number;
@@ -38,7 +38,7 @@ const comotDataArticle = async (id: string): Promise<Article> => {
 };
 
 const Page = async (props: Props) => {
-  const article = await comotDataArticle(props.params.id);
+  const article: any = await comotDataArticle(props.params.id);
   // console.log(props.params.id, "<<< 42");
   // console.log(article.data.author.name, "<<< 42");
   // return <NewsArticle article={{ data: article }} />;

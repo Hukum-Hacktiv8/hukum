@@ -2,11 +2,13 @@
 
 import { useRef, useState } from "react";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
+import { motion, AnimatePresence } from "framer-motion";
 
 const VideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
+  const [peerConnection, setPeerConnection] =
+    useState<RTCPeerConnection | null>(null);
   const [videoRoomId, setVideoRoomId] = useState<string | null>(null);
 
   const startCall = async () => {
@@ -86,87 +88,95 @@ const VideoCall = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title">Video Call</h1>
-      <p className="description">Start a video call or join an existing one by entering the Room ID.</p>
-      <div className="video-container">
-        <video ref={localVideoRef} autoPlay muted playsInline className="video" />
-        <video ref={remoteVideoRef} autoPlay playsInline className="video" />
+    <div className="h-[calc(100vh-4rem)] bg-slate-900 text-white px-8 flex items-center">
+      <div className="container mx-auto max-w-7xl -mt-20">
+        <h1 className="text-4xl font-bold mb-8">Video Conference</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="relative aspect-[16/10] bg-slate-800 rounded-xl overflow-hidden">
+            <video
+              ref={localVideoRef}
+              autoPlay
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">
+              Kamu
+            </div>
+          </div>
+          <div className="relative aspect-[16/10] bg-slate-800 rounded-xl overflow-hidden">
+            <video
+              ref={remoteVideoRef}
+              autoPlay
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">
+              Lawan Bicara
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <button
+            onClick={startMedia}
+            className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-lg transition-colors"
+          >
+            Mulai Media
+          </button>
+          <button
+            onClick={startCall}
+            disabled={!peerConnection}
+            className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
+          >
+            Buat Room
+          </button>
+          <button
+            onClick={joinCall}
+            disabled={!peerConnection}
+            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
+          >
+            Join Room
+          </button>
+          <button
+            onClick={endCall}
+            disabled={!peerConnection}
+            className="px-6 py-3 bg-red-500 hover:bg-red-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
+          >
+            Akhiri Call
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {videoRoomId && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-slate-800 p-6 rounded-xl mx-auto max-w-2xl"
+            >
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-lg mb-2"
+              >
+                Room ID:
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="font-mono bg-slate-700 p-3 rounded-lg break-all"
+              >
+                {videoRoomId}
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <div className="button-group">
-        <button className="button" onClick={startMedia}>
-          Start Media
-        </button>
-        <button className="button" onClick={startCall} disabled={!peerConnection}>
-          Create Room
-        </button>
-        <button className="button" onClick={joinCall} disabled={!peerConnection}>
-          Join Room
-        </button>
-        <button className="button" onClick={endCall} disabled={!peerConnection}>
-          End Call
-        </button>
-      </div>
-      {videoRoomId && (
-        <p className="room-id">
-          Room Link: <strong>http://localhost:3000/video-call/{videoRoomId}</strong>
-        </p>
-      )}
-      <style jsx>{`
-        .container {
-          text-align: center;
-          padding: 2rem;
-          font-family: Arial, sans-serif;
-        }
-        .title {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
-        }
-        .description {
-          font-size: 1.2rem;
-          margin-bottom: 2rem;
-          color: #555;
-        }
-        .video-container {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          margin-bottom: 2rem;
-        }
-        .video {
-          width: 300px;
-          height: 200px;
-          background: #000;
-          border: 1px solid #ccc;
-        }
-        .button-group {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-        }
-        .button {
-          background-color: #0070f3;
-          color: white;
-          border: none;
-          padding: 0.8rem 1.2rem;
-          font-size: 1rem;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-        }
-        .button:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
-        .button:hover:not(:disabled) {
-          background-color: #005bb5;
-        }
-        .room-id {
-          font-size: 1rem;
-          color: #333;
-          margin-top: 1rem;
-        }
-      `}</style>
     </div>
   );
 };

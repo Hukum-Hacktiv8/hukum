@@ -11,7 +11,8 @@ export const middleware = async (request: NextRequest) => {
     request.url.includes("/api/subs") ||
     request.url.includes("/api/userlogin") ||
     request.url.includes("/api/payment") ||
-    request.url.includes("/api/ai")
+    request.url.includes("/api/ai") ||
+    request.url.includes("/api/schedule")
     // userlogin api untuk login
   ) {
     const token = cookies().get("token");

@@ -4,7 +4,6 @@ import CheckoutPage from "@/components/CheckoutPage";
 import convertToSubcurrency from "@/lib/convertToSubCurrency";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {

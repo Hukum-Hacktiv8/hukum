@@ -2,7 +2,6 @@ export default function HeroSection() {
     return (
         <div className="relative h-screen w-full">
             {/* Video Background */}
-            {/* Temporarily commented out video for development */}
             <video 
                 autoPlay 
                 loop 
@@ -16,7 +15,6 @@ export default function HeroSection() {
                 />
             </video>
 
-            
             {/* Temporary Image Background */}
             {/* <div 
                 className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
@@ -25,8 +23,8 @@ export default function HeroSection() {
                 }}
             /> */}
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/60" />
+            {/* Overlay dgn opacity yg lebih rendah */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 from-5% via-black/60 via-70% to-slate-900 to-100%" />
 
             {/* Content */}
             <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
@@ -36,7 +34,7 @@ export default function HeroSection() {
                         <span className="text-yellow-500">Mengamankan Masa <br/>Depan Anda</span>
                     </h1>
                     <p className="text-lg md:text-xl text-gray-200 mb-8">
-                        Dengan pengalaman lebih dari 15 tahun, kami menyediakan solusi hukum yang disesuaikan dengan situasi Anda.
+                        Dengan pengalaman lebih dari 5 tahun, kami menyediakan solusi hukum yang disesuaikan dengan situasi Anda.
                     </p>
                     <button className="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition-colors">
                         Konsultasi Gratis
