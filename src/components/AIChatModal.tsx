@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoSparklesOutline } from "react-icons/io5";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ChatMessage {
   isUser: boolean;
@@ -19,6 +21,7 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [currentResponse, setCurrentResponse] = useState("");
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -49,19 +52,69 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
   const handleSearch = async () => {
     if (!query.trim()) return;
 
-    const userMessage = query;
-    setMessages((prev) => [...prev, { isUser: true, text: userMessage }]);
+    const userPrompt = query;
+    setMessages((prev) => [...prev, { isUser: true, text: userPrompt }]);
     setQuery("");
 
     setIsLoading(true);
     try {
-      const response = "Simulated response";
-      setMessages((prev) => [...prev, { isUser: false, text: response }]);
+      const response = await fetch("/api/ai", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          systemPrompt: `
+You are Hacktivist, a legal assistant specializing in Indonesian law. Always respond in English or Indonesian based on the user's input language.
+
+Structure your answers using proper Markdown formatting for clarity:
+- Use headings (e.g., ### Heading) for major points.
+- Ensure that lists are properly formatted with newlines separating each item.
+  Example:
+  1. First item.
+  2. Second item with details.
+  3. Third item with more details.
+
+- Add a blank line between paragraphs, headings, and lists.
+- Use * or - for unordered lists and 1. for ordered lists.
+
+Provide concise and actionable advice, citing specific Indonesian legal provisions (UUD, articles, and clauses) when relevant. End your response with this disclaimer: "Disclaimer: My knowledge of Indonesian law is up to date as of January 2025."
+
+Ensure the output is properly formatted and easy to read.
+          `,
+          userPrompt,
+        }),
+      });
+
+      if (!response.body) throw new Error("No response body");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      let result = "";
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        result += chunk;
+
+        setCurrentResponse((prev) => prev + chunk);
+      }
+
+      const cleanedResult = result
+        .replace(/(\d+\.\s)/g, "\n$1")
+        .replace(/(\*\s)/g, "\n$1")
+        .replace(/\n\n+/g, "\n\n")
+        .trim();
+      setMessages((prev) => [...prev, { isUser: false, text: cleanedResult }]);
     } catch (error) {
       console.error("Search error:", error);
       setMessages((prev) => [...prev, { isUser: false, text: "Sori, ada error nih... 😅" }]);
     } finally {
       setIsLoading(false);
+      setQuery("");
+      setCurrentResponse("");
     }
   };
 
@@ -96,7 +149,26 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
               <div ref={chatContainerRef} className="max-h-[calc(70vh-140px)] overflow-y-auto bg-slate-800 p-4">
                 {messages.map((msg, idx) => (
                   <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * idx }} className={`flex ${msg.isUser ? "justify-end" : "justify-start"} mb-4`}>
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.isUser ? "bg-blue-500 text-white rounded-tr-none" : "bg-slate-700 text-gray-100 rounded-tl-none"}`}>{msg.text}</div>
+                    {msg.isUser ? (
+                      <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.isUser ? "bg-blue-500 text-white rounded-tr-none" : "bg-slate-700 text-gray-100 rounded-tl-none"}`}>{msg.text}</div>
+                    ) : (
+                      <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.isUser ? "bg-blue-500 text-white rounded-tr-none" : "bg-slate-700 text-gray-100 rounded-tl-none"}`}>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            p: ({ children }) => <p className="mb-2">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc list-inside">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal list-inside">{children}</ol>,
+                            li: ({ children }) => <li className="ml-4">{children}</li>,
+                            h1: ({ children }) => <h1 className="text-xl font-bold my-2">{children}</h1>,
+                            h2: ({ children }) => <h2 className="text-lg font-semibold my-2">{children}</h2>,
+                            h3: ({ children }) => <h3 className="text-base font-medium my-2">{children}</h3>,
+                          }}
+                        >
+                          {msg.text}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </motion.div>
                 ))}
 
@@ -105,6 +177,12 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
                     <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" />
                     <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.2s" }} />
                     <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: "0.4s" }} />
+                  </motion.div>
+                )}
+
+                {isLoading && currentResponse && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2 px-4 py-2">
+                    <div className={"max-w-[80%] rounded-2xl px-4 py-2 bg-slate-700 text-gray-100 rounded-tl-none"}>{currentResponse}</div>
                   </motion.div>
                 )}
               </div>
