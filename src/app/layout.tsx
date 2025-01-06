@@ -29,7 +29,11 @@ export default function RootLayout({
   const token = cookieStore.get("token");
 
   if (token?.value) {
-    const payload = await verifyJoseToken<{ id: string; email: string; username: string }>(token.value);
+    const payload = verifyJoseToken<{
+      id: string;
+      email: string;
+      username: string;
+    }>(token.value);
     console.log("payload: ", payload);
   }
 

@@ -15,45 +15,45 @@ import Link from "next/link";
 const services = [
   {
     icon: HiScale,
-    title: "Criminal Law",
+    title: "Hukum Pidana",
     description:
-      "Professional handling of criminal cases with proven track record",
+      "Penanganan profesional kasus pidana dengan rekam jejak yang terbukti",
     href: "/services/criminal",
     gradient: "from-red-500/20 to-amber-500/20",
   },
   {
     icon: HiUserGroup,
-    title: "Family Law",
+    title: "Hukum Keluarga",
     description:
-      "Expert solutions for divorce, inheritance & child custody cases",
+      "Solusi ahli untuk kasus perceraian, warisan & hak asuh anak",
     href: "/services/family",
     gradient: "from-blue-500/20 to-purple-500/20",
   },
   {
     icon: HiOfficeBuilding,
-    title: "Corporate Law",
-    description: "Comprehensive legal support for your business needs",
+    title: "Hukum Perusahaan",
+    description: "Dukungan hukum menyeluruh untuk kebutuhan bisnis Anda",
     href: "/services/corporate",
     gradient: "from-emerald-500/20 to-teal-500/20",
   },
   {
     icon: HiCash,
-    title: "Tax Law",
-    description: "Tax dispute resolution and compliance optimization",
+    title: "Hukum Perpajakan",
+    description: "Penyelesaian sengketa pajak dan optimalisasi kepatuhan",
     href: "/services/tax",
     gradient: "from-amber-500/20 to-yellow-500/20",
   },
   {
     icon: HiHome,
-    title: "Property Law",
-    description: "Legal assistance in property transactions & land disputes",
+    title: "Hukum Properti",
+    description: "Bantuan hukum dalam transaksi properti & sengketa tanah",
     href: "/services/property",
     gradient: "from-indigo-500/20 to-sky-500/20",
   },
   {
     icon: HiDocumentText,
-    title: "Licensing",
-    description: "Expert guidance through complex licensing procedures",
+    title: "Perizinan",
+    description: "Panduan ahli melalui prosedur perizinan yang kompleks",
     href: "/services/licensing",
     gradient: "from-pink-500/20 to-rose-500/20",
   },
@@ -88,14 +88,13 @@ export default function ServicesSection() {
               variants={fadeInUp}
               className="text-4xl md:text-5xl font-lora font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"
             >
-              Our Legal Services
+              Layanan Hukum Kami
             </motion.h2>
             <motion.p
               variants={fadeInUp}
               className="text-lg text-white/80 max-w-2xl mx-auto"
             >
-              Comprehensive legal solutions tailored to protect your rights and
-              interests
+              Solusi hukum komprehensif yg dirancang untuk melindungi hak dan kepentingan Anda
             </motion.p>
           </div>
 
@@ -148,7 +147,7 @@ export default function ServicesSection() {
                     className="mt-8 flex items-center gap-2 text-amber-400 
                                 group-hover:translate-x-2 transition-transform duration-500"
                   >
-                    <span className="text-sm font-medium">Learn More</span>
+                    <span className="text-sm font-medium">Pelajari Lebih Lanjut</span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
