@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoSparklesOutline } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
+import { useRouter } from "next/navigation";
 interface ChatMessage {
   isUser: boolean;
   text: string;
@@ -22,7 +22,7 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentResponse, setCurrentResponse] = useState("");
-
+  const router = useRouter();
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,6 +87,11 @@ Ensure the output is properly formatted and easy to read.
       });
 
       if (!response.body) throw new Error("No response body");
+      const data = await response.json();
+
+      if (data?.statusCode === 401) {
+        router.push("/login");
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");

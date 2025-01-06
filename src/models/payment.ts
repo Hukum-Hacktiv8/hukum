@@ -14,6 +14,7 @@ export const createPayment = async (body: InputPayments) => {
   const db = await getDb();
   const bodyInput = {
     ...body,
+    userId: new ObjectId(body?.userId),
     transactionDate: new Date().toISOString(),
   };
 
