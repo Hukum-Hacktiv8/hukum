@@ -2,14 +2,22 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { HiScale, HiUserGroup, HiOfficeBuilding, HiCash, HiHome, HiDocumentText } from "react-icons/hi";
+import {
+  HiScale,
+  HiUserGroup,
+  HiOfficeBuilding,
+  HiCash,
+  HiHome,
+  HiDocumentText,
+} from "react-icons/hi";
 import Link from "next/link";
 
 const services = [
   {
     icon: HiScale,
     title: "Hukum Pidana",
-    description: "Penanganan profesional kasus pidana dengan rekam jejak yang terbukti",
+    description:
+      "Penanganan profesional kasus pidana dengan rekam jejak yang terbukti",
     href: "/services/criminal",
     gradient: "from-red-500/20 to-amber-500/20",
   },
@@ -66,26 +74,47 @@ export default function ServicesSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-900" />
 
       <div className="container max-w-7xl mx-auto px-6 relative z-10">
-        <motion.div ref={ref} variants={fadeInUp} initial="initial" whileInView="whileInView" className="space-y-16">
+        <motion.div
+          ref={ref}
+          variants={fadeInUp}
+          initial="initial"
+          whileInView="whileInView"
+          className="space-y-16"
+        >
           {/* Section Header with gradient text */}
           <div className="text-center space-y-4">
-            <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-lora font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+            <motion.h2
+              variants={fadeInUp}
+              className="text-4xl md:text-5xl font-lora font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent"
+            >
               Layanan Hukum Kami
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-lg text-white/80 max-w-2xl mx-auto">
-              Solusi hukum komprehensif yg dirancang untuk melindungi hak dan kepentingan Anda
+            <motion.p
+              variants={fadeInUp}
+              className="text-lg text-white/80 max-w-2xl mx-auto"
+            >
+              Solusi hukum komprehensif yg dirancang untuk melindungi hak dan
+              kepentingan Anda
             </motion.p>
           </div>
 
           {/* Services Grid with glass effect */}
-          <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          <motion.div
+            variants={fadeInUp}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+          >
             {services.map((service, idx) => (
-              <motion.div key={service.title} variants={fadeInUp} transition={{ delay: idx * 0.1 }}>
+              <motion.div
+                key={service.title}
+                variants={fadeInUp}
+                transition={{ delay: idx * 0.1 }}
+              >
                 <Link
                   href={service.href}
                   className={`group h-full relative flex flex-col bg-white/[0.03] backdrop-blur-sm 
                             rounded-2xl p-8 overflow-hidden border border-white/10 
-                            hover:border-white/20 transition-all duration-500`}>
+                            hover:border-white/20 transition-all duration-500`}
+                >
                   {/* Gradient Background */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${service.gradient} 
@@ -96,15 +125,19 @@ export default function ServicesSection() {
                   <div className="relative z-10 space-y-4 flex-1">
                     <div
                       className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center
-                                  transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                                  transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500"
+                    >
                       <service.icon className="w-6 h-6 text-amber-400" />
                     </div>
 
-                    <h3 className="text-xl font-lora font-semibold text-white">{service.title}</h3>
+                    <h3 className="text-xl font-lora font-semibold text-white">
+                      {service.title}
+                    </h3>
 
                     <p
                       className="text-white/70 group-hover:text-white/90 
-                                  transition-colors duration-500">
+                                  transition-colors duration-500"
+                    >
                       {service.description}
                     </p>
                   </div>
@@ -112,10 +145,23 @@ export default function ServicesSection() {
                   {/* Hover Arrow */}
                   <div
                     className="mt-8 flex items-center gap-2 text-amber-400 
-                                group-hover:translate-x-2 transition-transform duration-500">
-                    <span className="text-sm font-medium">Pelajari Lebih Lanjut</span>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                group-hover:translate-x-2 transition-transform duration-500"
+                  >
+                    <span className="text-sm font-medium">
+                      Pelajari Lebih Lanjut
+                    </span>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </div>
                 </Link>

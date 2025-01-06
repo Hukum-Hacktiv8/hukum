@@ -102,7 +102,7 @@ const VideoCall = () => {
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">
-              Kamu
+              Anda
             </div>
           </div>
           <div className="relative aspect-[16/10] bg-slate-800 rounded-xl overflow-hidden">
