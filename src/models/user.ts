@@ -86,3 +86,19 @@ export const updateUser = async (user: UserUpdateType) => {
 
   return result;
 };
+
+export const findUserRoleLawyer = async () => {
+  const db = await getDb();
+  const result = await db.collection("users").find({ role: "lawyer" }).toArray();
+
+  return result;
+};
+
+export const findLawyerById = async (id: string) => {
+  const db = await getDb();
+  // console.log(id);
+
+  const result = await db.collection("users").findOne({ role: "lawyer", _id: new ObjectId(id) });
+
+  return result;
+};
