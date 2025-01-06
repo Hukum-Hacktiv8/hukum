@@ -176,7 +176,9 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                 <div className="text-center mb-6">
                   <div className="relative inline-block mb-4">
                     <div className="w-24 h-24 rounded-full overflow-hidden">
-                      <Image src={user.profile.picture} alt="Profile" width={96} height={96} className="object-cover" unoptimized />
+                      {/* // ! harus di handle kalau user.profile.picture bernilai null */}
+                      {!user.profile.picture && <Image src="/user.jpg" alt="Profile" width={96} height={96} className="object-cover" unoptimized />}
+                      {user.profile.picture && <Image src={user.profile.picture} alt="Profile" width={96} height={96} className="object-cover" unoptimized />}
                     </div>
                     <label htmlFor="file-upload" className="absolute bottom-0 right-0 p-2 bg-yellow-500 rounded-full text-slate-900 hover:bg-yellow-600 cursor-pointer">
                       <IoCamera className="w-4 h-4" />
