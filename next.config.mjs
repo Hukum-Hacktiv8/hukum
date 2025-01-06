@@ -20,6 +20,12 @@ const nextConfig = {
         port: "", // Jika ada port tertentu, tambahkan di sini, jika tidak kosongkan.
         pathname: "/**", // Path wildcard untuk mengizinkan semua gambar dari domain ini
       },
+      {
+        protocol: "https", // Protokol URL
+        hostname: "images.pexels.com", // Hostname domain
+        port: "", // Jika ada port tertentu, tambahkan di sini, jika tidak kosongkan.
+        pathname: "/**", // Path wildcard untuk mengizinkan semua gambar dari domain ini
+      },
     ],
   },
 };
