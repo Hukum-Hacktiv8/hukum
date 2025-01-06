@@ -15,8 +15,8 @@ import {
   IoWalletOutline,
   // IoHelpCircleOutline
 } from "react-icons/io5";
-import { handleLogoutAction } from "../Avatar/action";
-import { SafeUserType } from "../../../types/userType";
+import { handleLogoutAction } from "./Avatar/action";
+import { SafeUserType } from "../../types/userType";
 import { UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
 
