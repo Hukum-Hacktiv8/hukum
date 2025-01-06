@@ -46,8 +46,7 @@ export function startCronJobs() {
         const data = await roomDeactive();
         console.log(data);
 
-        // console.log("Berhasil menghapus room yang tidak aktif");
-        //kenny isi tengah data yang dia butuh kan ada di lane 46
+        // Nyimpen history room. ( dari firebase )
 
         await savedRoom();
         console.log(`Success Cron Job Di jam 18.01`);
