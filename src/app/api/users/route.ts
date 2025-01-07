@@ -100,12 +100,12 @@ export const GET = async (request: Request) => {
 
 export const PUT = async (request: Request) => {
   try {
-    console.log("masuk put nih bang!");
+    // console.log("masuk put nih bang!");
     const data = await request.json();
-    console.log("data: ", data);
+    // console.log("data: ", data);
     const { email, picture } = data;
-    console.log("email: ", email);
-    console.log("picture: ", picture);
+    // console.log("email: ", email);
+    // console.log("picture: ", picture);
 
     if (!email || !picture) {
       return Response.json(

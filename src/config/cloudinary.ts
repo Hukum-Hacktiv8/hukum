@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
 });
 
-const handleUpload = async (dataURI: string) => {
+export const handleUpload = async (dataURI: string) => {
   try {
     const res = await cloudinary.uploader.upload(dataURI, {
       folder: "hacktivist",
@@ -20,4 +20,12 @@ const handleUpload = async (dataURI: string) => {
   }
 };
 
-export default handleUpload;
+export const handleDelete = async (publicId: string) => {
+  try {
+    const res = await cloudinary.uploader.destroy(publicId);
+
+    return res;
+  } catch (error) {
+    console.error("Error deleting file from Cloudinary", error);
+  }
+};

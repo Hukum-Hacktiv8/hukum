@@ -17,7 +17,7 @@ import {
 } from "react-icons/io5";
 import { handleLogoutAction } from "./Avatar/action";
 import { SafeUserType } from "../../types/userType";
-import { UploadImage } from "@/components/auth/uploadImageAction";
+import { DeleteImageFromCloudinary, UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/utils/formatRupiah";
 import ChatHistoryModal from "./ChatHistoryModal";
@@ -80,7 +80,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
     lawyerCertification: string;
   }
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
-  const oldUrl = user.profile.picture;
+
   const router = useRouter();
   // console.log("user yang ada di ProfileComponent nih Bang: ", user);
 
@@ -132,7 +132,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
       });
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.status === 200) {
         setRiwayat(data.data);
@@ -162,32 +162,30 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   ];
 
   const handleLogout = async () => {
-    // Implement logout logic here
-    console.log("Logging out...");
     await handleLogoutAction();
-    console.log("masuk sini nih bang!");
   };
 
+  const oldUrl = user.profile.picture;
   // ? ketika file input berubah maka upload ke cloudinary
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log("oldUrl: ", oldUrl);
     if (file) {
       // 1. hapus file yang sudah ada di cloudinary
       // untuk coba hapus harus coba upload dulu file ke cloudinary dan database
-      // supaya menghapusnya dari
+      // console.log("oldUrl ketika upload file baru: ", oldUrl);
+      // nah ketika sudah ambil oldUrl maka extract url paling belakang
+      // kirim delete saja langsung, nanti diextract di delete image
+      await DeleteImageFromCloudinary(oldUrl);
 
       // 2. upload file baru ke cloudinary
       const { secure_url } = await UploadImage(file);
 
       // 3. ambil url baru dari cloudinary
-      console.log("response dari Upload Image: ", secure_url);
-
       // 4. update profile.picture di database
       // kita harus ambil url dari cloudinary dan update profile.picture di database
       // supaya update profile.picture di database
       // kita harus buat put /api/users/:id
-      const response = await fetch("/api/users/", {
+      await fetch("/api/users/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -198,7 +196,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
         }),
       });
 
-      console.log(response);
+      // console.log(response);
       router.refresh();
     }
   };
