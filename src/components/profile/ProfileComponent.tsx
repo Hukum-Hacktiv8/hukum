@@ -20,16 +20,16 @@ import { SafeUserType } from "../../types/userType";
 import { UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/utils/formatRupiah";
-interface ConsultationHistory {
-  id: number;
-  lawyer: {
-    name: string;
-    avatar: string;
-  };
-  date: string;
-  duration: string;
-  status: "completed" | "upcoming" | "cancelled";
-}
+// interface ConsultationHistory {
+//   id: number;
+//   lawyer: {
+//     name: string;
+//     avatar: string;
+//   };
+//   date: string;
+//   duration: string;
+//   status: "completed" | "upcoming" | "cancelled";
+// }
 export interface Payment {
   _id: string;
   amount: number;
@@ -96,7 +96,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
 
   // Dummy data
   const fetchPayment = async () => {
-    const response = await fetch(`http://localhost:3000/api/payment`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payment`, {
       method: "GET",
     });
     // console.log(response);
@@ -107,7 +107,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   };
 
   const fetchSchedule = async () => {
-    const response = await fetch(`http://localhost:3000/api/schedule`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedule`, {
       method: "GET",
     });
     // console.log(response);
@@ -118,7 +118,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
 
   const fetchRiwayat = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/room-active", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/room-active`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

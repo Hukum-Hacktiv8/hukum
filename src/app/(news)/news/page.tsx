@@ -28,7 +28,7 @@ export default function News() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const fetchArticle = async () => {
-    const response = await fetch("http://localhost:3000/api/blogpost");
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogpost`);
 
     const responseJson = await response.json();
     setArticles(responseJson.data);

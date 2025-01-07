@@ -100,7 +100,7 @@ export default function Booking() {
   }, []);
 
   const fetchLawyers = async () => {
-    const data = await fetch("http://localhost:3000/api/lawyers", {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`, {
       method: "GET",
     });
     const response = await data.json();

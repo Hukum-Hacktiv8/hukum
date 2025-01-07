@@ -64,7 +64,7 @@ export function startCronJobs() {
           if (!roomId) return;
 
           const messages: Message[] = await fetchMessagesFromFirestore(roomId);
-          await fetch("http://localhost:3000/api/keep-chat-history", {
+          await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/keep-chat-history`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export function startCronJobs() {
   //         if (!roomId) return;
 
   //         const messages: Message[] = await fetchMessagesFromFirestore(roomId);
-  //         await fetch("http://localhost:3000/api/keep-chat-history", {
+  //         await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/keep-chat-history`, {
   //           method: "POST",
   //           headers: {
   //             "Content-Type": "application/json",

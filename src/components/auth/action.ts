@@ -25,7 +25,7 @@ export const registerUser = async (data: RegisterDataInput) => {
     },
   };
 
-  const response = await fetch("http://localhost:3000/api/users", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const registerLawyer = async (data: RegisterDataInput) => {
 
   // console.log("userInput: ", userInput);
 
-  const response = await fetch("http://localhost:3000/api/lawyers", {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -135,6 +135,6 @@ export const handleLogin = async (formData: FormData) => {
     sameSite: "strict",
   });
 
-  // return redirect(`http://localhost:3000`);
+  // return redirect(`${process.env.NEXT_PUBLIC_BASE_URL}`);
   return true;
 };

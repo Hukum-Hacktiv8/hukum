@@ -8,7 +8,7 @@ import {
   IoTimeOutline,
   IoBookmarkOutline,
   IoBookmark,
-  IoPrintOutline,
+  // IoPrintOutline,
   IoChevronBack,
 } from "react-icons/io5";
 
@@ -163,7 +163,7 @@ export default function NewsArticle({ article }: Props) {
                 {/* {article.data.relatedArticles.map((related) => ( */}
                 <Link
                   // key={related.id}
-                  href={`http://localhost:3000/news/677bb455708867a17e06ac73`}
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/news/677bb455708867a17e06ac73`}
                   className="group block">
                   <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-3">
                     <Image src="https://images.pexels.com/photos/4427556/pexels-photo-4427556.jpeg?auto=compress&cs=tinysrgb&w=800" alt="news 2" fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
@@ -173,7 +173,7 @@ export default function NewsArticle({ article }: Props) {
                 </Link>
                 <Link
                   // key={related.id}
-                  href={`http://localhost:3000/news/677bb455708867a17e06ac74`}
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/news/677bb455708867a17e06ac74`}
                   className="group block">
                   <div className="relative aspect-[16/9] rounded-lg overflow-hidden mb-3">
                     <Image src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40" alt="news 3" fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />

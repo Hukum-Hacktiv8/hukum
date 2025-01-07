@@ -20,7 +20,7 @@ export default function Page() {
   }, []);
 
   const fetchUser = async () => {
-    const response = await fetch("http://localhost:3000/api/userlogin", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/userlogin`, {
       method: "GET",
     });
     const data = await response.json();
@@ -58,7 +58,7 @@ export default function Page() {
         addSignatureToPDF(pdf, signatureImage);
         const pdfData = pdf.output("datauristring");
 
-        const response = await fetch("http://localhost:3000/api/savePDF", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/savePDF`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -123,8 +123,7 @@ export default function Page() {
                 className={`w-full bg-primary text-white py-4 px-6 rounded-xl text-lg font-semibold
                   hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed
                   ${isSaving ? "animate-pulse" : ""}`}
-                disabled={!signatureImage || isSaving}
-              >
+                disabled={!signatureImage || isSaving}>
                 {isSaving ? "Menyimpan..." : "Selesai & Simpan"}
               </button>
             </div>

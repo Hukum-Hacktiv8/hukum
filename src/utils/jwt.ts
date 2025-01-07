@@ -1,6 +1,6 @@
 import * as jose from "jose";
 import { ObjectId } from "mongodb";
-const SECRET_KEY = "this-is-not-a-safe-keythis veryveryno safety we can handle later ya";
+const SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET;
 
 export const createJoseToken = async (payload: { id: ObjectId; email: string; username: string }) => {
   const secret = new TextEncoder().encode(SECRET_KEY);

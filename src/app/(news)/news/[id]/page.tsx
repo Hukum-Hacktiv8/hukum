@@ -31,7 +31,7 @@ type Props = {
 };
 
 const comotDataArticle = async (id: string): Promise<Article> => {
-  const response = await fetch(`http://localhost:3000/api/blogpost/${id}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogpost/${id}`, {
     method: "GET",
   });
   const responseJson = await response.json();

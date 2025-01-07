@@ -28,7 +28,7 @@ export default function AddBlog() {
         tags.push(tag2);
       }
 
-      await fetch("http://localhost:3000/api/blogpost", {
+      await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogpost`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

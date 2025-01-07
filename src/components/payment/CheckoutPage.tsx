@@ -28,7 +28,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   useEffect(() => {
     const initializePayment = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/payment-intent", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payment-intent`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
@@ -71,8 +71,8 @@ const CheckoutPage = (props: CheckoutPageProp) => {
       // Payment successful
       if (lawyerId == "gaada") {
         await Promise.all([
-          fetch("http://localhost:3000/api/subs", { method: "POST" }),
-          fetch("http://localhost:3000/api/payment", {
+          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subs`, { method: "POST" }),
+          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payment`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -93,7 +93,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
               bookDate,
             }),
           }),
-          fetch("http://localhost:3000/api/payment", {
+          fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payment`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

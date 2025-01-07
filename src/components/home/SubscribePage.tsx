@@ -45,12 +45,12 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
   // const router = useRouter();
 
   // const handleSubs = async () => {
-  //   await fetch("http://localhost:3000/api/subs", {
+  //   await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/subs`, {
   //     method: "POST",
   //   });
   //   console.log(`udh bisa`);
 
-  //   router.push("http://localhost:3000/");
+  //   router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/`);
   // };
 
   return (

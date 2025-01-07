@@ -31,7 +31,7 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   }, []);
 
   const fetchDetailLawyer = async () => {
-    const response = await fetch(`http://localhost:3000/api/lawyers/${lawyerId}`, { method: "GET" });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers/${lawyerId}`, { method: "GET" });
 
     const data = await response.json();
     // console.log(data);
@@ -215,8 +215,7 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                     <button
                       className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900
                     font-semibold rounded-lg transition-colors"
-                      onClick={handleBooking}
-                    >
+                      onClick={handleBooking}>
                       Konfirmasi Booking
                     </button>
                   </div>
