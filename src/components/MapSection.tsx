@@ -1,3 +1,4 @@
+import { Lawyer } from "@/app/(booking)/booking/page";
 import { useLoadScript, GoogleMap, MarkerF } from "@react-google-maps/api";
 import { useRef, useState } from "react";
 
@@ -55,14 +56,6 @@ const mapOptions = {
   ],
 };
 
-interface Lawyer {
-  id: string;
-  name: string;
-  location: string;
-  lat: number;
-  lng: number;
-}
-
 interface MapSectionProps {
   lawyers: Lawyer[];
 }
@@ -77,7 +70,7 @@ export default function MapSection({ lawyers }: MapSectionProps) {
 
   // Fungsi utk scroll ke map & zoom ke lokasi lawyer
   const scrollToLawyer = (lawyerId: string) => {
-    const lawyer = lawyers.find((l) => l.id === lawyerId);
+    const lawyer = lawyers.find((l) => l._id === lawyerId);
     if (!lawyer || !mapRef.current) return;
 
     setSelectedLawyer(lawyerId);
@@ -87,7 +80,9 @@ export default function MapSection({ lawyers }: MapSectionProps) {
     mapElement?.scrollIntoView({ behavior: "smooth" });
 
     // Zoom ke lokasi lawyer
-    mapRef.current.panTo({ lat: lawyer.lat, lng: lawyer.lng });
+    if (lawyer.lat && lawyer.lng) {
+      mapRef.current.panTo({ lat: lawyer.lat, lng: lawyer.lng });
+    }
     mapRef.current.setZoom(15);
 
     // Reset selected lawyer after 3 seconds
@@ -125,7 +120,7 @@ export default function MapSection({ lawyers }: MapSectionProps) {
             }}
           >
             {lawyers.map((lawyer) => (
-              <MarkerF key={lawyer.id} position={{ lat: lawyer.lat, lng: lawyer.lng }} title={`${lawyer.name} - ${lawyer.location}`} animation={selectedLawyer === lawyer.id ? google.maps.Animation.BOUNCE : undefined} />
+              <MarkerF key={lawyer._id} position={{ lat: lawyer.lat, lng: lawyer.lng }} title={`${lawyer.name} - ${lawyer.location}`} animation={selectedLawyer === lawyer.id ? google.maps.Animation.BOUNCE : undefined} />
             ))}
           </GoogleMap>
         </div>
