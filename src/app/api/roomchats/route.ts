@@ -1,7 +1,7 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import {
-  CheckRoomLogin,
+  // CheckRoomLogin,
   createRoom,
   // findRoom
 } from "@/models/chatroom";
@@ -34,15 +34,15 @@ export const POST = async (request: Request) => {
   );
 };
 
-export const GET = async (request: Request) => {
-  const clientId = request.headers.get("rg-user-id");
+// export const GET = async (request: Request) => {
+//   const clientId = request.headers.get("rg-user-id");
 
-  if (!clientId) {
-    throw "Authorization";
-  }
+//   if (!clientId) {
+//     throw "Authorization";
+//   }
 
-  const data = await CheckRoomLogin(clientId);
-  // console.log(data);
+//   const data = await CheckRoomLogin(clientId);
+//   console.log(data);
 
-  return data;
-};
+//   return data;
+// };

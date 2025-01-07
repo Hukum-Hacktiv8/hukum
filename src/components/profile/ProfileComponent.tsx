@@ -56,7 +56,7 @@ interface profileLawyer {
 }
 export interface Message {
   sender: string;
-  content: string;
+  text: string;
   timestamp: string;
 }
 
@@ -335,7 +335,8 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                                     setSelectedChat(riwayat.messages || []);
                                     setSelectedLawyer(riwayat.lawyerName || "");
                                   }}
-                                  className="px-3 py-1 bg-yellow-500 text-slate-900 rounded-lg text-xs font-medium hover:bg-yellow-600">
+                                  className="px-3 py-1 bg-yellow-500 text-slate-900 rounded-lg text-xs font-medium hover:bg-yellow-600"
+                                >
                                   Lihat Chat
                                 </button>
                               )}
