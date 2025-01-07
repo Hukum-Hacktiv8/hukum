@@ -13,7 +13,7 @@ import {
   IoSparklesOutline,
 } from "react-icons/io5";
 import Hacktivist from "@/assets/icons/logo.png";
-import Avatar from "@/app/(profile)/Avatar/Avatar";
+import Avatar from "@/components/profile/Avatar/Avatar";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 type Props = {

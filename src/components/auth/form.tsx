@@ -1,13 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import {
-  IoMail,
-  IoLockClosed,
-  IoPaperPlane,
-  IoEye,
-  IoEyeOff,
-} from "react-icons/io5";
+import { useState, useRef, useEffect } from "react";
+import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
 import MottoSection from "./motto-section";
 import { registerUser, registerLawyer, handleLogin } from "./action";
@@ -435,11 +429,7 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
                         shadow-2xl
                     "
           >
-            <h1 className="text-3xl font-lora text-center mb-8 text-white">
-              {type === "login"
-                ? "Selamat Datang di Hacktivist"
-                : "Daftar Akun Baru"}
-            </h1>
+            <h1 className="text-3xl font-lora text-center mb-8 text-white">{type === "login" ? "Selamat Datang di Hacktivist" : "Daftar Akun Baru"}</h1>
 
             {type === "register" ? renderRegisterForm() : renderLoginForm()}
 

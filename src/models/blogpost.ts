@@ -42,8 +42,9 @@ export const readBlogAll = async () => {
 
 export const readDetail = async (id: string) => {
   const db = await getDb();
+  // console.log(id, "ini di model");
 
-  const response = await db.collection(COLLECTION).findOne({ id });
+  const response = await db.collection(COLLECTION).findOne({ _id: new ObjectId(id) });
 
   return response;
 };

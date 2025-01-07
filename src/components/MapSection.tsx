@@ -56,7 +56,7 @@ const mapOptions = {
 };
 
 interface Lawyer {
-  id: number;
+  id: string;
   name: string;
   location: string;
   lat: number;
@@ -69,14 +69,14 @@ interface MapSectionProps {
 
 export default function MapSection({ lawyers }: MapSectionProps) {
   const mapRef = useRef<google.maps.Map | null>(null);
-  const [selectedLawyer, setSelectedLawyer] = useState<number | null>(null);
+  const [selectedLawyer, setSelectedLawyer] = useState<string | null>(null);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBl12-VCiWi3n1L5Z4QVG6O_oSVYfLMMLg",
   });
 
   // Fungsi utk scroll ke map & zoom ke lokasi lawyer
-  const scrollToLawyer = (lawyerId: number) => {
+  const scrollToLawyer = (lawyerId: string) => {
     const lawyer = lawyers.find((l) => l.id === lawyerId);
     if (!lawyer || !mapRef.current) return;
 
