@@ -17,16 +17,19 @@ interface TimeSlot {
 export default function BookingDetail({ params }: { params: { lawyerId: string } }) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>("");
-  const [selectedDuration, setSelectedDuration] = useState<number>(1);
+  const [
+    selectedDuration,
+    // setSelectedDuration
+  ] = useState<number>(1);
   const [lawyer, setLawyer] = useState<Lawyer>();
   const lawyerId = params?.lawyerId;
   const router = useRouter();
 
   // Handle duration change & reset selected time
-  const handleDurationChange = (duration: number) => {
-    setSelectedDuration(duration);
-    setSelectedTime(""); // Reset selected time krn durasi berubah
-  };
+  // const handleDurationChange = (duration: number) => {
+  //   setSelectedDuration(duration);
+  //   setSelectedTime(""); // Reset selected time krn durasi berubah
+  // };
 
   // Dummy lawyer data
   // const lawyer = {
@@ -84,22 +87,27 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
 
     // Check if selected duration will overlap with next bookings
     if (selectedDuration > 1) {
-      slots.forEach((slot, idx) => {
-        if (slot.available) {
-          const slotHour = parseInt(slot.time.split(":")[0]);
+      slots.forEach(
+        (
+          slot
+          // idx
+        ) => {
+          if (slot.available) {
+            const slotHour = parseInt(slot.time.split(":")[0]);
 
-          // Check next slots based on selected duration
-          for (let i = 1; i < selectedDuration; i++) {
-            const nextSlot = slots.find((s) => parseInt(s.time.split(":")[0]) === slotHour + i);
+            // Check next slots based on selected duration
+            for (let i = 1; i < selectedDuration; i++) {
+              const nextSlot = slots.find((s) => parseInt(s.time.split(":")[0]) === slotHour + i);
 
-            // If any next slot is booked/unavailable, current slot becomes unavailable
-            if (!nextSlot || !nextSlot.available) {
-              slot.available = false;
-              break;
+              // If any next slot is booked/unavailable, current slot becomes unavailable
+              if (!nextSlot || !nextSlot.available) {
+                slot.available = false;
+                break;
+              }
             }
           }
         }
-      });
+      );
     }
 
     return slots;
@@ -226,8 +234,7 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                     <button
                       className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900
                     font-semibold rounded-lg transition-colors"
-                      onClick={handleBooking}
-                    >
+                      onClick={handleBooking}>
                       Konfirmasi Booking
                     </button>
                   </div>

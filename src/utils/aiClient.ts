@@ -1,7 +1,8 @@
 import { createGroq } from "@ai-sdk/groq";
 
 // Initialize Groq with API Key
-const groq = createGroq({
+// const groq =
+createGroq({
   apiKey: "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",
 });
 

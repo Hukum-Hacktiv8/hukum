@@ -1,13 +1,7 @@
 "use client";
 
 import convertToSubcurrency from "@/lib/convertToSubCurrency";
-import {
-  CardNumberElement,
-  CardExpiryElement,
-  CardCvcElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+import { CardNumberElement, CardExpiryElement, CardCvcElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -34,17 +28,15 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   useEffect(() => {
     const initializePayment = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3000/api/payment-intent",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
-          }
-        );
+        const response = await fetch("http://localhost:3000/api/payment-intent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+        });
         const data = await response.json();
         setClientSecret(data.clientSecret);
       } catch (error) {
+        console.log(error);
         setErrorMessage("Failed to initialize payment. Please try again.");
       } finally {
         setIsInitializing(false);
@@ -113,8 +105,9 @@ const CheckoutPage = (props: CheckoutPageProp) => {
         ]);
         router.push("/payment-success");
       }
-    } catch (err: any) {
-      setErrorMessage(err.message);
+    } catch (err) {
+      // setErrorMessage(err.message);
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -152,28 +145,19 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-xl mx-auto px-4">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-xl p-8"
-        >
-          <h1 className="text-3xl font-bold text-slate-900 mb-8">
-            {lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}
-          </h1>
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
+          <h1 className="text-3xl font-bold text-slate-900 mb-8">{lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}</h1>
 
           <div className="bg-primary/5 p-6 rounded-xl mb-8">
             <p className="text-lg text-slate-900">
               Total Pembayaran:
-              <span className="ml-2 text-xl font-bold text-primary">
-                Rp {amount.toLocaleString()}
-              </span>
+              <span className="ml-2 text-xl font-bold text-primary">Rp {amount.toLocaleString()}</span>
             </p>
           </div>
 
           <div className="space-y-8">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3">
-                Nomor Kartu
-              </label>
+              <label className="block text-sm font-semibold text-slate-700 mb-3">Nomor Kartu</label>
               <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
                 <CardNumberElement options={cardStyle} />
               </div>
@@ -181,17 +165,13 @@ const CheckoutPage = (props: CheckoutPageProp) => {
 
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-3">
-                  Tanggal Kadaluarsa
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">Tanggal Kadaluarsa</label>
                 <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
                   <CardExpiryElement options={cardStyle} />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-3">
-                  CVC
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-3">CVC</label>
                 <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
                   <CardCvcElement options={cardStyle} />
                 </div>
@@ -199,11 +179,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
             </div>
           </div>
 
-          {errorMessage && (
-            <div className="mt-6 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">
-              {errorMessage}
-            </div>
-          )}
+          {errorMessage && <div className="mt-6 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">{errorMessage}</div>}
 
           <button
             type="submit"
@@ -213,8 +189,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
               hover:bg-primary/90 transition-all
               disabled:opacity-50 disabled:cursor-not-allowed
               ${loading ? "animate-pulse" : ""}
-            `}
-          >
+            `}>
             {loading ? "Memproses pembayaran..." : "Bayar Sekarang"}
           </button>
         </form>

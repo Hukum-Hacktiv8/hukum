@@ -1,8 +1,10 @@
 import { savePdf } from "@/models/pdf";
-import { NextApiRequest, NextApiResponse } from "next";
 export const POST = async (request: Request) => {
   const body = await request.json();
-  const { pdfData, filename } = body;
+  const {
+    pdfData,
+    // filename
+  } = body;
   const inputPdf: string = pdfData;
   const inputFilename: string = pdfData;
   const inputSend = {
