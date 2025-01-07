@@ -1,11 +1,10 @@
-import HeroSection from "@/components/HeroSection";
-import StatsSection from "@/components/StatsSection";
-import ServicesSection from "@/components/ServicesSection";
-import LegalTipsSection from "@/components/LegalTipsSection";
+import HeroSection from "@/components/home/HeroSection";
+import StatsSection from "@/components/home/StatsSection";
+import ServicesSection from "@/components/home/ServicesSection";
+import LegalTipsSection from "@/components/home/LegalTipsSection";
 import Footer from "@/components/Footer";
-import SubscribePage from "@/components/SubscribePage";
+import SubscribePage from "@/components/home/SubscribePage";
 
-  
 export default function Home() {
   return (
     <>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DigitalSignature from "@/components/DigitalSignature";
+import DigitalSignature from "@/components/pdf/DigitalSignature";
 import { createPDFTemplate, addSignatureToPDF } from "@/utils/pdfTemplate";
 import { useRouter } from "next/navigation";
 
@@ -59,7 +59,7 @@ export default function Page() {
           throw new Error("Failed to save PDF");
         }
 
-        const result = await response.json();
+        // const result = await response.json();
         // alert(`PDF berhasil disimpan ke database dengan ID: ${result.id}`);
         router.push("/");
       } catch (error) {

@@ -7,7 +7,7 @@ export default function Register() {
 
   if (token) {
     redirect("/");
-    console.log("Buat toastify, sudah login");
+    // console.log("Buat toastify, sudah login");
   }
 
   return (

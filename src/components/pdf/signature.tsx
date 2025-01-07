@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 
-import DigitalSignature from "../components/DigitalSignature";
+import DigitalSignature from "./DigitalSignature";
+import Image from "next/image";
 
 const SignaturePage: React.FC = () => {
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
@@ -27,7 +28,7 @@ const SignaturePage: React.FC = () => {
       {signatureImage && (
         <div className="mt-4">
           <h2 className="text-xl font-semibold mb-2">Preview:</h2>
-          <img src={signatureImage} alt="Signature" className="border border-gray-300" />
+          <Image src={signatureImage} alt="Signature" className="border border-gray-300" width={500} height={250} />
           <button onClick={generatePDF} className="mt-4 px-4 py-2 bg-green-500 text-white rounded">
             Generate PDF
           </button>

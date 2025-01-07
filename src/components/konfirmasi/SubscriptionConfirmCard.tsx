@@ -7,7 +7,7 @@ export default function SubscriptionConfirmCard() {
   const searchParamsData = useSearchParams();
   const router = useRouter();
 
-  const interval = searchParamsData.get("interval");
+  // const interval = searchParamsData.get("interval");
   const time = searchParamsData.get("time");
   const date = searchParamsData.get("date");
   const lawyer = searchParamsData.get("lawyer");
@@ -20,12 +20,7 @@ export default function SubscriptionConfirmCard() {
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="relative h-[400px]">
-          <Image
-            src="https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg"
-            alt="Law-Subscription"
-            fill
-            className="object-cover"
-          />
+          <Image src="https://images.pexels.com/photos/5669602/pexels-photo-5669602.jpeg" alt="Law-Subscription" fill className="object-cover" />
         </div>
         <div className="p-8">
           <div className="space-y-6">

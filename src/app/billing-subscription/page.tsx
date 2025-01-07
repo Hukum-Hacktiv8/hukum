@@ -1,10 +1,10 @@
 "use client";
 
-import CheckoutPage from "@/components/CheckoutPage";
+import CheckoutPage from "@/components/payment/CheckoutPage";
 import convertToSubcurrency from "@/lib/convertToSubCurrency";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
   throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
@@ -14,7 +14,7 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function BillingPage() {
   // ! ini hardcode
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   const lawyerId = "gaada";
   const date = "gaada";
