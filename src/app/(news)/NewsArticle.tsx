@@ -153,10 +153,6 @@ export default function NewsArticle({ article }: Props) {
                   {isSaved ? <IoBookmark className="w-5 h-5 text-yellow-500" /> : <IoBookmarkOutline className="w-5 h-5" />}
                   <span>Save Article</span>
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600">
-                  <IoPrintOutline className="w-5 h-5" />
-                  <span>Print</span>
-                </button>
               </div>
             </div>
 
