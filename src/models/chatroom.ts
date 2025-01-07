@@ -182,3 +182,19 @@ export const roomDeactive = async () => {
 
   return data;
 };
+
+export const riwayatRoom = async (id: string) => {
+  const db = await getDb();
+  // console.log(id, "di model");
+
+  const chatHistory = await db
+    .collection(COLLECTION)
+    .find({
+      "participants.1": id,
+      status: "done",
+    })
+    .toArray();
+  // console.log(chatHistory);
+
+  return chatHistory;
+};
