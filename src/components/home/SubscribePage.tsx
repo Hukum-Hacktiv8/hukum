@@ -135,7 +135,7 @@ export default function SubscribePage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20">
+    <div id="subscribe" className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20">
       <div className="container mx-auto px-4">
         {/* Page Header */}
         <div className="text-center mb-16">
