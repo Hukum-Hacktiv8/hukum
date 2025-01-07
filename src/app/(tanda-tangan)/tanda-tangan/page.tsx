@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DigitalSignature from "@/components/pdf/DigitalSignature";
 import { createPDFTemplate, addSignatureToPDF } from "@/utils/pdfTemplate";
 import { useRouter } from "next/navigation";
@@ -9,16 +9,29 @@ export default function Page() {
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [pdfPreview, setPdfPreview] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [name, Setname] = useState<string>("");
   const router = useRouter();
   const handleSaveSignature = (image: string) => {
     setSignatureImage(image);
   };
-  const logo: string =
-    "https://thumbs.dreamstime.com/b/law-firm-logo-concept-lawyer-attorney-legal-lawyer-service-law-firm-logo-template-lawyer-attorney-jurist-judge-business-woman-326864298.jpg";
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    const response = await fetch("http://localhost:3000/api/userlogin", {
+      method: "GET",
+    });
+    const data = await response.json();
+    // console.log(data);
+    Setname(data.username);
+  };
+  const logo: string = "https://thumbs.dreamstime.com/b/law-firm-logo-concept-lawyer-attorney-legal-lawyer-service-law-firm-logo-template-lawyer-attorney-jurist-judge-business-woman-326864298.jpg";
   const handlePreviewPDF = () => {
     if (signatureImage) {
       // Buat template PDF
-      const pdf = createPDFTemplate(logo);
+      const pdf = createPDFTemplate(logo, name);
 
       // Tambahkan tanda tangan
       addSignatureToPDF(pdf, signatureImage);
@@ -31,7 +44,7 @@ export default function Page() {
 
   const generatePDF = () => {
     if (signatureImage) {
-      const pdf = createPDFTemplate(logo);
+      const pdf = createPDFTemplate(logo, name);
       addSignatureToPDF(pdf, signatureImage);
       pdf.save("surat-pernyataan.pdf");
     }
@@ -41,7 +54,7 @@ export default function Page() {
     if (signatureImage) {
       setIsSaving(true);
       try {
-        const pdf = createPDFTemplate(logo);
+        const pdf = createPDFTemplate(logo, name);
         addSignatureToPDF(pdf, signatureImage);
         const pdfData = pdf.output("datauristring");
 
@@ -78,47 +91,29 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Signature Area */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-8">
-              Tanda Tangan Digital
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900 mb-8">Tanda Tangan Digital</h1>
 
             <div className="space-y-8">
               {/* Signature Area */}
               <div className="bg-primary/5 p-6 rounded-xl">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                  Buat Tanda Tangan
-                </h2>
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Buat Tanda Tangan</h2>
                 <DigitalSignature onSave={handleSaveSignature} />
               </div>
 
               {/* Signature Preview */}
               {signatureImage && (
                 <div className="bg-primary/5 p-6 rounded-xl">
-                  <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                    Preview Tanda Tangan:
-                  </h2>
-                  <img
-                    src={signatureImage}
-                    alt="Signature"
-                    className="border-2 border-primary/20 rounded-xl max-w-[300px]"
-                  />
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">Preview Tanda Tangan:</h2>
+                  <img src={signatureImage} alt="Signature" className="border-2 border-primary/20 rounded-xl max-w-[300px]" />
                 </div>
               )}
 
               {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-4">
-                <button
-                  onClick={handlePreviewPDF}
-                  className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50"
-                  disabled={!signatureImage}
-                >
+                <button onClick={handlePreviewPDF} className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50" disabled={!signatureImage}>
                   Preview PDF
                 </button>
-                <button
-                  onClick={generatePDF}
-                  className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50"
-                  disabled={!signatureImage}
-                >
+                <button onClick={generatePDF} className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50" disabled={!signatureImage}>
                   Download PDF
                 </button>
               </div>
@@ -137,20 +132,12 @@ export default function Page() {
 
           {/* Right Column - PDF Preview */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">
-              Preview Dokumen
-            </h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-8">Preview Dokumen</h2>
             {pdfPreview ? (
-              <iframe
-                src={pdfPreview}
-                className="w-full h-[800px] rounded-xl border-2 border-primary/20"
-              />
+              <iframe src={pdfPreview} className="w-full h-[800px] rounded-xl border-2 border-primary/20" />
             ) : (
               <div className="h-[800px] rounded-xl border-2 border-primary/20 flex items-center justify-center">
-                <p className="text-slate-500">
-                  Preview PDF akan muncul di sini setelah Anda membuat tanda
-                  tangan
-                </p>
+                <p className="text-slate-500">Preview PDF akan muncul di sini setelah Anda membuat tanda tangan</p>
               </div>
             )}
           </div>

@@ -11,6 +11,7 @@ import {
   IoSchoolOutline,
 } from "react-icons/io5";
 import MapSection from "../../../components/MapSection";
+import { formatRupiah } from "@/utils/formatRupiah";
 
 export interface Lawyer {
   _id: string;
@@ -103,6 +104,7 @@ export default function Booking() {
       method: "GET",
     });
     const response = await data.json();
+    console.log(response.data, "tolong cek ini di lawyer");
 
     setLawyers(response.data);
   };
@@ -166,7 +168,7 @@ export default function Booking() {
                 <div className="space-y-2 mb-6 text-sm">
                   <div className="flex items-center gap-2 text-gray-300">
                     <IoTimeOutline className="w-4 h-4 text-gray-400" />
-                    <span>masi hardcode pengalaman</span>
+                    <span>Profesional</span>
                   </div>
                   <div className="flex items-center gap-2 text-gray-300">
                     <IoLocationOutline className="w-4 h-4 text-gray-400" />
@@ -174,14 +176,24 @@ export default function Booking() {
                   </div>
                   <div className="flex items-center gap-2 text-gray-300">
                     <IoSchoolOutline className="w-4 h-4 text-gray-400" />
-                    <span>Sekolah nya masi hardcode</span>
+                    <div className="flex flex-wrap gap-2">
+                      {lawyer.credentials.education.map(
+                        (el, idx) =>
+                          // Only show the first education entry (S1)
+                          idx === 1 && (
+                            <span key={idx} className="text-sm">
+                              {Object.values(el)[0]}
+                            </span>
+                          )
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Price & Actions */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                   <div>
-                    <div className="text-white font-medium">{lawyer.price}</div>
+                    <div className="text-white font-medium">{formatRupiah(lawyer.price)}</div>
                     <div className="text-green-500 text-sm">Tersedia</div>
                   </div>
                   <div className="flex items-center gap-2">

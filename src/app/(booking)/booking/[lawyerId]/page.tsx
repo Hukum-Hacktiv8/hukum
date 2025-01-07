@@ -98,10 +98,12 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   const getDates = () => {
     const dates = [];
     const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // Start from tomorrow
 
     for (let i = 0; i < 30; i++) {
       const date = new Date();
-      date.setDate(today.getDate() + i);
+      date.setDate(tomorrow.getDate() + i);
       dates.push(date);
     }
 
