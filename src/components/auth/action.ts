@@ -114,7 +114,8 @@ export const handleLogin = async (formData: FormData) => {
   const user = await getUserByEmail(parsedData.data.email);
 
   if (!user || !(await comparePass(parsedData.data.password, user.password))) {
-    return redirect(`/login?error=Invalid%20Credentials`);
+    // return redirect(`/login?error=Invalid%20Credentials`);
+    return false;
   }
 
   //   console.log(`masuk yaw`);
@@ -134,5 +135,6 @@ export const handleLogin = async (formData: FormData) => {
     sameSite: "strict",
   });
 
-  return redirect(`http://localhost:3000`);
+  // return redirect(`http://localhost:3000`);
+  return true;
 };

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function SubscriptionConfirmCard() {
   const searchParamsData = useSearchParams();
@@ -21,7 +22,10 @@ export default function SubscriptionConfirmCard() {
     const response = await fetch("/api/clientid");
     const { clientId } = await response.json();
 
-    if (!clientId) router.push("/login");
+    if (!clientId) {
+      toast.error("Silahkan login terlebih dahulu.");
+      router.push("/login");
+    }
 
     const data = await fetch("/api/check-premium", {
       method: "POST",
@@ -37,6 +41,7 @@ export default function SubscriptionConfirmCard() {
     const isPremium = result?.data;
 
     if (isPremium) {
+      toast.error("Anda sudah berlangganan");
       router.push("/");
     }
 

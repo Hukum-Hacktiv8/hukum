@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 const VideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
@@ -107,6 +108,7 @@ const VideoCall = () => {
     const isPremium = result?.data;
 
     if (!isPremium) {
+      toast.error("Silahkan Berlangganan Dulu");
       router.push("/");
     }
 
