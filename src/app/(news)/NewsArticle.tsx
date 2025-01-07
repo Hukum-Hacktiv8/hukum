@@ -38,6 +38,7 @@ type Article = {
 
 export type Props = {
   article: {
+    statusCode: number;
     data: Article;
   };
 };
