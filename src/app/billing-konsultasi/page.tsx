@@ -24,30 +24,33 @@ export default function BillingPage() {
   if (!lawyerId || !date) return null;
 
   return (
-    <main className="flex justify-center p-10">
-      <div className="  card bg-base-100 w-96 shadow-xl">
-        {/* <figure className="px-10 pt-10">
-          <Image src="https://images.pexels.com/photos/4427430/pexels-photo-4427430.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Law-Billing" className="rounded-xl h-40" fill sizes="100vw" />
-        </figure> */}
-        <div className=" flex justify-center align-center text-center px-10 pt-10 text-5xl font-bold">Jasa Konsultasi</div>
-        <div className="card-body items-center text-center">
-          <h2 className="card-title">Pembayaran</h2>
-        </div>
-        <div className="flex justify-center">
-          <p className="mr-5">Total Harga:</p>
-          <p className="font-bold">Rp.{amount}</p>
-        </div>
-        <div className="p-5">
-          <Elements
-            stripe={stripePromise}
-            options={{
-              mode: "payment",
-              amount: convertToSubcurrency(amount),
-              currency: "idr",
-            }}
-          >
-            <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
-          </Elements>
+    <main className="min-h-screen bg-slate-50">
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-slate-900">
+                Jasa Konsultasi
+              </h1>
+              <h2 className="text-xl mt-2">Pembayaran</h2>
+            </div>
+
+            <div className="flex justify-center mb-6">
+              <p className="mr-5">Total Harga:</p>
+              <p className="font-bold">Rp.{amount}</p>
+            </div>
+
+            <Elements
+              stripe={stripePromise}
+              options={{
+                mode: "payment",
+                amount: convertToSubcurrency(amount),
+                currency: "idr",
+              }}
+            >
+              <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
+            </Elements>
+          </div>
         </div>
       </div>
     </main>

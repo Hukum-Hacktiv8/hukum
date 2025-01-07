@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-export default function PaymentSuccess({ searchParams: { amount } }: { searchParams: { amount: string } }) {
+export default function PaymentSuccess({
+  searchParams: { amount },
+}: {
+  searchParams: { amount: string };
+}) {
   return (
     <main className="flex justify-center p-20">
       <div className="card bg-base-100 w-96 shadow-xl ">

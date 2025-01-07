@@ -13,7 +13,7 @@ export default function SubscriptionConfirmCard() {
   const lawyer = searchParamsData.get("lawyer");
 
   const handleSubmit = async () => {
-    router.push("/billing-subscription");
+    router.push(`/billing-subscription?lawyer=${lawyer}&date=${date}`);
   };
 
   return (
@@ -30,7 +30,7 @@ export default function SubscriptionConfirmCard() {
         <div className="p-8 space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-slate-900">
-              Subscription (Monthly)
+              Jasa Langganan (Monthly)
             </h2>
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-2">
