@@ -10,10 +10,6 @@ import {
   IoBookmark,
   IoPrintOutline,
   IoChevronBack,
-  // IoLogoTwitter,
-  // IoLogoLinkedin,
-  // IoLogoFacebook,
-  // IoLogoWhatsapp,
 } from "react-icons/io5";
 
 type Article = {
@@ -44,7 +40,6 @@ export type Props = {
   article: {
     data: Article;
   };
-  // article: Article;
 };
 
 export default function NewsArticle({ article }: Props) {
