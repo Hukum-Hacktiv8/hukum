@@ -108,8 +108,6 @@ Ensure the output is properly formatted and easy to read.
         .replace(/\n\n+/g, "\n\n")
         .trim();
 
-      console.log(cleanedResult.includes("Please login first. 🤖"), "INI BROO");
-
       if (cleanedResult?.includes("Please login first. 🤖")) {
         setMessages((prev) => [...prev, { isUser: false, text: "Please login first. 🤖" }]);
         router.push("/login");

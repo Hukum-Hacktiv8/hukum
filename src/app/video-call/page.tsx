@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPeerConnection, createRoom, joinRoom } from "@/lib/webrtc";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useRouter } from "next/navigation";
 const VideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const [peerConnection, setPeerConnection] =
-    useState<RTCPeerConnection | null>(null);
+  const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
   const [videoRoomId, setVideoRoomId] = useState<string | null>(null);
+  const router = useRouter();
 
   const startCall = async () => {
     if (!peerConnection) return;
@@ -87,6 +87,36 @@ const VideoCall = () => {
     }
   };
 
+  const checkPremium = async () => {
+    const response = await fetch("/api/clientid");
+    const { clientId } = await response.json();
+
+    if (!clientId) router.push("/login");
+
+    const data = await fetch("/api/check-premium", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        clientId,
+      }),
+    });
+
+    const result = await data.json();
+    const isPremium = result?.data;
+
+    if (!isPremium) {
+      router.push("/");
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    checkPremium();
+  }, []);
+
   return (
     <div className="h-[calc(100vh-4rem)] bg-slate-900 text-white px-8 flex items-center">
       <div className="container mx-auto max-w-7xl -mt-20">
@@ -94,83 +124,37 @@ const VideoCall = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="relative aspect-[16/10] bg-slate-800 rounded-xl overflow-hidden">
-            <video
-              ref={localVideoRef}
-              autoPlay
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">
-              Anda
-            </div>
+            <video ref={localVideoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">Anda</div>
           </div>
           <div className="relative aspect-[16/10] bg-slate-800 rounded-xl overflow-hidden">
-            <video
-              ref={remoteVideoRef}
-              autoPlay
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">
-              Lawan Bicara
-            </div>
+            <video ref={remoteVideoRef} autoPlay playsInline className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute bottom-4 left-4 bg-black/50 px-3 py-1 rounded-lg">Lawan Bicara</div>
           </div>
         </div>
 
         <div className="flex flex-wrap justify-center gap-4 mb-8">
-          <button
-            onClick={startMedia}
-            className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-lg transition-colors"
-          >
+          <button onClick={startMedia} className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-lg transition-colors">
             Mulai Media
           </button>
-          <button
-            onClick={startCall}
-            disabled={!peerConnection}
-            className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
-          >
+          <button onClick={startCall} disabled={!peerConnection} className="px-6 py-3 bg-green-500 hover:bg-green-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors">
             Buat Room
           </button>
-          <button
-            onClick={joinCall}
-            disabled={!peerConnection}
-            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
-          >
+          <button onClick={joinCall} disabled={!peerConnection} className="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors">
             Join Room
           </button>
-          <button
-            onClick={endCall}
-            disabled={!peerConnection}
-            className="px-6 py-3 bg-red-500 hover:bg-red-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors"
-          >
+          <button onClick={endCall} disabled={!peerConnection} className="px-6 py-3 bg-red-500 hover:bg-red-600 disabled:bg-slate-600 disabled:cursor-not-allowed font-medium rounded-lg transition-colors">
             Akhiri Call
           </button>
         </div>
 
         <AnimatePresence>
           {videoRoomId && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="bg-slate-800 p-6 rounded-xl mx-auto max-w-2xl"
-            >
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg mb-2"
-              >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.3, ease: "easeOut" }} className="bg-slate-800 p-6 rounded-xl mx-auto max-w-2xl">
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-lg mb-2">
                 Room ID:
               </motion.p>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="font-mono bg-slate-700 p-3 rounded-lg break-all"
-              >
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="font-mono bg-slate-700 p-3 rounded-lg break-all">
                 {videoRoomId}
               </motion.p>
             </motion.div>

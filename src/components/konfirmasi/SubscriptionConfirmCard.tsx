@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SubscriptionConfirmCard() {
   const searchParamsData = useSearchParams();
@@ -16,6 +17,36 @@ export default function SubscriptionConfirmCard() {
     router.push(`/billing-subscription?lawyer=${lawyer}&date=${date}`);
   };
 
+  const checkPremium = async () => {
+    const response = await fetch("/api/clientid");
+    const { clientId } = await response.json();
+
+    if (!clientId) router.push("/login");
+
+    const data = await fetch("/api/check-premium", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        clientId,
+      }),
+    });
+
+    const result = await data.json();
+    const isPremium = result?.data;
+
+    if (isPremium) {
+      router.push("/");
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    checkPremium();
+  }, []);
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="grid lg:grid-cols-2 gap-6">
@@ -24,9 +55,7 @@ export default function SubscriptionConfirmCard() {
         </div>
         <div className="p-8">
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-slate-900">
-              Jasa Langganan (Monthly)
-            </h2>
+            <h2 className="text-2xl font-bold text-slate-900">Jasa Langganan (Monthly)</h2>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Lawyer:</span>
@@ -49,10 +78,7 @@ export default function SubscriptionConfirmCard() {
                 <span className="font-medium text-gray-500">Rp 299,000</span>
               </div>
             </div>
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors"
-            >
+            <button onClick={handleSubmit} className="w-full bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors">
               Lanjut ke Pembayaran
             </button>
           </div>

@@ -25,27 +25,6 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
   const lawyerId = params?.lawyerId;
   const router = useRouter();
 
-  // Handle duration change & reset selected time
-  // const handleDurationChange = (duration: number) => {
-  //   setSelectedDuration(duration);
-  //   setSelectedTime(""); // Reset selected time krn durasi berubah
-  // };
-
-  // Dummy lawyer data
-  // const lawyer = {
-  //   id: 1,
-  //   name: "Dr. Sarah Wijaya, S.H., M.H.",
-  //   specialization: "Hukum Bisnis",
-  //   rating: 4.9,
-  //   reviews: 128,
-  //   experience: "15 tahun",
-  //   location: "Jakarta Selatan",
-  //   education: "Harvard Law School",
-  //   price: 1500000,
-  //   avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-  //   badges: ["Verified", "Top Rated", "Premium"],
-  // };
-
   useEffect(() => {
     fetchDetailLawyer();
     // console.log(lawyerId, "ini di atas effect");
@@ -234,7 +213,8 @@ export default function BookingDetail({ params }: { params: { lawyerId: string }
                     <button
                       className="w-full px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-slate-900
                     font-semibold rounded-lg transition-colors"
-                      onClick={handleBooking}>
+                      onClick={handleBooking}
+                    >
                       Konfirmasi Booking
                     </button>
                   </div>

@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJoseToken } from "./utils/jwt";
-import { redirect } from "next/navigation";
 
 export const middleware = async (request: NextRequest) => {
   if (
@@ -12,7 +11,8 @@ export const middleware = async (request: NextRequest) => {
     request.url.includes("/api/subs") ||
     request.url.includes("/api/userlogin") ||
     request.url.includes("/api/payment") ||
-    request.url.includes("/api/schedule")
+    request.url.includes("/api/schedule") ||
+    request.url.includes("/api/clientid")
     // userlogin api untuk login
   ) {
     const token = cookies().get("token");

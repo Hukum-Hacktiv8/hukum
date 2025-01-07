@@ -4,6 +4,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 // import Footer from "@/components/Footer";
 import { startCronJobs } from "@/utils/cron";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -40,6 +43,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${lora.variable} font-lora`}>
+        <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
         <Navbar token={token} />
         <div className="mt-16">{children}</div>
         {/* <Footer /> */}

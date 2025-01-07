@@ -118,17 +118,9 @@ export const checkSubscriptionStatus = async (userId: string) => {
 
   if (currentDate > endDate && subscription.status === "active" && subscription.type === "premium") {
     // Update subscription status if it's expired
-    await db.collection(COLLECTION).updateOne(
-      { userId: new ObjectId(userId) },
-      {
-        $set: {
-          status: "expired",
-          type: "free",
-        },
-      }
-    );
+    await db.collection(COLLECTION).deleteOne({ userId: new ObjectId(userId) });
 
-    return { status: "expired", type: "free" };
+    return "Success Delete";
   }
 
   return { status: subscription.status, type: subscription.type };
