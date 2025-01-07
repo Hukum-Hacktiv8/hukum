@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 
-import DigitalSignature from "../components/DigitalSignature";
+import DigitalSignature from "./DigitalSignature";
 import Image from "next/image";
 
 const SignaturePage: React.FC = () => {

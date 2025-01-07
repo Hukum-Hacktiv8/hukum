@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import DigitalSignature from "@/components/DigitalSignature";
+import DigitalSignature from "@/components/pdf/DigitalSignature";
 import { createPDFTemplate, addSignatureToPDF } from "@/utils/pdfTemplate";
 import { useRouter } from "next/navigation";
 
