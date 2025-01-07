@@ -27,40 +27,40 @@ export default function SubscriptionConfirmCard() {
             className="object-cover"
           />
         </div>
-        <div className="p-8 space-y-6">
-          <div>
+        <div className="p-8">
+          <div className="space-y-6">
             <h2 className="text-2xl font-bold text-slate-900">
               Jasa Langganan (Monthly)
             </h2>
-            <div className="mt-6 space-y-3">
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Lawyer:</span>
-                <span className="font-medium">{lawyer}</span>
+                <span className="font-medium text-gray-500">{lawyer}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Tanggal:</span>
-                <span className="font-medium">{date}</span>
+                <span className="font-medium text-gray-500">{date}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Waktu:</span>
-                <span className="font-medium">{time}</span>
+                <span className="font-medium text-gray-500">{time}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Durasi:</span>
-                <span className="font-medium">1 Bulan</span>
+                <span className="font-medium text-gray-500">1 Bulan</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Biaya:</span>
-                <span className="font-medium">Rp 299,000</span>
+                <span className="font-medium text-gray-500">Rp 299,000</span>
               </div>
             </div>
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors"
+            >
+              Lanjut ke Pembayaran
+            </button>
           </div>
-          <button
-            onClick={handleSubmit}
-            className="w-full bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors"
-          >
-            Lanjut ke Pembayaran
-          </button>
         </div>
       </div>
     </div>
