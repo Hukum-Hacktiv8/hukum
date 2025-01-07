@@ -86,19 +86,7 @@ Ensure the output is properly formatted and easy to read.
         }),
       });
 
-      // if (typeof response === "object") {
-      //   const data = await response.json();
-      //   console.log(data?.error, "HALO");
-      // } else {
-      //   console.log("stream nya lewat");
-      // }
-
       if (!response.body) throw new Error("No response body");
-
-      if (response.status === 401) {
-        router.push("/login");
-        return;
-      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
@@ -119,7 +107,15 @@ Ensure the output is properly formatted and easy to read.
         .replace(/(\*\s)/g, "\n$1")
         .replace(/\n\n+/g, "\n\n")
         .trim();
-      setMessages((prev) => [...prev, { isUser: false, text: cleanedResult }]);
+
+      console.log(cleanedResult.includes("Please login first. 🤖"), "INI BROO");
+
+      if (cleanedResult?.includes("Please login first. 🤖")) {
+        setMessages((prev) => [...prev, { isUser: false, text: "Please login first. 🤖" }]);
+        router.push("/login");
+      } else {
+        setMessages((prev) => [...prev, { isUser: false, text: cleanedResult }]);
+      }
     } catch (error) {
       console.error("Search error:", error);
       setMessages((prev) => [...prev, { isUser: false, text: "Sori, ada error nih... 😅" }]);
