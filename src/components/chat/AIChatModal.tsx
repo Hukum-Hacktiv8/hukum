@@ -6,6 +6,7 @@ import { IoSparklesOutline } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 interface ChatMessage {
   isUser: boolean;
   text: string;
@@ -110,7 +111,7 @@ Ensure the output is properly formatted and easy to read.
 
       if (cleanedResult?.includes("Please login first. 🤖")) {
         setMessages((prev) => [...prev, { isUser: false, text: "Please login first. 🤖" }]);
-        router.push("/login");
+        toast.error("Silahkan login terlebih dahulu.");
       } else {
         setMessages((prev) => [...prev, { isUser: false, text: cleanedResult }]);
       }
