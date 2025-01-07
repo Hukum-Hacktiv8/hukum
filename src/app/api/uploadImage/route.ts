@@ -1,4 +1,4 @@
-import handleUpload from "@/config/cloudinary";
+import { handleDelete, handleUpload } from "@/config/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -18,6 +18,15 @@ export const POST = async (request: NextRequest) => {
     cldRes = await handleUpload(dataURI);
   }
   console.log(cldRes);
+
+  return NextResponse.json(cldRes);
+};
+
+export const DELETE = async (request: NextRequest) => {
+  const data = await request.json();
+  const publicId = data.publicId;
+
+  const cldRes = await handleDelete(publicId);
 
   return NextResponse.json(cldRes);
 };
