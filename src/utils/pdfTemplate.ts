@@ -2,8 +2,9 @@
 
 import { jsPDF } from "jspdf";
 
-export function createPDFTemplate(logoUrl: string) {
+export function createPDFTemplate(logoUrl: string, name: string) {
   // Initialize PDF with proper settings
+
   const pdf = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -15,11 +16,6 @@ export function createPDFTemplate(logoUrl: string) {
     pdf.addImage(logoUrl, "PNG", 160, 10, 30, 25); // Adjust position and size as needed
   }
 
-  // Data klien
-  const name = `Raga`;
-  const nik = 112014;
-  const address = "JL MERPATI";
-  const lawyerName = "Bpk. Ahmad Sulaiman, S.H., M.H.";
   const consultationDate = new Date().toLocaleDateString("id-ID", {
     weekday: "long",
     year: "numeric",
@@ -51,13 +47,13 @@ export function createPDFTemplate(logoUrl: string) {
 
   // Penerima surat
   pdf.setFont("helvetica", "normal");
-  pdf.text(["Kepada Yth,", lawyerName, "Kantor Hukum Sulaiman & Partners", "di Jakarta"], 20, 60);
+  pdf.text(["Kepada Yth,", "Kantor Hacktivist", "di Jakarta"], 20, 60);
 
   // Pembuka
   pdf.text("Dengan hormat,", 20, 85);
 
   // Data pemohon
-  pdf.text(["Yang bertanda tangan di bawah ini:", "", `Nama\t\t\t: ${name}`, `NIK\t\t\t\t: ${nik}`, `Alamat\t\t\t: ${address}`], 20, 95);
+  pdf.text(["Yang bertanda tangan di bawah ini:", "", `Nama\t\t\t: ${name}`], 20, 95);
 
   // Isi surat
   pdf.setFont("helvetica", "normal");
