@@ -58,7 +58,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
+    setLoading(true); // note
 
     try {
       if (!stripe || !elements) {
@@ -153,56 +153,58 @@ const CheckoutPage = (props: CheckoutPageProp) => {
             {lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}
           </h1>
 
-          <div className="flex-1 overflow-auto pr-2">
-            <div className="space-y-10">
-              <div>
-                <label className="block text-base font-semibold text-slate-700 mb-4">
-                  Nomor Kartu
-                </label>
-                <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
-                  <CardNumberElement options={cardStyle} />
+          <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
+            <div className="flex-1 overflow-auto pr-2">
+              <div className="space-y-10">
+                <div>
+                  <label className="block text-base font-semibold text-slate-700 mb-4">
+                    Nomor Kartu
+                  </label>
+                  <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                    <CardNumberElement options={cardStyle} />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-8">
+                  <div>
+                    <label className="block text-base font-semibold text-slate-700 mb-4">
+                      Tanggal Kadaluarsa
+                    </label>
+                    <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                      <CardExpiryElement options={cardStyle} />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-base font-semibold text-slate-700 mb-4">
+                      CVC
+                    </label>
+                    <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                      <CardCvcElement options={cardStyle} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <label className="block text-base font-semibold text-slate-700 mb-4">
-                    Tanggal Kadaluarsa
-                  </label>
-                  <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
-                    <CardExpiryElement options={cardStyle} />
-                  </div>
+              {errorMessage && (
+                <div className="mt-8 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">
+                  {errorMessage}
                 </div>
-                <div>
-                  <label className="block text-base font-semibold text-slate-700 mb-4">
-                    CVC
-                  </label>
-                  <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
-                    <CardCvcElement options={cardStyle} />
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
-            {errorMessage && (
-              <div className="mt-8 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">
-                {errorMessage}
-              </div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={!stripe || loading}
-            className={`
+            <button
+              type="submit"
+              disabled={!stripe || loading}
+              className={`
                         mt-10 w-full bg-primary text-white py-5 px-8 rounded-xl text-lg font-semibold
                         hover:bg-primary/90 transition-all flex-shrink-0
                         disabled:opacity-50 disabled:cursor-not-allowed
                         ${loading ? "animate-pulse" : ""}
                     `}
-          >
-            {loading ? "Memproses pembayaran..." : "Bayar Sekarang"}
-          </button>
+            >
+              {loading ? "Memproses pembayaran..." : "Bayar Sekarang"}
+            </button>
+          </form>
         </div>
       )}
     </div>
