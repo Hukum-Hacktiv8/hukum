@@ -3,10 +3,14 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
+  console.log("MASUKKK");
+
   const { systemPrompt, userPrompt } = await req.json();
   const token = cookies().get("token");
 
-  if (!token) return new Response("Unauthorized", { status: 401 });
+  if (!token) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   if (!userPrompt) {
     return NextResponse.json({ error: "User prompt is required" }, { status: 400 });

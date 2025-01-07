@@ -86,11 +86,18 @@ Ensure the output is properly formatted and easy to read.
         }),
       });
 
-      if (!response.body) throw new Error("No response body");
-      const data = await response.json();
+      // if (typeof response === "object") {
+      //   const data = await response.json();
+      //   console.log(data?.error, "HALO");
+      // } else {
+      //   console.log("stream nya lewat");
+      // }
 
-      if (data?.statusCode === 401) {
+      if (!response.body) throw new Error("No response body");
+
+      if (response.status === 401) {
         router.push("/login");
+        return;
       }
 
       const reader = response.body.getReader();
