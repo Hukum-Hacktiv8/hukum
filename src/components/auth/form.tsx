@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoMail, IoLockClosed, IoPaperPlane, IoEye, IoEyeOff } from "react-icons/io5";
 import Link from "next/link";
 import MottoSection from "./motto-section";
 import { registerUser, registerLawyer, handleLogin } from "./action";
 import { useRouter } from "next/navigation";
 import { UploadImage } from "./uploadImageAction";
+import { toast } from "react-toastify";
 
 interface AuthFormProps {
   type?: "login" | "register";
@@ -89,7 +90,10 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         // const response = await registerUser(sanitizedData);
         if (formData.role === "client") {
           const response = await registerUser(sanitizedData);
-          if (response.message === "Success Register") router.push("/login");
+          if (response.message === "Success Register") {
+            toast.success("Berhasil Daftar");
+            router.push("/login");
+          }
         } else if (formData.role === "lawyer") {
           // ? upload data menggunakan cloudinary
           let secureImageUrlCloudinary = null;
@@ -100,7 +104,10 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
           };
 
           const response = await registerLawyer(registerFormData);
-          if (response.message === "Success Register Lawyer") router.push("/login");
+          if (response.message === "Success Register Lawyer") {
+            toast.success("Berhasil daftar, tunggu konfirmasi tim kami ya!");
+            router.push("/login");
+          }
         }
       } else {
         // console.log("Login attempt:", { email, password });
@@ -111,7 +118,12 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
         formData.append("email", email);
         formData.append("password", password);
 
-        await handleLogin(formData);
+        const check = await handleLogin(formData);
+        if (!check) {
+          toast.error("Invalid Credentials");
+        } else {
+          router.push("/");
+        }
       }
 
       // ! jika ada error, maka redirect ke halaman register lagi dengan error (Kelvin)
@@ -133,6 +145,22 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
       // console.log("form Data kalau ada file: ", formData);
     }
   };
+
+  const checkLogin = async () => {
+    const response = await fetch("/api/clientid");
+    const { clientId } = await response.json();
+
+    if (clientId) {
+      toast.error("Anda sudah login.");
+      router.push("/");
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   // LOGIN FORM
   const renderLoginForm = () => (
@@ -213,7 +241,8 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
               })
             }
             className="w-full px-6 py-3 bg-white/15 backdrop-blur-md border border-white/30 text-white focus:border-blue-400/60 outline-none transition-all placeholder-white/50 rounded-xl hover:border-white/40 font-sans"
-            required>
+            required
+          >
             <option value="client" className="bg-gray-800">
               Client
             </option>
@@ -286,7 +315,8 @@ export default function AuthForm({ type = "login" }: AuthFormProps) {
                         w-full 
                         h-full 
                         shadow-2xl
-                    ">
+                    "
+          >
             <h1 className="text-3xl font-lora text-center mb-8 text-white">{type === "login" ? "Selamat Datang di Hacktivist" : "Daftar Akun Baru"}</h1>
 
             {type === "register" ? renderRegisterForm() : renderLoginForm()}

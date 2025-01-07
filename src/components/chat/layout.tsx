@@ -18,6 +18,7 @@ import { db } from "@/lib/firebase";
 import { ObjectId } from "mongodb";
 import ChatUI from "./ChatUI";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface Message {
   id: string;
@@ -50,10 +51,25 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [mongoDbRoomId, setMongoDbRoomId] = useState<string | null>("");
   const router = useRouter();
-
   // const scrollToBottom = () => {
   //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // };
+
+  const checkLogin = async () => {
+    const response = await fetch("/api/clientid");
+    const { clientId } = await response.json();
+
+    if (!clientId) {
+      toast.error("Silahkan login terlebih dahulu.");
+      router.push("/login");
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
