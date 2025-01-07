@@ -19,7 +19,7 @@ import { handleLogoutAction } from "./Avatar/action";
 import { SafeUserType } from "../../types/userType";
 import { UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
-
+import { formatRupiah } from "@/utils/formatRupiah";
 interface ConsultationHistory {
   id: number;
   lawyer: {
@@ -46,8 +46,13 @@ export interface ChatRoom {
   participants: string[];
   status: string;
   createdAt: string;
+  lawyerName?: string;
+  lawyerProfile?: profileLawyer;
 }
-
+interface profileLawyer {
+  name: string;
+  certification: string;
+}
 export interface Message {
   sender: string;
   content: string;
@@ -70,6 +75,8 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
     participants: [string];
     status: string;
     createdAt: string;
+    lawyerName: string;
+    lawyerCertification: string;
   }
   const [activeTab, setActiveTab] = useState<"overview" | "history" | "saved" | "edit-profile" | "notifications" | "payments" | "help">("overview");
   const oldUrl = user.profile.picture;
@@ -259,7 +266,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Total Konsultasi</h4>
-                        <p className="text-2xl font-bold text-yellow-500">12</p>
+                        <p className="text-2xl font-bold text-yellow-500">{Riwayat?.length}</p>
                       </div>
                       {/* <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Artikel Tersimpan</h4>
@@ -267,11 +274,11 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                       </div> */}
                       <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Jam Konsultasi</h4>
-                        <p className="text-2xl font-bold text-yellow-500">24</p>
+                        <p className="text-2xl font-bold text-yellow-500">{Riwayat?.length * 8}</p>
                       </div>
                       <div className="bg-slate-700 rounded-lg p-4">
                         <h4 className="text-white font-medium mb-2">Total Pembayaran</h4>
-                        <p className="text-2xl font-bold text-yellow-500">Rp2.4jt</p>
+                        <p className="text-2xl font-bold text-yellow-500">{formatRupiah(Payment.reduce((total, payment) => total + payment.amount, 0))}</p>
                       </div>
                     </div>
 
@@ -303,22 +310,26 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                 {activeTab === "history" && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">Riwayat Konsultasi</h3>
-                    {Riwayat.map((riwayat) => (
-                      <div key={riwayat._id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
-                        <div className="flex items-center gap-4">
-                          {/* <Image src={riwayat.lawyer.avatar} alt={riwayat.lawyer.name} width={48} height={48} className="rounded-full object-cover" unoptimized /> */}
-                          <div>
-                            <h4 className="text-white font-medium">Name Lawyer</h4>
-                            <div className="text-sm text-gray-400">
-                              <span>{riwayat.bookDate}</span>
-                              <span className="mx-2">•</span>
-                              <span>1 Sesi</span>
+                    <div className="space-y-4">
+                      {" "}
+                      {/* Added wrapper div with space-y-4 */}
+                      {Riwayat.map((riwayat) => (
+                        <div key={riwayat._id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
+                          <div className="flex items-center gap-4">
+                            {riwayat.lawyerProfile?.certification && <Image src={riwayat.lawyerProfile?.certification} alt="" width={48} height={48} className="rounded-full object-cover" unoptimized />}
+                            <div>
+                              <h4 className="text-white font-medium">{riwayat.lawyerName}</h4>
+                              <div className="text-sm text-gray-400">
+                                <span>{riwayat.bookDate}</span>
+                                <span className="mx-2">•</span>
+                                <span>1 Sesi</span>
+                              </div>
                             </div>
                           </div>
+                          <span className={`px-3 py-1 rounded-lg text-xs font-medium ${riwayat.status === "" ? "bg-green-500/10 text-green-500" : riwayat.status === "done" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{riwayat.status === "completed" ? "Selesai" : riwayat.status === "upcoming" ? "Akan Datang" : "Sudah Selesai"}</span>
                         </div>
-                        <span className={`px-3 py-1 rounded-lg text-xs font-medium ${riwayat.status === "" ? "bg-green-500/10 text-green-500" : riwayat.status === "done" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{riwayat.status === "completed" ? "Selesai" : riwayat.status === "upcoming" ? "Akan Datang" : "Sudah Selesai"}</span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </motion.div>
                 )}
 
@@ -371,18 +382,22 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                 {activeTab === "notifications" && (
                   <div className="bg-slate-700 rounded-lg p-4">
                     <h4 className="text-white font-medium mb-4">Konsultasi Mendatang</h4>
-                    {Schedule.map((el) => (
-                      <div key={el._id} className="flex items-center justify-between bg-slate-600 p-4 rounded-lg">
-                        <div className="flex items-center gap-4">
-                          {/* <Image src={el.lawyer.avatar} alt={el.lawyer.name} width={48} height={48} className="rounded-full" unoptimized /> */}
-                          <div>
-                            <h4 className="text-white font-medium">INI NAMA LAWYER TAPI HARDCODE Karena Blom Di look up</h4>
-                            <p className="text-sm text-gray-400">{el.bookDate}</p>
+                    <div className="space-y-4">
+                      {" "}
+                      {/* Added wrapper div with space-y-4 */}
+                      {Schedule.map((el) => (
+                        <div key={el._id} className="flex items-center justify-between bg-slate-600 p-4 rounded-lg">
+                          <div className="flex items-center gap-4">
+                            <Image src={el.lawyerCertification} alt="" width={48} height={48} className="rounded-full" unoptimized />
+                            <div>
+                              <h4 className="text-white font-medium">{el.lawyerName}</h4>
+                              <p className="text-sm text-gray-400">{el.bookDate}</p>
+                            </div>
                           </div>
+                          <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600"> 09.00 </button>
                         </div>
-                        <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600">UpComing</button>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
 
@@ -397,7 +412,22 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                         </div> */}
                         <div className="flex-1 p-4">
                           <span className="text-yellow-500 text-sm mb-1">{payment.status}</span>
-                          <h3 className="text-white font-medium mb-1">{payment.paymentType}</h3>
+                          <h1 className="text-white font-medium mb-1">Transaction ID : {payment._id}</h1>
+                          <div className="badge badge-warning mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                // strokeWidth="2"
+                                // d="M6 18L18 6M6 6l12 12"
+                              ></path>
+                            </svg>
+                            {payment.paymentType}
+                          </div>
+
+                          {/* <h3 className="text-yellow-500 font-medium mb-1">{payment.paymentType}</h3> */}
+
+                          <h3 className="text-white font-medium mb-1">{formatRupiah(payment.amount)}</h3>
                           <span className="text-gray-400 text-sm">{payment.transactionDate}</span>
                         </div>
                       </div>
