@@ -10,6 +10,7 @@ import {
   // IoShieldOutline,
 } from "react-icons/io5";
 import Hacktivist from "@/assets/icons/logo.png";
+import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -32,7 +33,9 @@ export default function Footer() {
               <p className="text-gray-400">Berlangganan untuk mendapatkan informasi terbaru mengenai layanan kami</p>
             </div>
             <div className="flex justify-end">
-              <button className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition-colors">Aktifkan Notifikasi</button>
+              <Link href="#subscribe">
+                <button className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition-colors">Aktifkan Notifikasi</button>
+              </Link>
             </div>
           </div>
         </div>
