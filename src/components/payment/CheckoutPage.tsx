@@ -1,9 +1,16 @@
 "use client";
 
 import convertToSubcurrency from "@/lib/convertToSubCurrency";
-import { CardNumberElement, CardExpiryElement, CardCvcElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Loading from "@/app/loading";
 
 type CheckoutPageProp = {
   amount: number;
@@ -28,11 +35,14 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   useEffect(() => {
     const initializePayment = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/payment-intent", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/payment-intent",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+          }
+        );
         const data = await response.json();
         setClientSecret(data.clientSecret);
       } catch (error) {
@@ -113,17 +123,6 @@ const CheckoutPage = (props: CheckoutPageProp) => {
     }
   };
 
-  if (isInitializing) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900 pt-16">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-slate-600">Mempersiapkan pembayaran...</p>
-        </div>
-      </div>
-    );
-  }
-
   const cardStyle = {
     style: {
       base: {
@@ -143,57 +142,69 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 pt-16">
-      <div className="max-w-xl mx-auto px-4">
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-8">{lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}</h1>
+    <div className="relative h-full">
+      {isInitializing ? (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Loading small />
+        </div>
+      ) : (
+        <div className="h-full flex flex-col">
+          <h1 className="text-3xl font-bold text-slate-900 mb-10 flex-shrink-0">
+            {lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}
+          </h1>
 
-          <div className="bg-primary/5 p-6 rounded-xl mb-8">
-            <p className="text-lg text-slate-900">
-              Total Pembayaran:
-              <span className="ml-2 text-xl font-bold text-primary">Rp {amount.toLocaleString()}</span>
-            </p>
-          </div>
+          <div className="flex-1 overflow-auto pr-2">
+            <div className="space-y-10">
+              <div>
+                <label className="block text-base font-semibold text-slate-700 mb-4">
+                  Nomor Kartu
+                </label>
+                <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                  <CardNumberElement options={cardStyle} />
+                </div>
+              </div>
 
-          <div className="space-y-8">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3">Nomor Kartu</label>
-              <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
-                <CardNumberElement options={cardStyle} />
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <label className="block text-base font-semibold text-slate-700 mb-4">
+                    Tanggal Kadaluarsa
+                  </label>
+                  <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                    <CardExpiryElement options={cardStyle} />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-base font-semibold text-slate-700 mb-4">
+                    CVC
+                  </label>
+                  <div className="border-2 rounded-xl p-5 bg-white focus-within:border-primary transition-colors">
+                    <CardCvcElement options={cardStyle} />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-3">Tanggal Kadaluarsa</label>
-                <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
-                  <CardExpiryElement options={cardStyle} />
-                </div>
+            {errorMessage && (
+              <div className="mt-8 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">
+                {errorMessage}
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-3">CVC</label>
-                <div className="border-2 rounded-xl p-4 bg-white focus-within:border-primary transition-colors">
-                  <CardCvcElement options={cardStyle} />
-                </div>
-              </div>
-            </div>
+            )}
           </div>
-
-          {errorMessage && <div className="mt-6 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl">{errorMessage}</div>}
 
           <button
             type="submit"
             disabled={!stripe || loading}
             className={`
-              mt-8 w-full bg-primary text-white py-4 px-6 rounded-xl text-lg font-semibold
-              hover:bg-primary/90 transition-all
-              disabled:opacity-50 disabled:cursor-not-allowed
-              ${loading ? "animate-pulse" : ""}
-            `}>
+                        mt-10 w-full bg-primary text-white py-5 px-8 rounded-xl text-lg font-semibold
+                        hover:bg-primary/90 transition-all flex-shrink-0
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        ${loading ? "animate-pulse" : ""}
+                    `}
+          >
             {loading ? "Memproses pembayaran..." : "Bayar Sekarang"}
           </button>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
