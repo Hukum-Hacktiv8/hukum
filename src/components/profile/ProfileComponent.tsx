@@ -20,6 +20,7 @@ import { SafeUserType } from "../../types/userType";
 import { UploadImage } from "@/components/auth/uploadImageAction";
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/utils/formatRupiah";
+import ChatHistoryModal from "./ChatHistoryModal";
 // interface ConsultationHistory {
 //   id: number;
 //   lawyer: {
@@ -86,6 +87,8 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   const [Payment, setPayment] = useState<Payment[]>([]);
   const [Schedule, setSchedule] = useState<ScheduleUser[]>([]);
   const [Riwayat, setRiwayat] = useState<ChatRoom[]>([]);
+  const [selectedChat, setSelectedChat] = useState<Message[] | null>(null);
+  const [selectedLawyer, setSelectedLawyer] = useState<string>("");
 
   useEffect(() => {
     fetchPayment();
@@ -205,12 +208,28 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
     label: string;
     icon: React.ReactNode;
   }> = [
-    { id: "overview", label: "Overview", icon: <IoHomeOutline className="w-5 h-5" /> },
+    {
+      id: "overview",
+      label: "Overview",
+      icon: <IoHomeOutline className="w-5 h-5" />,
+    },
     // { id: "edit-profile", label: "Edit Profile", icon: <IoPersonOutline className="w-5 h-5" /> },
-    { id: "history", label: "Riwayat Konsultasi", icon: <IoCalendarOutline className="w-5 h-5" /> },
+    {
+      id: "history",
+      label: "Riwayat Konsultasi",
+      icon: <IoCalendarOutline className="w-5 h-5" />,
+    },
     // { id: "saved", label: "Artikel Tersimpan", icon: <IoBookmarkOutline className="w-5 h-5" /> },
-    { id: "notifications", label: "Notifikasi", icon: <IoNotificationsOutline className="w-5 h-5" /> },
-    { id: "payments", label: "Pembayaran", icon: <IoWalletOutline className="w-5 h-5" /> },
+    {
+      id: "notifications",
+      label: "Notifikasi",
+      icon: <IoNotificationsOutline className="w-5 h-5" />,
+    },
+    {
+      id: "payments",
+      label: "Pembayaran",
+      icon: <IoWalletOutline className="w-5 h-5" />,
+    },
     // { id: "help", label: "Bantuan", icon: <IoHelpCircleOutline className="w-5 h-5" /> },
   ];
 
@@ -281,55 +300,60 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                         <p className="text-2xl font-bold text-yellow-500">{formatRupiah(Payment.reduce((total, payment) => total + payment.amount, 0))}</p>
                       </div>
                     </div>
-
-                    {/* Artikel Terbaru */}
-                    {/* <div className="bg-slate-700 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-white font-medium">Artikel Tersimpan Terbaru</h4>
-                        <button onClick={() => setActiveTab("saved")} className="text-yellow-500 text-sm hover:underline">
-                          Lihat Semua
-                        </button>
-                      </div>
-                      <div className="space-y-4">
-                        {savedArticles.slice(0, 2).map((article) => (
-                          <Link key={article.id} href={`/news/${article.id}`} className="bg-slate-600 rounded-xl overflow-hidden flex items-center gap-4 hover:bg-slate-500 transition-colors">
-                            <div className="w-20 h-20 relative flex-shrink-0">
-                              <Image src={article.thumbnail} alt={article.title} fill className="object-cover" unoptimized />
-                            </div>
-                            <div className="flex-1 p-3">
-                              <h3 className="text-white font-medium text-sm mb-1">{article.title}</h3>
-                              <span className="text-gray-400 text-xs">{article.date}</span>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div> */}
                   </motion.div>
                 )}
 
                 {activeTab === "history" && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">Riwayat Konsultasi</h3>
+
+                    {/* {console.log("Riwayat data:", Riwayat)} */}
+
                     <div className="space-y-4">
-                      {" "}
-                      {/* Added wrapper div with space-y-4 */}
-                      {Riwayat.map((riwayat) => (
-                        <div key={riwayat._id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
-                          <div className="flex items-center gap-4">
-                            {riwayat.lawyerProfile?.certification && <Image src={riwayat.lawyerProfile?.certification} alt="" width={48} height={48} className="rounded-full object-cover" unoptimized />}
-                            <div>
-                              <h4 className="text-white font-medium">{riwayat.lawyerName}</h4>
-                              <div className="text-sm text-gray-400">
-                                <span>{riwayat.bookDate}</span>
-                                <span className="mx-2">•</span>
-                                <span>1 Sesi</span>
+                      {Riwayat.map((riwayat) => {
+                        console.log("Messages for riwayat:", riwayat.messages);
+
+                        return (
+                          <div key={riwayat._id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
+                            <div className="flex items-center gap-4">
+                              {riwayat.lawyerProfile?.certification && <Image src={riwayat.lawyerProfile?.certification} alt="" width={48} height={48} className="rounded-full object-cover" unoptimized />}
+                              <div>
+                                <h4 className="text-white font-medium">{riwayat.lawyerName}</h4>
+                                <div className="text-sm text-gray-400">
+                                  <span>{riwayat.bookDate}</span>
+                                  <span className="mx-2">•</span>
+                                  <span>1 Sesi</span>
+                                </div>
                               </div>
                             </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-3 py-1 rounded-lg text-xs font-medium ${riwayat.status === "completed" ? "bg-green-500/10 text-green-500" : riwayat.status === "done" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{riwayat.status === "completed" ? "Selesai" : riwayat.status === "upcoming" ? "Akan Datang" : "Sudah Selesai"}</span>
+                              {riwayat.messages && Array.isArray(riwayat.messages) && riwayat.messages.length > 0 && (
+                                <button
+                                  onClick={() => {
+                                    console.log("Clicked messages:", riwayat.messages);
+                                    setSelectedChat(riwayat.messages || []);
+                                    setSelectedLawyer(riwayat.lawyerName || "");
+                                  }}
+                                  className="px-3 py-1 bg-yellow-500 text-slate-900 rounded-lg text-xs font-medium hover:bg-yellow-600">
+                                  Lihat Chat
+                                </button>
+                              )}
+                            </div>
                           </div>
-                          <span className={`px-3 py-1 rounded-lg text-xs font-medium ${riwayat.status === "" ? "bg-green-500/10 text-green-500" : riwayat.status === "done" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{riwayat.status === "completed" ? "Selesai" : riwayat.status === "upcoming" ? "Akan Datang" : "Sudah Selesai"}</span>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
+
+                    <ChatHistoryModal
+                      isOpen={!!selectedChat}
+                      onClose={() => {
+                        setSelectedChat(null);
+                        setSelectedLawyer("");
+                      }}
+                      messages={selectedChat || []}
+                      lawyerName={selectedLawyer}
+                    />
                   </motion.div>
                 )}
 
@@ -352,33 +376,6 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     </div>
                   </motion.div>
                 )}
-
-                {/* {activeTab === "edit-profile" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white mb-4">Edit Profile</h3>
-                    <div className="space-y-4">
-                      <div className="bg-slate-700 rounded-lg p-4">
-                        <h4 className="text-white font-medium mb-4">Info Pribadi</h4>
-                        <div className="space-y-4">
-                          <div>
-                            <label className="block text-sm text-gray-400 mb-1">Nama</label>
-                            <input type="text" className="w-full bg-slate-600 rounded-lg px-4 py-2 text-white" defaultValue="John Doe" />
-                          </div>
-                          <div>
-                            <label className="block text-sm text-gray-400 mb-1">Email</label>
-                            <input type="email" className="w-full bg-slate-600 rounded-lg px-4 py-2 text-white" defaultValue="john.doe@example.com" />
-                          </div>
-                          <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600">Simpan Perubahan</button>
-                        </div>
-                      </div>
-                      <div className="bg-slate-700 rounded-lg p-4">
-                        <h4 className="text-white font-medium mb-4">Keamanan</h4>
-                        <button className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-500">Ubah Password</button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )} */}
-
                 {activeTab === "notifications" && (
                   <div className="bg-slate-700 rounded-lg p-4">
                     <h4 className="text-white font-medium mb-4">Konsultasi Mendatang</h4>
@@ -434,12 +431,6 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     ))}
                   </motion.div>
                 )}
-
-                {/* {activeTab === "help" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                    <h3 className="text-xl font-semibold text-white mb-4">Bantuan</h3>
-                  </motion.div>
-                )} */}
               </div>
             </div>
           </div>

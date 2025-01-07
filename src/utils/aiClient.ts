@@ -1,7 +1,7 @@
 import { createGroq } from "@ai-sdk/groq";
 
 createGroq({
-  apiKey: "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",
+  apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
 });
 
 export const getAIResponseStream = async (systemPrompt: string, userPrompt: string, onChunk: (chunk: string) => void): Promise<void> => {
