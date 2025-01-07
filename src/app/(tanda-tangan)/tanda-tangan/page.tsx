@@ -27,7 +27,7 @@ export default function Page() {
     // console.log(data);
     Setname(data.username);
   };
-  const logo: string = "https://thumbs.dreamstime.com/b/law-firm-logo-concept-lawyer-attorney-legal-lawyer-service-law-firm-logo-template-lawyer-attorney-jurist-judge-business-woman-326864298.jpg";
+  const logo: string = "https://res.cloudinary.com/dztilubhi/image/upload/v1736263087/hacktivist/hacktivist_logo_black_transparentbg.png";
   const handlePreviewPDF = () => {
     if (signatureImage) {
       // Buat template PDF
@@ -123,7 +123,8 @@ export default function Page() {
                 className={`w-full bg-primary text-white py-4 px-6 rounded-xl text-lg font-semibold
                   hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed
                   ${isSaving ? "animate-pulse" : ""}`}
-                disabled={!signatureImage || isSaving}>
+                disabled={!signatureImage || isSaving}
+              >
                 {isSaving ? "Menyimpan..." : "Selesai & Simpan"}
               </button>
             </div>
