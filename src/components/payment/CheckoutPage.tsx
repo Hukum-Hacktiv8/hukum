@@ -115,7 +115,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 pt-16">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="mt-4 text-slate-600">Mempersiapkan pembayaran...</p>
@@ -143,7 +143,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-900 pt-16">
       <div className="max-w-xl mx-auto px-4">
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-8">{lawyerId == "gaada" ? "Berlangganan" : "Jasa Konsultasi"}</h1>

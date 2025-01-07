@@ -37,19 +37,19 @@ export default function KonsultasiConfirmCard() {
             <div className="mt-6 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Lawyer:</span>
-                <span className="font-medium">{lawyer}</span>
+                <span className="font-medium text-gray-500">{lawyer}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Tanggal:</span>
-                <span className="font-medium">{date}</span>
+                <span className="font-medium text-gray-500">{date}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Waktu:</span>
-                <span className="font-medium">{time}</span>
+                <span className="font-medium text-gray-500">{time}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-slate-500">Biaya:</span>
-                <span className="font-medium">Rp {amount}</span>
+                <span className="font-medium text-gray-500">Rp {amount}</span>
               </div>
             </div>
           </div>

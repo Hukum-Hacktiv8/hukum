@@ -13,7 +13,8 @@ export default function Page() {
   const handleSaveSignature = (image: string) => {
     setSignatureImage(image);
   };
-  const logo: string = "https://thumbs.dreamstime.com/b/law-firm-logo-concept-lawyer-attorney-legal-lawyer-service-law-firm-logo-template-lawyer-attorney-jurist-judge-business-woman-326864298.jpg";
+  const logo: string =
+    "https://thumbs.dreamstime.com/b/law-firm-logo-concept-lawyer-attorney-legal-lawyer-service-law-firm-logo-template-lawyer-attorney-jurist-judge-business-woman-326864298.jpg";
   const handlePreviewPDF = () => {
     if (signatureImage) {
       // Buat template PDF
@@ -72,43 +73,89 @@ export default function Page() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Digital Signature</h1>
+    <div className="min-h-screen bg-slate-900 pt-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Left Column - Signature Area */}
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h1 className="text-3xl font-bold text-slate-900 mb-8">
+              Tanda Tangan Digital
+            </h1>
 
-      {/* Area Tanda Tangan */}
-      <div className="mb-6">
-        <h2 className="text-xl mb-2">Buat Tanda Tangan</h2>
-        <DigitalSignature onSave={handleSaveSignature} />
-      </div>
+            <div className="space-y-8">
+              {/* Signature Area */}
+              <div className="bg-primary/5 p-6 rounded-xl">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                  Buat Tanda Tangan
+                </h2>
+                <DigitalSignature onSave={handleSaveSignature} />
+              </div>
 
-      {/* Preview Tanda Tangan */}
-      {signatureImage && (
-        <div className="mb-6">
-          <h2 className="text-xl mb-2">Preview Tanda Tangan:</h2>
-          <img src={signatureImage} alt="Signature" className="border border-gray-300 max-w-[300px]" />
+              {/* Signature Preview */}
+              {signatureImage && (
+                <div className="bg-primary/5 p-6 rounded-xl">
+                  <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                    Preview Tanda Tangan:
+                  </h2>
+                  <img
+                    src={signatureImage}
+                    alt="Signature"
+                    className="border-2 border-primary/20 rounded-xl max-w-[300px]"
+                  />
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={handlePreviewPDF}
+                  className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50"
+                  disabled={!signatureImage}
+                >
+                  Preview PDF
+                </button>
+                <button
+                  onClick={generatePDF}
+                  className="px-4 py-3 bg-primary/10 text-primary rounded-xl font-semibold hover:bg-primary/20 transition-all disabled:opacity-50"
+                  disabled={!signatureImage}
+                >
+                  Download PDF
+                </button>
+              </div>
+
+              <button
+                onClick={savePDFToDatabase}
+                className={`w-full bg-primary text-white py-4 px-6 rounded-xl text-lg font-semibold
+                  hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed
+                  ${isSaving ? "animate-pulse" : ""}`}
+                disabled={!signatureImage || isSaving}
+              >
+                {isSaving ? "Menyimpan..." : "Selesai & Simpan"}
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column - PDF Preview */}
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-3xl font-bold text-slate-900 mb-8">
+              Preview Dokumen
+            </h2>
+            {pdfPreview ? (
+              <iframe
+                src={pdfPreview}
+                className="w-full h-[800px] rounded-xl border-2 border-primary/20"
+              />
+            ) : (
+              <div className="h-[800px] rounded-xl border-2 border-primary/20 flex items-center justify-center">
+                <p className="text-slate-500">
+                  Preview PDF akan muncul di sini setelah Anda membuat tanda
+                  tangan
+                </p>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-
-      {/* Tombol Aksi */}
-      <div className="space-x-4 mb-6">
-        <button onClick={handlePreviewPDF} className="px-4 py-2 bg-blue-500 text-white rounded" disabled={!signatureImage}>
-          Preview PDF
-        </button>
-        <button onClick={generatePDF} className="px-4 py-2 bg-green-500 text-white rounded" disabled={!signatureImage}>
-          Download PDF
-        </button>
-        <button onClick={savePDFToDatabase} className="px-4 py-2 bg-purple-500 text-white rounded" disabled={!signatureImage || isSaving}>
-          {isSaving ? "Menyimpan..." : "Continue "}
-        </button>
       </div>
-
-      {/* Preview PDF */}
-      {pdfPreview && (
-        <div className="mt-6">
-          <h2 className="text-xl mb-2">Preview PDF:</h2>
-          <iframe src={pdfPreview} className="w-full h-[600px] border border-gray-300" />
-        </div>
-      )}
     </div>
   );
 }

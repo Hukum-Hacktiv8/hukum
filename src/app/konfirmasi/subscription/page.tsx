@@ -8,9 +8,7 @@ export default function KonfirmasiSubscription() {
           <h1 className="text-3xl font-bold text-center text-white mb-8">
             Konfirmasi Langganan
           </h1>
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <SubscriptionConfirmCard />
-          </div>
+          <SubscriptionConfirmCard />
         </div>
       </div>
     </main>

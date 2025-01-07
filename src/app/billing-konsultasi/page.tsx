@@ -24,30 +24,19 @@ export default function BillingPage() {
   if (!lawyerId || !date) return null;
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      <div className="container mx-auto px-4 py-16">
+    <main className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-slate-900">Jasa Konsultasi</h1>
-              <h2 className="text-xl mt-2">Pembayaran</h2>
-            </div>
-
-            <div className="flex justify-center mb-6">
-              <p className="mr-5">Total Harga:</p>
-              <p className="font-bold">Rp.{amount}</p>
-            </div>
-
-            <Elements
-              stripe={stripePromise}
-              options={{
-                mode: "payment",
-                amount: convertToSubcurrency(amount),
-                currency: "idr",
-              }}>
-              <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
-            </Elements>
-          </div>
+          <Elements
+            stripe={stripePromise}
+            options={{
+              mode: "payment",
+              amount: convertToSubcurrency(amount),
+              currency: "idr",
+            }}
+          >
+            <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
+          </Elements>
         </div>
       </div>
     </main>

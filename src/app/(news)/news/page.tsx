@@ -132,7 +132,7 @@ export default function News() {
             {/* Newsletter */}
             <div className="bg-slate-800 rounded-xl p-6">
               <h3 className="text-lg font-bold text-white mb-2">Legal Newsletter</h3>
-              <p className="text-gray-400 text-sm mb-4">Dptkan update hukum terbaru & analisis lgsg ke inbox</p>
+              <p className="text-gray-400 text-sm mb-4">Dapatkan update hukum terbaru & analisis terbaru ke inbox</p>
               <div className="space-y-3">
                 <input type="email" placeholder="Email kamu" className="w-full px-4 py-2.5 bg-slate-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
                 <button className="w-full px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">Subscribe</button>
