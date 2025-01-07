@@ -1,6 +1,6 @@
 "use client";
 
-import CheckoutPage from "@/components/CheckoutPage";
+import CheckoutPage from "@/components/payment/CheckoutPage";
 import convertToSubcurrency from "@/lib/convertToSubCurrency";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -29,9 +29,7 @@ export default function BillingPage() {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-slate-900">
-                Jasa Konsultasi
-              </h1>
+              <h1 className="text-3xl font-bold text-slate-900">Jasa Konsultasi</h1>
               <h2 className="text-xl mt-2">Pembayaran</h2>
             </div>
 
@@ -46,8 +44,7 @@ export default function BillingPage() {
                 mode: "payment",
                 amount: convertToSubcurrency(amount),
                 currency: "idr",
-              }}
-            >
+              }}>
               <CheckoutPage amount={amount} lawyerId={lawyerId} date={date} />
             </Elements>
           </div>

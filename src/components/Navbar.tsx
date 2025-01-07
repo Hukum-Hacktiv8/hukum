@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import AIChatModal from "./AIChatModal";
+import AIChatModal from "./chat/AIChatModal";
 import {
   IoChatbubblesOutline,
   IoNewspaperOutline,
