@@ -163,11 +163,57 @@ export const keepChatHistory = async (props: keepChatHistoryProp) => {
 
 export const roomSchedule = async (id: string) => {
   const db = await getDb();
-  const query = {
-    participants: id,
-    status: "pending",
-  };
-  const data = await db.collection(COLLECTION).find(query).toArray();
+  const data = await db
+    .collection(COLLECTION)
+    .aggregate([
+      {
+        $match: {
+          participants: id,
+          status: "pending",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          let: { lawyerId: { $arrayElemAt: ["$participants", 0] } },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", { $toObjectId: "$$lawyerId" }] },
+              },
+            },
+            {
+              $project: {
+                name: 1,
+                "credentials.certification": 1,
+              },
+            },
+          ],
+          as: "lawyerInfo",
+        },
+      },
+      {
+        $unwind: {
+          path: "$lawyerInfo",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          bookDate: 1,
+          status: 1,
+          participants: 1,
+          messages: 1,
+          createdAt: 1,
+          lawyerName: "$lawyerInfo.name",
+          lawyerCertification: "$lawyerInfo.credentials.certification",
+        },
+      },
+    ])
+    .toArray();
+
+  // console.log(data, "ini pada bagian incoming");
 
   return data;
 };
@@ -189,12 +235,59 @@ export const riwayatRoom = async (id: string) => {
 
   const chatHistory = await db
     .collection(COLLECTION)
-    .find({
-      "participants.1": id,
-      status: "done",
-    })
+    .aggregate([
+      {
+        $match: {
+          "participants.1": id,
+          status: "done",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          let: { lawyerId: { $arrayElemAt: ["$participants", 0] } },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", { $toObjectId: "$$lawyerId" }] },
+              },
+            },
+            {
+              $project: {
+                name: 1,
+                "profile.picture": 1,
+                "credentials.certification": 1,
+              },
+            },
+          ],
+          as: "lawyerInfo",
+        },
+      },
+      {
+        $unwind: {
+          path: "$lawyerInfo",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          bookDate: 1,
+          status: 1,
+          participants: 1,
+          messages: 1,
+          createdAt: 1,
+          lawyerName: "$lawyerInfo.name",
+          lawyerProfile: {
+            name: "$lawyerInfo.name",
+            avatar: "$lawyerInfo.profile.picture",
+            certification: "$lawyerInfo.credentials.certification",
+          },
+        },
+      },
+    ])
     .toArray();
-  // console.log(chatHistory);
+  // console.log(chatHistory, "ini data pemberian nya yg baru");
 
   return chatHistory;
 };
