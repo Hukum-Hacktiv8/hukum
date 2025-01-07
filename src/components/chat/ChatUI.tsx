@@ -36,7 +36,18 @@ interface ChatUIProps {
   onMessageChange: (message: string) => void;
   onMessageSubmit: (e: React.FormEvent) => void;
 }
-export default function ChatUI({ closeRoom, clientId, contacts, selectedContact, messages, newMessage, messagesEndRef, onContactSelect, onMessageChange, onMessageSubmit }: ChatUIProps) {
+export default function ChatUI({
+  // closeRoom,
+  clientId,
+  contacts,
+  selectedContact,
+  messages,
+  newMessage,
+  messagesEndRef,
+  onContactSelect,
+  onMessageChange,
+  onMessageSubmit,
+}: ChatUIProps) {
   const router = useRouter();
 
   return (

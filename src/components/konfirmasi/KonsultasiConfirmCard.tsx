@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  // useState
+} from "react";
 import { toast } from "react-toastify";
 
 export default function KonsultasiConfirmCard() {

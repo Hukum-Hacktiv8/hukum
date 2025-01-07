@@ -10,7 +10,7 @@ import {
   IoLocationOutline,
   IoSchoolOutline,
 } from "react-icons/io5";
-import MapSection from "../../../components/MapSection";
+// import MapSection from "../../../components/MapSection";
 import { formatRupiah } from "@/utils/formatRupiah";
 
 export interface Lawyer {

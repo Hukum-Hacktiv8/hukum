@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { IoSparklesOutline } from "react-icons/io5";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 interface ChatMessage {
   isUser: boolean;
@@ -23,7 +23,7 @@ export default function AIChatModal({ isOpen, onClose, initialQuery }: AIChatMod
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [currentResponse, setCurrentResponse] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -170,8 +170,7 @@ Ensure the output is properly formatted and easy to read.
                             h1: ({ children }) => <h1 className="text-xl font-bold my-2">{children}</h1>,
                             h2: ({ children }) => <h2 className="text-lg font-semibold my-2">{children}</h2>,
                             h3: ({ children }) => <h3 className="text-base font-medium my-2">{children}</h3>,
-                          }}
-                        >
+                          }}>
                           {msg.text}
                         </ReactMarkdown>
                       </div>
