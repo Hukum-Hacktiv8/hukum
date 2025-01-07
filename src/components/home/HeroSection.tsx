@@ -14,18 +14,7 @@ export default function HeroSection() {
                     type="video/mp4" 
                 />
             </video>
-
-            {/* Temporary Image Background */}
-            {/* <div 
-                className="absolute top-0 left-0 w-full h-full bg-cover bg-center"
-                style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070')"
-                }}
-            /> */}
-
-            {/* Overlay dgn opacity yg lebih rendah */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 from-5% via-black/60 via-70% to-slate-900 to-100%" />
-
             {/* Content */}
             <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
                 <div className="max-w-4xl mx-auto text-center">
@@ -37,7 +26,7 @@ export default function HeroSection() {
                         Dengan pengalaman lebih dari 5 tahun, kami menyediakan solusi hukum yang disesuaikan dengan situasi Anda.
                     </p>
                     <button className="px-8 py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition-colors">
-                        Konsultasi Gratis
+                        Langganan Sekarang
                     </button>
                 </div>
             </div>
