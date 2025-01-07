@@ -79,43 +79,78 @@ export default function KonsultasiPage() {
             lawyers.map((lawyer) => (
               <div key={lawyer.id}>
                 <figure className="flex justify-center items-center lg:w-1/3 w-full">
-                  <Image src={lawyer.image} alt="Photo" className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80" fill sizes="100vw" />
+                  <Image
+                    src={lawyer.image}
+                    alt="Photo"
+                    className="object-cover rounded-lg lg:w-80 lg:h-96 w-64 h-80"
+                    fill
+                    sizes="100vw"
+                  />
                 </figure>
                 <div className="card-body lg:w-2/3 w-full">
-                  <h2 className="card-title text-2xl font-bold">{lawyer.name}</h2>
+                  <h2 className="card-title text-2xl font-bold">
+                    {lawyer.name}
+                  </h2>
 
                   <p className="text-md text-gray-600 mt-4">{lawyer.bio}</p>
                   <p className="font-semibold text-lg mt-4">
-                    Appointment Fee: <span className="text-primary">Rp. 50,000</span>
+                    Appointment Fee:{" "}
+                    <span className="text-primary">Rp. 50,000</span>
                   </p>
                   <div className="mt-6">
                     <p className="font-semibold mb-2">Booking Slots:</p>
                     <div className="flex flex-wrap gap-4 mb-4">
                       {["One-time", "Monthly"].map((interval) => (
-                        <button key={interval} onClick={() => setSelectedInterval(interval)} className={`btn px-4 py-1 text-sm font-medium ${selectedInterval === interval ? "btn-primary text-white" : ""}`}>
+                        <button
+                          key={interval}
+                          onClick={() => setSelectedInterval(interval)}
+                          className={`btn px-4 py-1 text-sm font-medium ${
+                            selectedInterval === interval
+                              ? "btn-primary text-white"
+                              : ""
+                          }`}
+                        >
                           {interval}
                         </button>
                       ))}
                     </div>
                     <div className="flex flex-wrap gap-4 mb-4">
-                      <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        className="rounded-md border"
+                      />
                     </div>
                     <div className="flex flex-wrap gap-4">
                       {["09:00", "18:00"].map((time) => (
-                        <button key={time} onClick={() => setSelectedTime(time)} className={`btn px-4 py-1 text-sm font-medium ${selectedTime === time ? "btn-primary text-white" : ""}`}>
+                        <button
+                          key={time}
+                          onClick={() => setSelectedTime(time)}
+                          className={`btn px-4 py-1 text-sm font-medium ${
+                            selectedTime === time
+                              ? "btn-primary text-white"
+                              : ""
+                          }`}
+                        >
                           {time}
                         </button>
                       ))}
                     </div>
                   </div>
                   <div className="card-actions justify-end mt-6">
-                    <button className="btn btn-primary px-6" onClick={handleBooking}>
+                    <button
+                      className="btn btn-primary px-6"
+                      onClick={handleBooking}
+                    >
                       Book an Appointment
                     </button>
                   </div>
                 </div>
 
-                <button onClick={() => setSelectedLawyer(lawyer.id)}>Select</button>
+                <button onClick={() => setSelectedLawyer(lawyer.id)}>
+                  Select
+                </button>
               </div>
             ))
           ) : (
