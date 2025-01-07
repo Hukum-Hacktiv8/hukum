@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FaCrown, FaCheck, FaStar } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -133,6 +133,15 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
 // Main component
 export default function SubscribePage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (window.location.hash === "#subscribe") {
+      const subscribeElement = document.getElementById("subscribe");
+      if (subscribeElement) {
+        subscribeElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
 
   return (
     <div id="subscribe" className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20">

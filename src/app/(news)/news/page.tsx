@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { IoBookmarkOutline, IoBookmark } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 // import { readBlogAll } from "@/models/blogpost";
 
 interface NewsArticle {
@@ -49,6 +50,12 @@ export default function News() {
         return article;
       })
     );
+  };
+
+  const router = useRouter();
+
+  const redirectToSubscribe = () => {
+    router.push("/#subscribe");
   };
 
   // Filter articles based on selected category
@@ -140,7 +147,9 @@ export default function News() {
             <div className="bg-slate-800 rounded-xl p-6">
               <h3 className="text-lg font-bold text-white mb-2">Legal Newsletter</h3>
               <p className="text-gray-400 text-sm mb-4">Dapatkan update hukum terbaru & analisis terbaru ke inbox</p>
-              <button className="w-full px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">Langganan Sekarang</button>
+              <button onClick={redirectToSubscribe} className="w-full px-4 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">
+                Langganan Sekarang
+              </button>
             </div>
           </aside>
         </div>
