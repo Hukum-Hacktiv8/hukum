@@ -11,6 +11,11 @@ export async function POST(request: NextRequest) {
       currency: "idr",
       automatic_payment_methods: { enabled: true },
     });
+    // console.log(paymentIntent, "p");
+    // console.log(amount, "aaaaaaaa");
+    // console.log(paymentIntent.client_secret, "client_secret");
+    
+    
 
     return NextResponse.json(
       { clientSecret: paymentIntent.client_secret },
