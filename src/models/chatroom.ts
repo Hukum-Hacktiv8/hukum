@@ -239,7 +239,7 @@ export const riwayatRoom = async (id: string) => {
       {
         $match: {
           "participants.1": id,
-          status: "done",
+          status: "saved",
         },
       },
       {
