@@ -39,6 +39,21 @@ export interface Payment {
   transactionDate: string;
 }
 
+export interface ChatRoom {
+  _id: string;
+  bookDate: string;
+  messages?: Message[];
+  participants: string[];
+  status: string;
+  createdAt: string;
+}
+
+export interface Message {
+  sender: string;
+  content: string;
+  timestamp: string;
+}
+
 interface SavedArticle {
   id: number;
   title: string;
@@ -63,10 +78,13 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
 
   const [Payment, setPayment] = useState<Payment[]>([]);
   const [Schedule, setSchedule] = useState<ScheduleUser[]>([]);
+  const [Riwayat, setRiwayat] = useState<ChatRoom[]>([]);
 
   useEffect(() => {
     fetchPayment();
     fetchSchedule();
+    fetchRiwayat();
+    // console.log(user, "ini untuk cek ");
   }, []);
 
   // Dummy data
@@ -91,28 +109,30 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
     setSchedule(data.data);
   };
 
-  const consultations: ConsultationHistory[] = [
-    {
-      id: 1,
-      lawyer: {
-        name: "Dr. Sarah Wijaya, S.H., M.H.",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-      },
-      date: "28 Feb 2024 • 14:00",
-      duration: "2 jam",
-      status: "completed",
-    },
-    {
-      id: 2,
-      lawyer: {
-        name: "Adv. Budi Santoso, S.H.",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
-      },
-      date: "5 Mar 2024 • 10:00",
-      duration: "1 jam",
-      status: "upcoming",
-    },
-  ];
+  const fetchRiwayat = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/room-active", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.id,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (data.status === 200) {
+        setRiwayat(data.data);
+      } else {
+        console.error("Error fetching chat history:", data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const savedArticles: SavedArticle[] = [
     {
@@ -255,27 +275,6 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                       </div>
                     </div>
 
-                    {/* Konsultasi Mendatang */}
-                    <div className="bg-slate-700 rounded-lg p-4">
-                      <h4 className="text-white font-medium mb-4">Konsultasi Mendatang</h4>
-                      {consultations
-                        .filter((c) => c.status === "upcoming")
-                        .map((consultation) => (
-                          <div key={consultation.id} className="flex items-center justify-between bg-slate-600 p-4 rounded-lg">
-                            <div className="flex items-center gap-4">
-                              {/* <div className="w-10 aspect-square rounded-full bg-red-500 flex items-center"> */}
-                              <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} className="rounded-full object-cover" width={48} height={48} unoptimized />
-                              {/* </div> */}
-                              <div>
-                                <h4 className="text-white font-medium">{consultation.lawyer.name}</h4>
-                                <p className="text-sm text-gray-400">{consultation.date}</p>
-                              </div>
-                            </div>
-                            <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600">Masuk Meeting</button>
-                          </div>
-                        ))}
-                    </div>
-
                     {/* Artikel Terbaru */}
                     {/* <div className="bg-slate-700 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-4">
@@ -304,20 +303,20 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                 {activeTab === "history" && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">Riwayat Konsultasi</h3>
-                    {consultations.map((consultation) => (
-                      <div key={consultation.id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
+                    {Riwayat.map((riwayat) => (
+                      <div key={riwayat._id} className="flex items-center justify-between bg-slate-700 p-4 rounded-lg">
                         <div className="flex items-center gap-4">
-                          <Image src={consultation.lawyer.avatar} alt={consultation.lawyer.name} width={48} height={48} className="rounded-full object-cover" unoptimized />
+                          {/* <Image src={riwayat.lawyer.avatar} alt={riwayat.lawyer.name} width={48} height={48} className="rounded-full object-cover" unoptimized /> */}
                           <div>
-                            <h4 className="text-white font-medium">{consultation.lawyer.name}</h4>
+                            <h4 className="text-white font-medium">Name Lawyer</h4>
                             <div className="text-sm text-gray-400">
-                              <span>{consultation.date}</span>
+                              <span>{riwayat.bookDate}</span>
                               <span className="mx-2">•</span>
-                              <span>{consultation.duration}</span>
+                              <span>1 Sesi</span>
                             </div>
                           </div>
                         </div>
-                        <span className={`px-3 py-1 rounded-lg text-xs font-medium ${consultation.status === "completed" ? "bg-green-500/10 text-green-500" : consultation.status === "upcoming" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{consultation.status === "completed" ? "Selesai" : consultation.status === "upcoming" ? "Akan Datang" : "Dibatalkan"}</span>
+                        <span className={`px-3 py-1 rounded-lg text-xs font-medium ${riwayat.status === "" ? "bg-green-500/10 text-green-500" : riwayat.status === "done" ? "bg-blue-500/10 text-blue-500" : "bg-red-500/10 text-red-500"}`}>{riwayat.status === "completed" ? "Selesai" : riwayat.status === "upcoming" ? "Akan Datang" : "Sudah Selesai"}</span>
                       </div>
                     ))}
                   </motion.div>
