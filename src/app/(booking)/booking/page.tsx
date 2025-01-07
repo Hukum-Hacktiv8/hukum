@@ -10,7 +10,7 @@ import {
   IoLocationOutline,
   IoSchoolOutline,
 } from "react-icons/io5";
-// import MapSection from "../../../components/MapSection";
+import MapSection from "../../../components/MapSection";
 
 export interface Lawyer {
   _id: string;
@@ -24,6 +24,8 @@ export interface Lawyer {
   price: number;
   createdAt: string;
   updatedAt: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Profiles {
@@ -36,15 +38,7 @@ export interface credentialsLawyer {
   certification: string;
 }
 
-const categories = [
-  "Semua",
-  "Hukum Bisnis",
-  "Hukum Pidana",
-  "Hukum Perdata",
-  "Hukum Keluarga",
-  "Hukum Properti",
-  "Hak Kekayaan Intelektual",
-];
+const categories = ["Semua", "Hukum Bisnis", "Hukum Pidana", "Hukum Perdata", "Hukum Keluarga", "Hukum Properti", "Hak Kekayaan Intelektual"];
 
 export default function Booking() {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
@@ -113,16 +107,10 @@ export default function Booking() {
     setLawyers(response.data);
   };
 
-  const filteredLawyers =
-    selectedCategory === "Semua"
-      ? lawyers
-      : lawyers.filter((lawyer) => lawyer.specialization === selectedCategory);
+  const filteredLawyers = selectedCategory === "Semua" ? lawyers : lawyers.filter((lawyer) => lawyer.specialization === selectedCategory);
 
   const totalPages = Math.ceil(filteredLawyers.length / 6);
-  const paginatedLawyers = filteredLawyers.slice(
-    (currentPage - 1) * 6,
-    currentPage * 6
-  );
+  const paginatedLawyers = filteredLawyers.slice((currentPage - 1) * 6, currentPage * 6);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -132,27 +120,15 @@ export default function Booking() {
     <div className="bg-slate-900 min-h-screen pb-12">
       {/* Header */}
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold text-white mb-2">
-          Konsultasi dgn Pengacara
-        </h1>
-        <p className="text-gray-400">
-          Pilih pengacara sesuai kebutuhan hukum Anda
-        </p>
+        <h1 className="text-2xl font-bold text-white mb-2">Konsultasi dgn Pengacara</h1>
+        <p className="text-gray-400">Pilih pengacara sesuai kebutuhan hukum Anda</p>
       </div>
 
       {/* Category Filter */}
       <div className="container mx-auto px-4 mb-8">
         <div className="flex items-center gap-3 overflow-x-auto pb-4 scrollbar-hide">
           {categories.map((category, idx) => (
-            <button
-              key={idx}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${
-                category === selectedCategory
-                  ? "bg-yellow-500 text-slate-900 font-medium"
-                  : "bg-slate-800 text-gray-400 hover:text-white"
-              }`}
-            >
+            <button key={idx} onClick={() => setSelectedCategory(category)} className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-colors ${category === selectedCategory ? "bg-yellow-500 text-slate-900 font-medium" : "bg-slate-800 text-gray-400 hover:text-white"}`}>
               {category}
             </button>
           ))}
@@ -163,38 +139,17 @@ export default function Booking() {
       <div className="container mx-auto px-4 mb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {paginatedLawyers.map((lawyer, idx) => (
-            <motion.div
-              key={lawyer._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="bg-slate-800 rounded-xl overflow-hidden hover:bg-slate-800/80 transition-colors"
-            >
+            <motion.div key={lawyer._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-800 rounded-xl overflow-hidden hover:bg-slate-800/80 transition-colors">
               <div className="p-6">
                 {/* Lawyer Info */}
                 <div className="flex items-start gap-4 mb-4">
-                  <Image
-                    src={lawyer.credentials.certification}
-                    alt={lawyer.name}
-                    width={80}
-                    height={80}
-                    className="w-20 h-20 rounded-xl object-cover"
-                    unoptimized
-                  />
+                  <Image src={lawyer.credentials.certification} alt={lawyer.name} width={80} height={80} className="w-20 h-20 rounded-xl object-cover" unoptimized />
                   <div>
                     <div className="flex flex-wrap gap-2 mb-2">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-medium bg-blue-500/10 text-blue-500`}
-                      >
-                        Verified
-                      </span>
+                      <span className={`px-2 py-1 rounded text-xs font-medium bg-blue-500/10 text-blue-500`}>Verified</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-1">
-                      {lawyer.name}
-                    </h3>
-                    <p className="text-yellow-500 text-sm">
-                      {lawyer.specialization}
-                    </p>
+                    <h3 className="text-lg font-semibold text-white mb-1">{lawyer.name}</h3>
+                    <p className="text-yellow-500 text-sm">{lawyer.specialization}</p>
                   </div>
                 </div>
 
@@ -230,17 +185,10 @@ export default function Booking() {
                     <div className="text-green-500 text-sm">Tersedia</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => (window as any).scrollToLawyer(lawyer._id)}
-                      className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors"
-                      title="Lihat di Map"
-                    >
+                    <button onClick={() => (window as any).scrollToLawyer(lawyer._id)} className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors" title="Lihat di Map">
                       <IoLocationOutline className="w-6 h-6" />
                     </button>
-                    <Link
-                      href={`/booking/${lawyer._id}`}
-                      className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors"
-                    >
+                    <Link href={`/booking/${lawyer._id}`} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">
                       Book Now
                     </Link>
                   </div>
@@ -254,15 +202,7 @@ export default function Booking() {
       {/* Pagination */}
       <div className="container mx-auto px-4 mb-12 flex justify-center items-center gap-2">
         {Array.from({ length: totalPages }).map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              currentPage === index + 1
-                ? "bg-yellow-500 text-slate-900"
-                : "bg-slate-800 text-gray-400 hover:text-white"
-            }`}
-          >
+          <button key={index} onClick={() => handlePageChange(index + 1)} className={`px-4 py-2 rounded-lg text-sm font-medium ${currentPage === index + 1 ? "bg-yellow-500 text-slate-900" : "bg-slate-800 text-gray-400 hover:text-white"}`}>
             {index + 1}
           </button>
         ))}
