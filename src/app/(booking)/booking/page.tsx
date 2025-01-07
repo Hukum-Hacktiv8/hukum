@@ -197,9 +197,9 @@ export default function Booking() {
                     <div className="text-green-500 text-sm">Tersedia</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => (window as any).scrollToLawyer(lawyer._id)} className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors" title="Lihat di Map">
+                    {/* <button onClick={() => (window as any).scrollToLawyer(lawyer._id)} className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors" title="Lihat di Map">
                       <IoLocationOutline className="w-6 h-6" />
-                    </button>
+                    </button> */}
                     <Link href={`/booking/${lawyer._id}`} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">
                       Book Now
                     </Link>
