@@ -5,6 +5,7 @@ import { FaCrown, FaCheck, FaStar } from "react-icons/fa";
 import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 // Definisi tipe data untuk plan
 type Plan = {
@@ -133,15 +134,16 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
 // Main component
 export default function SubscribePage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (window.location.hash === "#subscribe") {
+    if (searchParams.get("scroll") === "subscribe") {
       const subscribeElement = document.getElementById("subscribe");
       if (subscribeElement) {
         subscribeElement.scrollIntoView({ behavior: "smooth" });
       }
     }
-  }, []);
+  }, [searchParams]);
 
   return (
     <div id="subscribe" className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-20">

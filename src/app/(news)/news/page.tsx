@@ -55,7 +55,7 @@ export default function News() {
   const router = useRouter();
 
   const redirectToSubscribe = () => {
-    router.push("/#subscribe");
+    router.push("/?scroll=subscribe");
   };
 
   // Filter articles based on selected category
