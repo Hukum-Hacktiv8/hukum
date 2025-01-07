@@ -52,20 +52,13 @@ export default function Navbar({ token }: Props) {
             />
             <span className="text-xl font-bold text-white">Hacktivist</span>
           </Link>
-          {/* <span className="text-xl font-bold text-white">Premium</span> */}
-          {/* <div className="badge badge-md bg-yellow">Premium</div> */}
-          <div className="badge badge-warning gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              // className="inline-block h-4 w-4 stroke-current"
-            >
+          <div className="badge badge-warning ml-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
+                // strokeWidth="2"
+                // d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>
             Premium
