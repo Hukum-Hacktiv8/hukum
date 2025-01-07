@@ -116,6 +116,7 @@ export default function Chat() {
 
         setContacts(fetchedContacts.filter(Boolean));
       } catch (error) {
+        console.log(error);
         setContacts([]);
       }
     }

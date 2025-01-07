@@ -1,10 +1,14 @@
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { CheckRoomLogin, createRoom, findRoom } from "@/models/chatroom";
-import { ObjectId } from "mongodb";
+import {
+  CheckRoomLogin,
+  createRoom,
+  // findRoom
+} from "@/models/chatroom";
+// import { ObjectId } from "mongodb";
 
 export const POST = async (request: Request) => {
-  let data = await request.json();
+  const data = await request.json();
   const clientId = request.headers.get("rg-user-id");
 
   data?.participants?.push(clientId);

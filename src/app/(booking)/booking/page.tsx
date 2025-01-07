@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { IoStar, IoTimeOutline, IoLocationOutline, IoSchoolOutline } from "react-icons/io5";
-import MapSection from "../../../components/MapSection";
+import {
+  // IoStar,
+  IoTimeOutline,
+  IoLocationOutline,
+  IoSchoolOutline,
+} from "react-icons/io5";
+// import MapSection from "../../../components/MapSection";
 
 export interface Lawyer {
   _id: string;

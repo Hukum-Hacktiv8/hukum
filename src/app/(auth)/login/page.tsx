@@ -7,7 +7,7 @@ export default function Login() {
 
   if (token) {
     redirect("/");
-    console.log("Buat toastify, sudah login");
+    // console.log("Buat toastify, sudah login");
   }
 
   return (

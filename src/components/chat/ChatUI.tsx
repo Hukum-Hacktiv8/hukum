@@ -2,7 +2,7 @@ import { IonIcon } from "@ionic/react";
 import {
   sendOutline,
   videocamOutline,
-  callOutline,
+  // callOutline,
   // micOutline,
   // micOffOutline,
   // videocamOffOutline,

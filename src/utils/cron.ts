@@ -130,7 +130,6 @@ export function startCronJobs() {
 export const findChatRoomInFirestore = async (contactId: string, clientId: string) => {
   console.log(contactId, clientId, "INI TESSSS");
   const chatRoomsRef = collection(db, "chat-rooms");
-  const result = [];
 
   const q = query(chatRoomsRef, where("participants", "array-contains", clientId));
   const querySnapshot = await getDocs(q);
