@@ -102,3 +102,10 @@ export const findLawyerById = async (id: string) => {
 
   return result;
 };
+
+export const findLawyerByName = async (name: string) => {
+  const db = await getDb();
+
+  const result = await db.collection("users").findOne({ role: "lawyer", name });
+  return result;
+};
