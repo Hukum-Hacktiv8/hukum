@@ -102,12 +102,9 @@ export default function Booking() {
   }, []);
 
   const fetchLawyers = async () => {
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`,
-      {
-        method: "GET",
-      }
-    );
+    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`, {
+      method: "GET",
+    });
     const response = await data.json();
     // console.log(response.data, "tolong cek ini di lawyer");
 
@@ -153,14 +150,8 @@ export default function Booking() {
                   <div>
                     <div className="flex flex-wrap gap-2 mb-2">
                       <div className="flex items-center gap-1">
-                        <Lottie
-                          animationData={verificationLottie}
-                          loop={true}
-                          className="w-12 h-12"
-                        />
-                        <span className="text-sm font-medium text-blue-500">
-                          Verified
-                        </span>
+                        <Lottie animationData={verificationLottie} loop={true} className="w-12 h-12" />
+                        <span className="text-sm font-medium text-blue-500">Verified</span>
                       </div>
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-1">{lawyer.name}</h3>
@@ -195,13 +186,19 @@ export default function Booking() {
                 {/* Price & Actions */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                   <div>
-                    <div className="text-white font-medium">
-                      {formatRupiah(lawyer.price)}
-                    </div>
+                    <div className="text-white font-medium">{formatRupiah(lawyer.price)}</div>
                     <div className="text-green-500 text-sm">Tersedia</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => (window as any).scrollToLawyer(lawyer._id)} className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors" title="Lihat di Map">
+                    <button
+                      onClick={() => {
+                        if (typeof window !== "undefined" && window.scrollToLawyer) {
+                          window.scrollToLawyer(lawyer._id);
+                        }
+                      }}
+                      className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors"
+                      title="Lihat di Map"
+                    >
                       <IoLocationOutline className="w-6 h-6" />
                     </button>
                     <Link href={`/booking/${lawyer._id}`} className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-medium rounded-lg transition-colors">
@@ -225,7 +222,7 @@ export default function Booking() {
       </div>
 
       {/* Maps Section */}
-      {/* <MapSection lawyers={lawyers} /> */}
+      <MapSection lawyers={lawyers} />
     </div>
   );
 }
