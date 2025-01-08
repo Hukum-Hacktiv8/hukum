@@ -233,7 +233,14 @@ export default function Booking() {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => (window as any).scrollToLawyer(lawyer._id)}
+                      onClick={() => {
+                        if (
+                          typeof window !== "undefined" &&
+                          window.scrollToLawyer
+                        ) {
+                          window.scrollToLawyer(lawyer._id);
+                        }
+                      }}
                       className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors"
                       title="Lihat di Map"
                     >
