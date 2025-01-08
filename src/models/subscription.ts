@@ -60,7 +60,7 @@ export const createSubs = async (userId: string) => {
   };
 
   const response = await db.collection(COLLECTION).insertOne(InputcreateSubs);
-  console.log(`pakah lolos`);
+  // console.log(`pakah lolos`);
 
   return response;
 };
@@ -84,7 +84,8 @@ export const updateSubscriptionStatus = async () => {
   const db = await getDb();
   const currentDate = new Date();
 
-  const result = await db.collection(COLLECTION).updateMany(
+  // const result =
+  await db.collection(COLLECTION).updateMany(
     {
       endDate: { $lt: currentDate },
       status: "active",
@@ -98,7 +99,7 @@ export const updateSubscriptionStatus = async () => {
     }
   );
 
-  console.log(`${result.modifiedCount} subscriptions updated to expired status.`);
+  // console.log(`${result.modifiedCount} subscriptions updated to expired status.`);
 };
 
 // Fungsi yang dimodifikasi untuk membuat langganan

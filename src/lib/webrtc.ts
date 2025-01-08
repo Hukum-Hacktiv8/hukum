@@ -23,14 +23,14 @@ export const createPeerConnection = (): RTCPeerConnection => {
 //Create Room
 export const createRoom = async (peerConnection: RTCPeerConnection): Promise<string> => {
   const roomRef = await addDoc(collection(db, "video-rooms"), {}); // Correct
-  console.log("Created new room with ID:", roomRef.id);
+  // console.log("Created new room with ID:", roomRef.id);
 
   const callerCandidatesCollection = collection(db, `video-rooms/${roomRef.id}/callerCandidates`); // Fixed path
 
   peerConnection.addEventListener("icecandidate", async (event) => {
     if (event.candidate) {
       await addDoc(callerCandidatesCollection, event.candidate.toJSON());
-      console.log("Added ICE candidate to Firestore:", event.candidate.toJSON());
+      // console.log("Added ICE candidate to Firestore:", event.candidate.toJSON());
     }
   });
 
@@ -49,7 +49,7 @@ export const createRoom = async (peerConnection: RTCPeerConnection): Promise<str
     if (data?.answer && !peerConnection.currentRemoteDescription) {
       const answer = new RTCSessionDescription(data.answer);
       peerConnection.setRemoteDescription(answer);
-      console.log("Set remote SDP answer:", answer);
+      // console.log("Set remote SDP answer:", answer);
     }
   });
 
@@ -62,7 +62,7 @@ export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string
 
   const roomSnapshot = await getDoc(roomRef);
   if (roomSnapshot.exists()) {
-    console.log("Joined room with ID:", roomId);
+    // console.log("Joined room with ID:", roomId);
 
     const roomData = roomSnapshot.data();
     const offer = roomData?.offer;
@@ -70,7 +70,7 @@ export const joinRoom = async (peerConnection: RTCPeerConnection, roomId: string
     if (offer) {
       const offerDescription = new RTCSessionDescription(offer);
       await peerConnection.setRemoteDescription(offerDescription);
-      console.log("Set remote SDP offer:", offerDescription);
+      // console.log("Set remote SDP offer:", offerDescription);
 
       const answer = await peerConnection.createAnswer();
       await peerConnection.setLocalDescription(answer);

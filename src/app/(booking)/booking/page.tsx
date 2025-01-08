@@ -104,7 +104,7 @@ export default function Booking() {
       method: "GET",
     });
     const response = await data.json();
-    console.log(response.data, "tolong cek ini di lawyer");
+    // console.log(response.data, "tolong cek ini di lawyer");
 
     setLawyers(response.data);
   };
