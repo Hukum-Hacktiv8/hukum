@@ -13,7 +13,7 @@ type UserLogin = {
   username: string;
 };
 
-const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
+const Avatar = ({ token, setPremiumLogout }: { token: RequestCookie | undefined; setPremiumLogout: () => void }) => {
   const [userLogin, setUserLogin] = useState<UserLogin | null>(null);
   const router = useRouter();
 
@@ -38,6 +38,7 @@ const Avatar = ({ token }: { token: RequestCookie | undefined }) => {
     try {
       await handleLogoutAction();
       await fetchUserLogin();
+      setPremiumLogout();
       router.push("/login");
     } catch (error) {
       console.log(error);
