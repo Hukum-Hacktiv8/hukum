@@ -4,15 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Message } from "./ProfileComponent";
+import { formatTimestamp } from "@/utils/formatTimestamp";
 
 interface ChatHistoryModalProps {
   isOpen: boolean;
   onClose: () => void;
   messages?: Message[];
   lawyerName?: string;
+  you: string;
 }
 
-export default function ChatHistoryModal({ isOpen, onClose, messages = [], lawyerName }: ChatHistoryModalProps) {
+export default function ChatHistoryModal({ isOpen, onClose, messages = [], lawyerName, you }: ChatHistoryModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -37,8 +39,8 @@ export default function ChatHistoryModal({ isOpen, onClose, messages = [], lawye
               {/* Chat Messages */}
               <div className="max-h-[calc(70vh-140px)] overflow-y-auto bg-slate-800 p-4">
                 {messages.map((msg, idx) => (
-                  <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * idx }} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} mb-4`}>
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.sender === "user" ? "bg-blue-500 text-white rounded-tr-none" : "bg-slate-700 text-gray-100 rounded-tl-none"}`}>
+                  <motion.div key={idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * idx }} className={`flex ${msg.sender === you ? "justify-end" : "justify-start"} mb-4`}>
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${msg.sender === you ? "bg-red-500 text-white rounded-tr-none" : "bg-slate-700 text-gray-100 rounded-tl-none"}`}>
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
@@ -53,12 +55,10 @@ export default function ChatHistoryModal({ isOpen, onClose, messages = [], lawye
                       >
                         {msg.text}
                       </ReactMarkdown>
-                      <div className="text-xs opacity-70 mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</div>
+                      <div className="text-xs text-gray-300/70 mt-1">{formatTimestamp(msg.timestamp)}</div>
                     </div>
                   </motion.div>
                 ))}
-
-                {messages.length === 0 && <div className="text-center text-gray-400 py-8">Tidak ada riwayat chat</div>}
               </div>
             </div>
           </motion.div>
