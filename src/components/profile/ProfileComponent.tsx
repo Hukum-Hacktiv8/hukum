@@ -21,6 +21,8 @@ import { DeleteImageFromCloudinary, UploadImage } from "@/components/auth/upload
 import { useRouter } from "next/navigation";
 import { formatRupiah } from "@/utils/formatRupiah";
 import ChatHistoryModal from "./ChatHistoryModal";
+import { formatDate } from "@/utils/formatDate";
+import { formatTransactionDate } from "@/utils/formatDate";
 // interface ConsultationHistory {
 //   id: number;
 //   lawyer: {
@@ -57,9 +59,13 @@ interface profileLawyer {
 export interface Message {
   sender: string;
   text: string;
-  timestamp: string;
+  timestamp: IsiTimeStamp;
 }
 
+interface IsiTimeStamp {
+  seconds: number;
+  nanoseconds: number;
+}
 interface SavedArticle {
   id: number;
   title: string;
@@ -89,6 +95,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
   const [Riwayat, setRiwayat] = useState<ChatRoom[]>([]);
   const [selectedChat, setSelectedChat] = useState<Message[] | null>(null);
   const [selectedLawyer, setSelectedLawyer] = useState<string>("");
+  const [selectedIdYouId, setSelectedYouId] = useState<string>("");
 
   useEffect(() => {
     fetchPayment();
@@ -308,7 +315,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     {/* {console.log("Riwayat data:", Riwayat)} */}
 
                     <div className="space-y-4">
-                      {Riwayat.map((riwayat) => {
+                      {Riwayat.map((riwayat, idx) => {
                         console.log("Messages for riwayat:", riwayat.messages);
 
                         return (
@@ -318,7 +325,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                               <div>
                                 <h4 className="text-white font-medium">{riwayat.lawyerName}</h4>
                                 <div className="text-sm text-gray-400">
-                                  <span>{riwayat.bookDate}</span>
+                                  <span>{formatDate(riwayat.bookDate)}</span>
                                   <span className="mx-2">•</span>
                                   <span>1 Sesi</span>
                                 </div>
@@ -332,6 +339,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                                     console.log("Clicked messages:", riwayat.messages);
                                     setSelectedChat(riwayat.messages || []);
                                     setSelectedLawyer(riwayat.lawyerName || "");
+                                    setSelectedYouId(riwayat.participants[1]);
                                   }}
                                   className="px-3 py-1 bg-yellow-500 text-slate-900 rounded-lg text-xs font-medium hover:bg-yellow-600"
                                 >
@@ -352,6 +360,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                       }}
                       messages={selectedChat || []}
                       lawyerName={selectedLawyer}
+                      you={selectedIdYouId}
                     />
                   </motion.div>
                 )}
@@ -387,7 +396,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                             <Image src={el.lawyerCertification} alt="" width={48} height={48} className="rounded-full" unoptimized />
                             <div>
                               <h4 className="text-white font-medium">{el.lawyerName}</h4>
-                              <p className="text-sm text-gray-400">{el.bookDate}</p>
+                              <p className="text-sm text-gray-400">{formatDate(el.bookDate)}</p>
                             </div>
                           </div>
                           <button className="px-4 py-2 bg-yellow-500 text-slate-900 rounded-lg hover:bg-yellow-600"> 09.00 </button>
@@ -424,7 +433,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                           {/* <h3 className="text-yellow-500 font-medium mb-1">{payment.paymentType}</h3> */}
 
                           <h3 className="text-white font-medium mb-1">{formatRupiah(payment.amount)}</h3>
-                          <span className="text-gray-400 text-sm">{payment.transactionDate}</span>
+                          <span className="text-gray-400 text-sm">{formatTransactionDate(payment.transactionDate)}</span>
                         </div>
                       </div>
                     ))}
