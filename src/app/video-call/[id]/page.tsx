@@ -20,7 +20,7 @@ const VideoCallId = () => {
 
     setVideoRoomId(id);
 
-    console.log("Room ID:", id);
+    // console.log("Room ID:", id);
   };
 
   const joinCall = async () => {
@@ -34,7 +34,7 @@ const VideoCallId = () => {
     }
 
     await joinRoom(peerConnection, id);
-    console.log("Joined Room ID:", id);
+    // console.log("Joined Room ID:", id);
   };
 
   const startMedia = async () => {
@@ -45,10 +45,11 @@ const VideoCallId = () => {
 
     if (localVideoRef.current) {
       localVideoRef.current.srcObject = localStream;
-      console.log("INI LOCACL VIDEO ELEMENT :", localVideoRef.current);
-    } else {
-      console.log("LOCAL VIDEO GAADA BOY");
+      // console.log("INI LOCACL VIDEO ELEMENT :", localVideoRef.current);
     }
+    // else {
+      // console.log("LOCAL VIDEO GAADA BOY");
+    // }
 
     const pc = createPeerConnection();
 

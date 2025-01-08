@@ -1,7 +1,7 @@
 export const GET = async (request: Request, { params }: { params: { id: string } }) => {
   try {
     const { id } = params;
-    console.log(id, "INI ID BOIIIIII");
+    console.log(id);
   } catch (error) {
     console.log(error);
     return Response.json(

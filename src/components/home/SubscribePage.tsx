@@ -117,7 +117,7 @@ const SubscriptionCard = ({ plan, isSelected, onSelect }: { plan: Plan; isSelect
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(`Selected plan: ${plan.name}, INI SELECTED PAN BOI`);
+                // console.log(`Selected plan: ${plan.name}, INI SELECTED PAN BOI`);
               }}
               className={`w-full py-3 rounded-lg text-white font-semibold
                 bg-gradient-to-r ${plan.color}

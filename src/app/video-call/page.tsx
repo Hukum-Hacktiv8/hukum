@@ -19,7 +19,7 @@ const VideoCall = () => {
 
     setVideoRoomId(id);
 
-    console.log("Room ID:", id);
+    // console.log("Room ID:", id);
   };
 
   const joinCall = async () => {
