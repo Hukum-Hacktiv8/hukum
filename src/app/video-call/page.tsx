@@ -109,7 +109,7 @@ const VideoCall = () => {
 
     if (!isPremium) {
       toast.error("Silahkan Berlangganan Dulu");
-      router.push("/");
+      router.push("/?scroll=subscribe");
     }
 
     return null;
