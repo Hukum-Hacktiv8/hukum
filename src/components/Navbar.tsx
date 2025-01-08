@@ -61,9 +61,14 @@ export default function Navbar({ token }: Props) {
     return null;
   };
 
+  const setPremiumLogout = () => {
+    setIsPremium(false);
+  };
+
   useEffect(() => {
     checkPremium();
-  }, []);
+    console.log("isPremium", isPremium);
+  }, [token, isPremium]);
 
   return (
     <>
@@ -113,7 +118,7 @@ export default function Navbar({ token }: Props) {
               <IoBusinessOutline className="w-6 h-6" title="About" />
             </Link>
 
-            <Avatar token={token} />
+            <Avatar token={token} setPremiumLogout={setPremiumLogout} />
           </div>
         </div>
       </nav>
