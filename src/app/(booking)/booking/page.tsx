@@ -12,6 +12,8 @@ import {
 } from "react-icons/io5";
 import MapSection from "../../../components/MapSection";
 import { formatRupiah } from "@/utils/formatRupiah";
+import Lottie from "lottie-react";
+import verificationLottie from "@/assets/lottie/verification.json";
 
 export interface Lawyer {
   _id: string;
@@ -100,9 +102,12 @@ export default function Booking() {
   }, []);
 
   const fetchLawyers = async () => {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`, {
-      method: "GET",
-    });
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/lawyers`,
+      {
+        method: "GET",
+      }
+    );
     const response = await data.json();
     // console.log(response.data, "tolong cek ini di lawyer");
 
@@ -143,28 +148,25 @@ export default function Booking() {
           {paginatedLawyers.map((lawyer, idx) => (
             <motion.div key={lawyer._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-slate-800 rounded-xl overflow-hidden hover:bg-slate-800/80 transition-colors">
               <div className="p-6">
-                {/* Lawyer Info */}
                 <div className="flex items-start gap-4 mb-4">
                   <Image src={lawyer.credentials.certification} alt={lawyer.name} width={80} height={80} className="w-20 h-20 rounded-xl object-cover" unoptimized />
                   <div>
                     <div className="flex flex-wrap gap-2 mb-2">
-                      <span className={`px-2 py-1 rounded text-xs font-medium bg-blue-500/10 text-blue-500`}>Verified</span>
+                      <div className="flex items-center gap-1">
+                        <Lottie
+                          animationData={verificationLottie}
+                          loop={true}
+                          className="w-12 h-12"
+                        />
+                        <span className="text-sm font-medium text-blue-500">
+                          Verified
+                        </span>
+                      </div>
                     </div>
                     <h3 className="text-lg font-semibold text-white mb-1">{lawyer.name}</h3>
                     <p className="text-yellow-500 text-sm">{lawyer.specialization}</p>
                   </div>
                 </div>
-
-                {/* Stats */}
-                {/* <div className="flex items-center gap-4 mb-4 text-sm">
-                  <div className="flex items-center gap-1 text-yellow-500">
-                    <IoStar className="w-4 h-4" />
-                    <span>{lawyer.rating}</span>
-                  </div>
-                  <span className="text-gray-400">{lawyer.reviews} reviews</span>
-                </div> */}
-
-                {/* Details */}
                 <div className="space-y-2 mb-6 text-sm">
                   <div className="flex items-center gap-2 text-gray-300">
                     <IoTimeOutline className="w-4 h-4 text-gray-400" />
@@ -193,7 +195,9 @@ export default function Booking() {
                 {/* Price & Actions */}
                 <div className="flex items-center justify-between pt-4 border-t border-slate-700">
                   <div>
-                    <div className="text-white font-medium">{formatRupiah(lawyer.price)}</div>
+                    <div className="text-white font-medium">
+                      {formatRupiah(lawyer.price)}
+                    </div>
                     <div className="text-green-500 text-sm">Tersedia</div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -221,7 +225,7 @@ export default function Booking() {
       </div>
 
       {/* Maps Section */}
-      <MapSection lawyers={lawyers} />
+      {/* <MapSection lawyers={lawyers} /> */}
     </div>
   );
 }
