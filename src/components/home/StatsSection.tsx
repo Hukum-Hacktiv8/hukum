@@ -14,7 +14,7 @@ const stats = [
   },
   {
     icon: HiOutlineClock,
-    value: 15,
+    value: 5,
     label: "Years Experience",
     suffix: "+",
   },
