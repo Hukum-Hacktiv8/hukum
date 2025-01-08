@@ -84,6 +84,7 @@ const CheckoutPage = (props: CheckoutPageProp) => {
           }),
         ]);
         router.push("/");
+        router.refresh();
       } else {
         await Promise.all([
           fetch("/api/roomchats", {
@@ -179,7 +180,8 @@ const CheckoutPage = (props: CheckoutPageProp) => {
                         hover:bg-primary/90 transition-all flex-shrink-0
                         disabled:opacity-50 disabled:cursor-not-allowed
                         ${loading ? "animate-pulse" : ""}
-                    `}>
+                    `}
+            >
               {loading ? "Memproses pembayaran..." : "Bayar Sekarang"}
             </button>
           </form>
