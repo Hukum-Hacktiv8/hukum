@@ -315,7 +315,7 @@ export default function ProfileComponent({ user }: { user: SafeUserType }) {
                     {/* {console.log("Riwayat data:", Riwayat)} */}
 
                     <div className="space-y-4">
-                      {Riwayat.map((riwayat, idx) => {
+                      {Riwayat.map((riwayat) => {
                         console.log("Messages for riwayat:", riwayat.messages);
 
                         return (

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { fetchUserLogin } from "./action";
 import ProfileComponent from "../../../components/profile/ProfileComponent";

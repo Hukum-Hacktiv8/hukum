@@ -60,26 +60,39 @@ interface Location {
   lng: number;
 }
 
+// Add interface extension for window
+declare global {
+  interface Window {
+    scrollToLawyer: (lawyerId: string) => void;
+  }
+}
+
 const MapSection = ({ lawyers }: MapSectionProps) => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const [selectedLawyer, setSelectedLawyer] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<Location | null>(null);
-  const [mapCenter, setMapCenter] = useState(() => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Update mapCenter initialization with proper type checking
+  const [mapCenter, setMapCenter] = useState<Location>(() => {
+    // Check if window is defined (client-side)
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("userLocation");
-      return saved
-        ? JSON.parse(saved)
-        : {
-            lat: -6.2088,
-            lng: 106.8456,
-          };
+      try {
+        const saved = localStorage.getItem("userLocation");
+        if (saved) {
+          const parsed = JSON.parse(saved) as Location;
+          return parsed;
+        }
+      } catch (error) {
+        console.error("Error reading from localStorage:", error);
+      }
     }
+    // Default coordinates if no saved location
     return {
       lat: -6.2088,
       lng: 106.8456,
     };
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBl12-VCiWi3n1L5Z4QVG6O_oSVYfLMMLg",
@@ -102,12 +115,13 @@ const MapSection = ({ lawyers }: MapSectionProps) => {
           };
           setUserLocation(location);
           setMapCenter(location);
-          localStorage.setItem("userLocation", JSON.stringify(location));
 
           if (mapRef.current) {
             mapRef.current.panTo(location);
             mapRef.current.setZoom(16);
           }
+
+          localStorage.setItem("userLocation", JSON.stringify(location));
           setIsLoading(false);
         },
         (error) => {
@@ -137,13 +151,12 @@ const MapSection = ({ lawyers }: MapSectionProps) => {
     }
     mapRef.current.setZoom(15);
 
-    // Reset selected lawyer after 3 seconds
     setTimeout(() => setSelectedLawyer(null), 3000);
   };
 
-  // Expose scrollToLawyer function
+  // Update the scrollToLawyer assignment
   if (typeof window !== "undefined") {
-    (window as any).scrollToLawyer = scrollToLawyer;
+    window.scrollToLawyer = scrollToLawyer;
   }
 
   if (!isLoaded)
@@ -169,7 +182,8 @@ const MapSection = ({ lawyers }: MapSectionProps) => {
             options={mapOptions}
             onLoad={(map) => {
               mapRef.current = map;
-            }}>
+            }}
+          >
             {userLocation && (
               <>
                 <MarkerF
@@ -215,7 +229,8 @@ const MapSection = ({ lawyers }: MapSectionProps) => {
               onClick={getCurrentLocation}
               className="bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 
               transition-all duration-200 disabled:opacity-50"
-              disabled={isLoading}>
+              disabled={isLoading}
+            >
               <MdMyLocation className={`text-2xl text-blue-600 ${isLoading ? "animate-spin" : ""}`} />
             </button>
           </div>
